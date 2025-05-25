@@ -115,7 +115,7 @@ const Search = () => {
                           fill
                         />
                       </div>
-                      <p>{product.name}</p>
+                      <p>{product.name} w</p>
                     </div>
                   </Link>
                 ))}
