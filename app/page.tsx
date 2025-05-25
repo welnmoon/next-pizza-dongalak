@@ -1,12 +1,5 @@
-import CategoriesAndSort from "@/components/CategoriesAndSort/CategoriesAndSort";
-import FilterAndProducts from "@/components/FilterAndProducts/FilterAndProducts";
-import ProductCard from "@/components/ProductCard";
+const Page = () => {
+  return <></>;
+};
 
-export default function Home() {
-  return (
-    <div className="">
-      <CategoriesAndSort />
-      <FilterAndProducts />
-    </div>
-  );
-}
+export default Page;

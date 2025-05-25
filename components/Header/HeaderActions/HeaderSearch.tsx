@@ -2,7 +2,7 @@
 import { Api } from "@/services/api-client";
 import { Product } from "@prisma/client";
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -10,6 +10,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 const Search = () => {
   const [focused, setFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [defaultProducts, setDefaultProducts] = useState<Product[]>([]);
 
   const [searchResult, setSearchResult] = useState<Product[]>([]);
 
@@ -26,6 +27,12 @@ const Search = () => {
     };
     getSearchedProducts();
   }, [searchQuery]);
+
+  useEffect(() => {
+    Api.products.search("").then((products) => {
+      setDefaultProducts(products);
+    });
+  }, []);
 
   const onClickProduct = () => {
     setFocused(false);
@@ -67,34 +74,51 @@ const Search = () => {
                       }`}
         >
           <div className="relative flex flex-col">
-            {searchResult.length > 0 ? (
-              searchResult.slice(0, 5).map((product) => (
-                <Link
-                  href={`/product/${product.id}`}
-                  className="hover:bg-orange-100 rounded-md px-2 py-1 transition duration-200"
-                  onClick={onClickProduct}
-                >
-                  <div
-                    key={product.id}
-                    className="relative flex items-center gap-4 "
+            {searchResult.length > 0
+              ? searchResult.slice(0, 5).map((product) => (
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="hover:bg-orange-100 rounded-md px-2 py-1 transition duration-200"
+                    onClick={onClickProduct}
                   >
-                    <div className="h-10 w-10 relative">
-                      <Image
-                        alt={product.name}
-                        src={product.imageUrl}
-                        className=" object-contain"
-                        fill
-                      />
+                    <div
+                      key={product.id}
+                      className="relative flex items-center gap-4 "
+                    >
+                      <div className="h-10 w-10 relative">
+                        <Image
+                          alt={product.name}
+                          src={product.imageUrl}
+                          className=" object-contain"
+                          fill
+                        />
+                      </div>
+                      <p>{product.name}</p>
                     </div>
-                    <p>{product.name}</p>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div>
-                <p>Результаты</p>
-              </div>
-            )}
+                  </Link>
+                ))
+              : defaultProducts.slice(0, 5).map((product) => (
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="hover:bg-orange-100 rounded-md px-2 py-1 transition duration-200"
+                    onClick={onClickProduct}
+                  >
+                    <div
+                      key={product.id}
+                      className="relative flex items-center gap-4 "
+                    >
+                      <div className="h-10 w-10 relative">
+                        <Image
+                          alt={product.name}
+                          src={product.imageUrl}
+                          className=" object-contain"
+                          fill
+                        />
+                      </div>
+                      <p>{product.name}</p>
+                    </div>
+                  </Link>
+                ))}
           </div>
         </div>
       </div>

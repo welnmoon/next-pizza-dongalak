@@ -9,13 +9,15 @@ import { usePriceFilterStore } from "@/store/priceFilterStore";
 import { usePizzaSizeFilterStore } from "@/store/pizzaSizeFilterStore";
 import { useDoughTypeFilterStore } from "@/store/doughTypeFilterStore";
 import { useIngredientFilterStore } from "@/store/ingredientFilterStore";
+import qs from "qs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Filter = () => {
   const { ingredients } = useFilterIngredients();
+  const router = useRouter();
 
-  const selectedCategories = useCategoryFilterStore(
-    (s) => s.selectedCategories
-  );
+  const selectedCategory = useCategoryFilterStore((s) => s.selectedCategory);
   const selectedPriceRange = usePriceFilterStore((s) => s.priceRange);
   const selectedPizzaSizes = usePizzaSizeFilterStore(
     (s) => s.selectedPizzaSizes
@@ -26,6 +28,23 @@ const Filter = () => {
   const selectedIngredients = useIngredientFilterStore(
     (s) => s.selectedIngredients
   );
+
+  const selectedFilters = {
+    selectedCategory,
+    selectedPriceRange,
+    selectedPizzaSizes: Array.from(selectedPizzaSizes),
+    selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
+    selectedIngredients: Array.from(selectedIngredients),
+  };
+
+  const query = qs.stringify(selectedFilters, {
+    arrayFormat: "repeat",
+    skipNulls: true,
+  });
+  
+  useEffect(() => {
+    router.replace(`?${query}`, { scroll: false });
+  }, [query]);
 
   return (
     <div className="lg:w-[250px] md:w-[200px]">

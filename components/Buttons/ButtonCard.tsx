@@ -1,4 +1,4 @@
-import { User } from "lucide-react";
+import { PlusIcon, User } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface Props {
@@ -7,7 +7,8 @@ interface Props {
 
 const ButtonCard = ({ text }: Props) => {
   return (
-    <Button className="rounded-full  border border-orange-400 text-orange-500 bg-orange-200 hover:bg-orange-500 hover:text-white">
+    <Button className="rounded-full font-medium text-orange-600 bg-orange-100 hover:bg-orange-200">
+      <PlusIcon />
       {text}
     </Button>
   );

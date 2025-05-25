@@ -1,27 +1,30 @@
 import ProductCard from "./ProductCard";
 
 interface Props {
-  title: string;
-  categoryId: string;
-  products?: {
-    id: string;
+  groupTitle: string;
+  categoryId: number;
+  products: {
+    id: number;
     title: string;
     price: number;
     ingredients: string;
     image: string;
-    categoryId: string;
+    categoryId: number;
   }[];
 }
 
-const ProductGroupList = ({ categoryId, products, title }: Props) => {
+const ProductGroupList = ({ categoryId, products, groupTitle }: Props) => {
+  const filteredProducts = products.filter((p) => p.categoryId === categoryId);
+
   return (
     <div className="w-full">
-      <h1 className="font-semibold text-2xl mb-4">{title}</h1>
-      <div className="grid grid-cols-3 gap-10 w-full">
-        {products && products.length > 0 ? (
-          products.map((product) => (
+      <h1 className="font-semibold text-2xl mb-4">{groupTitle}</h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
               categoryId={product.categoryId}
               image={product.image}
               ingredients={product.ingredients}

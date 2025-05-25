@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Logotype = () => {
   return (
-    <Link href="/">
+    <Link href="/home">
       <div className="flex gap-2 items-center">
         <div className="text-black">
           <Image
