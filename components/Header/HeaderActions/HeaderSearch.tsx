@@ -77,6 +77,7 @@ const Search = () => {
             {searchResult.length > 0
               ? searchResult.slice(0, 5).map((product) => (
                   <Link
+                    key={product.id}
                     href={`/product/${product.id}`}
                     className="hover:bg-orange-100 rounded-md px-2 py-1 transition duration-200"
                     onClick={onClickProduct}
@@ -99,6 +100,7 @@ const Search = () => {
                 ))
               : defaultProducts.slice(0, 5).map((product) => (
                   <Link
+                    key={product.id}
                     href={`/product/${product.id}`}
                     className="hover:bg-orange-100 rounded-md px-2 py-1 transition duration-200"
                     onClick={onClickProduct}
@@ -115,7 +117,7 @@ const Search = () => {
                           fill
                         />
                       </div>
-                      <p>{product.name} w</p>
+                      <p>{product.name}</p>
                     </div>
                   </Link>
                 ))}
