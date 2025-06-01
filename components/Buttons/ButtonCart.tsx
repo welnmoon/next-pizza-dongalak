@@ -3,13 +3,21 @@
 import { ArrowRight, ShoppingCart } from "lucide-react";
 import { Button } from "../ui/button";
 import { CartDrawer } from "../Cart/CartDrawer";
+import { useCartStore } from "@/store/cartState";
+
+import { cartItemsTotalPrice } from "@/lib/cartItemsTotalPrice";
 
 const ButtonCart = () => {
+  const cartItems = useCartStore((s) => s.items);
+  const items = useCartStore((s) => s.items);
+
+  const totalPrice = cartItemsTotalPrice({ items });
+
   return (
     <CartDrawer>
       <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 flex items-center gap-4 shadow-md group">
         {/* Сумма */}
-        <span className="text-md font-semibold">3980 ₸</span>
+        <span className="text-md font-semibold">{totalPrice} ₸</span>
 
         {/* Разделительная линия */}
         <div className="w-px h-5 bg-white opacity-60" />
@@ -23,7 +31,7 @@ const ButtonCart = () => {
           </div>
 
           {/* Число товаров */}
-          <span className="text-md font-semibold">3</span>
+          <span className="text-md font-semibold">{cartItems.length}</span>
         </div>
       </Button>
     </CartDrawer>

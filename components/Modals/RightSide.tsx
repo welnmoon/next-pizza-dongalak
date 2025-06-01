@@ -1,10 +1,12 @@
 import { cn } from "@/lib/utils";
 import { Ingredient, Product, ProductItem } from "@prisma/client";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { DialogTitle } from "../ui/dialog";
 import { PIZZA_TYPE_LABELS } from "@/prisma/constants";
 import { CircleCheck } from "lucide-react";
+import { useCartStore } from "@/store/cartState";
+import { addItemToCart } from "@/services/cart";
 
 interface Props {
   product: Product;
@@ -33,7 +35,40 @@ const RightSide = ({
   ingredients,
   handleSetSelectedIngredients,
 }: Props) => {
-  const totalPrice = total;
+  const addCartItem = useCartStore((s) => s.addCartItem);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  const matchRules: Record<number, (item: ProductItem) => boolean> = {
+    1: (item) =>
+      item.size === selectedSize && item.pizzaType === selectedDoughTypes, // Пиццы
+    2: () => true, // Напитки (только один вариант)
+    3: () => true, // Десерты
+    4: () => true, // Соусы
+    // ... добавь свои правила при необходимости
+  };
+
+  const matchFn = matchRules[product.categoryId] || (() => true); // fallback на безопасное поведение
+
+  const matchedItem = items.find(matchFn);
+
+  const handleAddToCart = async () => {
+    if (!matchedItem) return alert("Такой товар не найден!");
+    setIsLoading(true);
+
+    try {
+      await addCartItem(matchedItem, selectedIngredients);
+      setIsLoading(false);
+      setIsSuccess(true);
+    } catch (error) {
+      setIsLoading(false);
+      setIsSuccess(false);
+      console.error(error);
+    }
+
+    setTimeout(() => setIsSuccess(false), 3000);
+  };
   return (
     <div className="w-full h-full md:w-1/2 flex flex-col py-8 px-4 bg-gray-100">
       <div className="flex-1 overflow-y-auto pr-1">
@@ -129,8 +164,21 @@ const RightSide = ({
       </div>
 
       {/* Кнопка снизу */}
-      <button className="mt-6 bg-orange-500 hover:bg-orange-600 text-white text-sm py-3 w-full rounded-xl font-semibold transition">
-        Добавить в корзину за {totalPrice} ₸
+      <button
+        onClick={handleAddToCart}
+        disabled={isLoading}
+        className={cn(
+          "mt-6 text-white text-sm py-3 w-full rounded-xl font-semibold transition flex items-center justify-center",
+          isSuccess ? "bg-orange-500" : "bg-orange-500 hover:bg-orange-600"
+        )}
+      >
+        {isLoading ? (
+          <div className="loader border-white w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" />
+        ) : isSuccess ? (
+          <CircleCheck className="text-white w-5 h-5" />
+        ) : (
+          `Добавить в корзину за ${matchedItem?.price} ₸`
+        )}
       </button>
     </div>
   );

@@ -8,11 +8,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronRight } from "lucide-react";
 import CartDrawerItem from "./CartDrawerItem";
 import { useCartStore } from "@/store/cartState";
+import { taxCalculate } from "@/lib/taxCalculate";
+import { cartItemsTotalPrice } from "@/lib/cartItemsTotalPrice";
 
 interface Props {
   children: ReactNode;
@@ -21,14 +23,14 @@ interface Props {
 export function CartDrawer({ children }: Props) {
   const fetchCartItems = useCartStore((state) => state.fetchCartItems);
   const items = useCartStore((state) => state.items);
-  const loading = useCartStore((state) => state.loading);
+  const loading = useCartStore((state) => state.loadingCart);
   const error = useCartStore((state) => state.error);
 
-  console.log(items);
-
-  useEffect(() => {0
+  const totalPrice = cartItemsTotalPrice({ items });
+  const itemsPriceWithTax = totalPrice! + taxCalculate(totalPrice!);
+  useEffect(() => {
     fetchCartItems();
-  }, [fetchCartItems]);
+  }, []);
 
   if (loading) return <p>Загрузка корзины...</p>;
 
@@ -37,11 +39,13 @@ export function CartDrawer({ children }: Props) {
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent side="right" className="!max-w-none w-[430px]  bg-gray-100">
         <SheetHeader>
-          <SheetTitle>2 Товара на 10 000 тг</SheetTitle>
+          <SheetTitle>
+            {items.length} товара на {totalPrice} тг.
+          </SheetTitle>
         </SheetHeader>
-        <div>
+        <div className="flex flex-col gap-4">
           {items.map((i) => (
-            <CartDrawerItem item={i}/>
+            <CartDrawerItem key={i.id} item={i} />
           ))}
         </div>
         <SheetFooter className="p-0 bg-white">
@@ -49,14 +53,20 @@ export function CartDrawer({ children }: Props) {
             <div>
               {/* Строка 1 */}
               <div className="flex items-center justify-between gap-2 text-sm font-bold">
-                <span className="whitespace-nowrap text-xs">2 Товара</span>
-                <span className="whitespace-nowrap text-xs">10 000 тг.</span>
+                <span className="whitespace-nowrap text-xs">
+                  {items.length} Товара
+                </span>
+                <span className="whitespace-nowrap text-xs">
+                  {totalPrice} тг.
+                </span>
               </div>
 
               {/* Строка 2 */}
               <div className="flex items-center justify-between gap-2 text-sm font-bold">
                 <span className="whitespace-nowrap text-xs">Налог 5%</span>
-                <span className="whitespace-nowrap">500 тг.</span>
+                <span className="whitespace-nowrap">
+                  {taxCalculate(totalPrice!)}
+                </span>
               </div>
             </div>
             <div className="flex-1 border-b border-gray-200" />
@@ -67,7 +77,7 @@ export function CartDrawer({ children }: Props) {
                   Сумма заказа
                 </span>
                 <span className="whitespace-nowrap text-lg font-semibold">
-                  500 тг.
+                  {itemsPriceWithTax} тг.
                 </span>
               </div>
             </div>
