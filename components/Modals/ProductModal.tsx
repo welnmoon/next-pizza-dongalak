@@ -3,10 +3,11 @@
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useRouter } from "next/navigation";
 import { Ingredient, Product, ProductItem } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
-import { calculateTotalPrice } from "@/lib/calculateTotalPrice";
+import { useModalLogic } from "@/hooks/useModalLogic";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface Props {
   product: Product;
@@ -22,37 +23,15 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(
     []
   );
-  const total = calculateTotalPrice({
-    items,
-    selectedSize,
-    selectedDoughTypes,
-    selectedIngredients,
-  });
-
-  const handleSetSelectedIngredients = (ingredient: Ingredient) => {
-    if (selectedIngredients.includes(ingredient)) {
-      setSelectedIngredients(
-        selectedIngredients.filter((s) => s.id !== ingredient.id)
-      );
-    } else {
-      setSelectedIngredients([...selectedIngredients, ingredient]);
-    }
-  };
-
-  const availablePizzaSizes = [
-    ...new Set(items.map((i) => i.size).filter(Boolean)),
-  ] as number[];
-
-  useEffect(() => {
-    const availableTypes = items
-      .filter((i) => i.size === selectedSize)
-      .map((i) => i.pizzaType)
-      .filter((id): id is number => id !== null);
-
-    if (!availableTypes.includes(selectedDoughTypes)) {
-      setSelectedDoughTypes(availableTypes[0]);
-    }
-  }, [selectedSize, items]);
+  const { total, availablePizzaSizes, handleSetSelectedIngredients } =
+    useModalLogic({
+      items,
+      selectedSize,
+      selectedDoughTypes,
+      selectedIngredients,
+      setSelectedDoughTypes,
+      setSelectedIngredients,
+    });
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
@@ -65,6 +44,9 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
           p-0
         "
       >
+        <VisuallyHidden>
+          <DialogTitle>Заголовок</DialogTitle>
+        </VisuallyHidden>
         {/* Левая часть — картинка */}
         <LeftSide selectedSize={selectedSize} product={product} />
 

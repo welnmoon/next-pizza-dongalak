@@ -1,13 +1,20 @@
 import HeaderActions from "./HeaderActions/HeaderActions";
 import Logotype from "../Logotype/Logotype";
 import HeaderSearch from "./HeaderActions/HeaderSearch";
+import { cn } from "@/lib/utils";
 
-const Header = () => {
+interface Props {
+  className?: string;
+  hasSearch?: boolean;
+  hasCart?: boolean;
+}
+
+const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
   return (
-    <header className="flex justify-between">
+    <header className={cn("flex justify-between", className)}>
       <Logotype />
-      <HeaderSearch />
-      <HeaderActions />
+      {hasSearch ? <HeaderSearch /> : null}
+      <HeaderActions hasCart={hasCart} />
     </header>
   );
 };

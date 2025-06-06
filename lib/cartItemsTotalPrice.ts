@@ -7,20 +7,14 @@ interface Props {
 }
 
 export const cartItemsTotalPrice = ({ items }: Props): number => {
-  const itemsPrice = items.reduce(
-    (sum, cur) => sum + cur.price * cur.quantity,
-    0
-  );
+  return items.reduce((sum, item) => {
+    const base = item.price * item.quantity;
 
-  const ingredientsPrice = items.reduce(
-    (sum, cur) =>
-      sum +
-      cur.ingredients.reduce(
-        (innerSum, ing) => innerSum + ing.price * cur.quantity,
-        0
-      ),
-    0
-  );
+    const ingredientsTotal = item.ingredients.reduce(
+      (innerSum, ing) => innerSum + ing.price * item.quantity,
+      0
+    );
 
-  return itemsPrice + ingredientsPrice;
+    return sum + base + ingredientsTotal;
+  }, 0);
 };

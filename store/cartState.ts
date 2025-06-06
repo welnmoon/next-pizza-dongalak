@@ -1,5 +1,6 @@
 import { arraysEqual } from "@/lib/arraysEqual";
 import { Api } from "@/services/api-client";
+import { CartWithItems } from "@/types/cart";
 import { Ingredient, ProductItem } from "@prisma/client";
 import { create } from "zustand";
 
@@ -12,6 +13,7 @@ export interface FlatCartItem {
   quantity: number;
   name: string;
   imageUrl: string;
+  disabled?: boolean;
   ingredients: Ingredient[];
 }
 
@@ -19,10 +21,10 @@ interface CartState {
   items: FlatCartItem[];
   error: boolean;
 
-  loadingCart: boolean; // для fetchCartItems
-  updating: boolean; // для изменения количества
-  removing: boolean; // для удаления
-  adding: boolean; // для добавления
+  loadingCart: boolean;
+  updating: boolean;
+  removing: boolean;
+  adding: boolean;
 
   fetchCartItems: () => Promise<void>;
   updateItemQuantity: (id: number, quantity: number) => Promise<void>;
@@ -112,14 +114,22 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   removeCartItem: async (id) => {
     try {
-      set({ removing: true });
+      set((state) => ({
+        items: state.items.map((item) =>
+          item.id === id ? { ...item, disabled: true } : item
+        ),
+      }));
+
       await Api.cart.deleteCartItem(id);
-      const updatedItems = get().items.filter((item) => item.id !== id);
-      set({ items: updatedItems });
+
+      const data = await Api.cart.getCart();
+      set(getCartDetails(data));
     } catch (error) {
-      console.error("Ошибка при удалении товара", error);
+      console.error(error);
     } finally {
-      set({ removing: false });
+      set((state) => ({
+        items: state.items.map((item) => ({ ...item, disabled: false })),
+      }));
     }
   },
 
@@ -134,3 +144,23 @@ export const useCartStore = create<CartState>((set, get) => ({
     }, 0);
   },
 }));
+
+function getCartDetails(data: CartWithItems | null): Partial<CartState> {
+  const parsedItems =
+    data?.items.map((item) => ({
+      id: item.id,
+      price: item.productItem.price,
+      size: item.productItem.size ?? null,
+      pizzaType: item.productItem.pizzaType ?? null,
+      productId: item.productItem.productId ?? 0,
+      imageUrl: item.productItem.product.imageUrl,
+      name: item.productItem.product.name,
+      quantity: item.quantity,
+      ingredients: item.ingredients,
+    })) || [];
+
+  return {
+    items: parsedItems,
+    loadingCart: false,
+  };
+}

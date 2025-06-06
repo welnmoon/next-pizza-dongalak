@@ -9,6 +9,7 @@ import { useCartStore } from "@/store/cartState";
 import { addItemToCart } from "@/services/cart";
 
 interface Props {
+  classNames?: string;
   product: Product;
   selectedSize: number;
   availablePizzaSizes: number[];
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const RightSide = ({
+  classNames,
   product,
   selectedSize,
   availablePizzaSizes,
@@ -46,10 +48,9 @@ const RightSide = ({
     2: () => true, // Напитки (только один вариант)
     3: () => true, // Десерты
     4: () => true, // Соусы
-    // ... добавь свои правила при необходимости
   };
 
-  const matchFn = matchRules[product.categoryId] || (() => true); // fallback на безопасное поведение
+  const matchFn = matchRules[product.categoryId] || (() => true); // fallback
 
   const matchedItem = items.find(matchFn);
 
@@ -70,11 +71,14 @@ const RightSide = ({
     setTimeout(() => setIsSuccess(false), 3000);
   };
   return (
-    <div className="w-full h-full md:w-1/2 flex flex-col py-8 px-4 bg-gray-100">
+    <div
+      className={cn(
+        "w-full h-full md:w-1/2 flex flex-col py-8 px-4 bg-orange-50",
+        classNames
+      )}
+    >
       <div className="flex-1 overflow-y-auto pr-1">
-        <DialogTitle className="text-2xl font-bold mb-1">
-          {product.name}
-        </DialogTitle>
+        <h1 className="text-2xl font-bold mb-1">{product.name}</h1>
         {product.categoryId === 1 && (
           <p className="text-sm text-gray-500 mb-4">
             {selectedSize} см, {PIZZA_TYPE_LABELS[selectedDoughTypes]} тесто
