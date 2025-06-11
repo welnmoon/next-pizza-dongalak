@@ -21,7 +21,7 @@ const ProductCard = ({ image, ingredients, price, title, id }: Props) => {
   return (
     <div className="w-full max-w-[240px] flex flex-col bg-white">
       {/* Изображение */}
-      <div onClick={modelOpen} className="relative w-full aspect-square p-4">
+      <div className="relative w-full aspect-square p-4">
         <Image alt={title} src={image} fill className="object-contain" />
       </div>
 
@@ -37,7 +37,7 @@ const ProductCard = ({ image, ingredients, price, title, id }: Props) => {
           <p className="text-sm">
             от <span className="font-bold">{price} ₸</span>
           </p>
-          <ButtonCard text="Добавить" />
+          <ButtonCard onClick={modelOpen} text="Добавить" />
         </div>
       </div>
     </div>

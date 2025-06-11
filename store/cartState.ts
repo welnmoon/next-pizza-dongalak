@@ -36,7 +36,7 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   error: false,
-  loadingCart: false,
+  loadingCart: true,
   updating: false,
   removing: false,
   adding: false,
