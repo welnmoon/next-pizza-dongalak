@@ -1,7 +1,6 @@
 "use server";
 
 import { ChekoutSchema } from "@/components/Checkout/chekoutSchema";
-import { PayOrderEmailTemplate } from "@/components/email/pay-order"; //! не используется
 import { sendEmail } from "@/lib/sendEmail";
 import { prisma } from "@/prisma/prisma-client";
 import { OrderStatus } from "@prisma/client";
@@ -68,13 +67,31 @@ export async function createOrder(data: ChekoutSchema) {
         userId: userCart?.user?.id,
       },
     });
+    let url = "";
+    try {
+      const res = await fetch("/api/payment", {
+        method: "POST",
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      console.log("Ответ от сервера:", data);
+      if (data.url) {
+        url = data.url as string;
+      } else {
+        console.error("URL не найден в ответе");
+      }
+    } catch (error) {
+      console.error("Произошла ошибка:", error);
+    }
 
     await sendEmail(
       data.email,
       "Next Pizza / Оплатите заказ #" + order.id,
       order.id,
       total,
-      "https://nextjs.org"
+      url
     );
 
     // теперь может очистить
@@ -93,9 +110,7 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    
-
-    // return "https://nextjs.org";
+    return url;
   } catch (err) {
     console.error("Ошибка при создании заказа:", err);
     throw err;
