@@ -37,6 +37,7 @@
     "react-spinners": "^0.17.0",
     "react-use": "^17.6.0",
     "resend": "^4.5.2",
+    "stripe": "^18.2.1",
     "tailwind-merge": "^3.3.0",
     "use-debounce": "^10.0.4",
     "zustand": "^5.0.4"

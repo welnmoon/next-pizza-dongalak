@@ -16,6 +16,10 @@ const TotalSection = ({
   const tax = itemsPriceWithTax - totalPrice;
   const delivery = totalPrice === 0 ? 0 : 1000; // фиксируем доставку под картинку
 
+  const handleClick = async () => {
+    
+  };
+
   return (
     <div className="bg-white rounded-xl w-[450px] flex flex-col gap-6 px-6 py-6">
       {/* Итого */}
@@ -41,7 +45,12 @@ const TotalSection = ({
       <div className="text-gray-400 text-sm">У меня есть промокод</div>
 
       {/* Кнопка */}
-      <Button className="bg-orange-500 hover:bg-orange-600 flex h-12 rounded-full w-full">
+      <Button
+        // type="submit"
+        // onClick={handleClick}
+        disabled={totalPrice === 0}
+        className={`bg-orange-500 hover:bg-orange-600 flex h-12 rounded-full w-full `}
+      >
         {pending ? (
           <span className="flex items-center gap-2">
             <svg

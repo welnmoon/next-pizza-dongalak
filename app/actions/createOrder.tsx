@@ -69,18 +69,12 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    const html = await render(
-      <PayOrderEmailTemplate
-        orderId={order.id}
-        totalAmount={order.totalAmount}
-        paymentUrl="https://nextjs.org"
-      />
-    );
-
     await sendEmail(
       data.email,
       "Next Pizza / Оплатите заказ #" + order.id,
-      html //
+      order.id,
+      total,
+      "https://nextjs.org"
     );
 
     // теперь может очистить
@@ -99,7 +93,9 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    return "https://nextjs.org";
+    
+
+    // return "https://nextjs.org";
   } catch (err) {
     console.error("Ошибка при создании заказа:", err);
     throw err;

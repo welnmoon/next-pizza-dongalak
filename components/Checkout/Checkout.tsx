@@ -34,11 +34,19 @@ const Checkout = () => {
   const onSubmit = async (data: ChekoutSchema) => {
     try {
       setSubmitting(true);
-      setTransition(async () => {
-        const url = await createOrder(data);
-        console.log(url);
-        if (url) location.href = url;
+      // setTransition(async () => {
+      // const url = await createOrder(data);
+      // console.log(url);
+      // if (url) location.href = url;
+
+      const res = await fetch("/api/payment", {
+        method: "POST",
       });
+      const data = await res.json();
+
+      console.log("Ответ от сервера:", data);
+      window.location.href = data.url;
+      // });
     } catch (err) {
       console.log(err);
       setSubmitting(false);
