@@ -7,6 +7,7 @@ import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 
 import { render } from "@react-email/render";
+import { checkoutActionPayment } from "../(checkout)/checkout/checkout-action";
 
 export async function createOrder(data: ChekoutSchema) {
   try {
@@ -67,31 +68,35 @@ export async function createOrder(data: ChekoutSchema) {
         userId: userCart?.user?.id,
       },
     });
-    let url = "";
-    try {
-      const res = await fetch("/api/payment", {
-        method: "POST",
-      });
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      const data = await res.json();
-      console.log("Ответ от сервера:", data);
-      if (data.url) {
-        url = data.url as string;
-      } else {
-        console.error("URL не найден в ответе");
-      }
-    } catch (error) {
-      console.error("Произошла ошибка:", error);
-    }
+    // let url = "";
+    // try {
+    //   const baseUrl =
+    //     process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    //   const res = await fetch(`${baseUrl}/api/payment`, {
+    //     method: "POST",
+    //   });
+    //   if (!res.ok) {
+    //     throw new Error(`HTTP error! status: ${res.status}`);
+    //   }
+    //   const data = await res.json();
+    //   console.log("Ответ от сервера:", data);
+    //   if (data.url) {
+    //     url = data.url as string;
+    //   } else {
+    //     console.error("URL не найден в ответе");
+    //   }
+    // } catch (error) {
+    //   console.error("Произошла ошибка:", error);
+    // }
+
+    const url = await checkoutActionPayment();
 
     await sendEmail(
       data.email,
       "Next Pizza / Оплатите заказ #" + order.id,
       order.id,
       total,
-      url
+      url.url
     );
 
     // теперь может очистить

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 
-export async function POST() {
+export async function checkoutActionPayment() {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

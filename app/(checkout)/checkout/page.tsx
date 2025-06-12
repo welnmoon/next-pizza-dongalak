@@ -1,6 +1,4 @@
 import Checkout from "@/components/Checkout/Checkout";
-import PersonalInfo from "@/components/Checkout/PersonalInfo";
-import TotalSection from "@/components/Checkout/TotalSection";
 
 const CheckoutPage = () => {
   return (
