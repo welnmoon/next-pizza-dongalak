@@ -7,6 +7,7 @@ import { OrderStatus } from "@prisma/client";
 import { prisma } from "@/prisma/prisma-client";
 
 export async function POST(req: NextRequest) {
+  console.log("[Stripe-webhook] ");
   const sig = req.headers.get("stripe-signature")!;
   const body = await req.text();
 
@@ -30,22 +31,25 @@ export async function POST(req: NextRequest) {
       where: { paymentId: session.payment_intent },
     });
 
-    if (order) {
-      await sendEmail(
-        order.email,
-        `Next Pizza / Спасибо за оплату заказа #${order.id}`,
-        PaidEmailTemplate({
-          orderId: order.id,
-          items: String(order.items),
-          totalAmount: order.totalAmount,
-        })
-      );
-
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { status: OrderStatus.SUCCEEDED },
-      });
+    if (!order) {
+      console.log("stripe-webhook Error, Order not found");
+      return 0;
     }
+
+    await sendEmail(
+      "sultanelshatuly@gmail.com",
+      `Next Pizza / Спасибо за оплату заказа #${order.id}`,
+      PaidEmailTemplate({
+        orderId: order.id,
+        items: String(order.items),
+        totalAmount: order.totalAmount,
+      })
+    );
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { status: OrderStatus.SUCCEEDED },
+    });
   }
 
   return NextResponse.json({ received: true });

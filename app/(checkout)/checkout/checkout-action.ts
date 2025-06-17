@@ -43,9 +43,7 @@ export async function checkoutActionPayment({
       },
     });
 
-   
-
-    return { url: session.url };
+    return session;
   } catch (error: any) {
     console.error("Ошибка создания сессии Stripe:", error);
     throw new Error("Ошибка при создании платежной сессии: " + error.message);

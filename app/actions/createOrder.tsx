@@ -70,10 +70,15 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    let url = await checkoutActionPayment({
+    let stripeSession = await checkoutActionPayment({
       orderId: order.id,
       name: userCart.items.map((i) => i.productItem.product.name).toString(),
       unit_amount: order.totalAmount,
+    });
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { paymentId: String(stripeSession.payment_intent) },
     });
 
     const itemNames = userCart.items.map(
@@ -87,8 +92,8 @@ export async function createOrder(data: ChekoutSchema) {
       <PayOrderEmailTemplate
         orderId={order.id}
         totalAmount={total}
-        paymentUrl={url.url!}
-        items={String(userCart.items)}
+        paymentUrl={stripeSession.url!}
+        items={JSON.stringify(itemNames)}
       />
     );
 
@@ -108,7 +113,7 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    return url;
+    return stripeSession.url;
   } catch (err) {
     console.error("Ошибка при создании заказа:", err);
     throw err;
