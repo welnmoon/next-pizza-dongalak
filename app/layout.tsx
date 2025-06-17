@@ -1,4 +1,5 @@
 import { Nunito } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -15,6 +16,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${nunito.variable} antialiased`}>
         {children}
+
+        <Toaster />
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ const Checkout = () => {
     setTransition(async () => {
       const url = await createOrder(data);
       console.log(url);
-      if (url) location.href = url.url;
+      if (url) location.href = url.url!;
     });
 
     //   const res = await fetch("/api/payment", {

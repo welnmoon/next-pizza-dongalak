@@ -1,12 +1,10 @@
-import { PayOrderEmailTemplate } from "@/components/email/pay-order";
 import { Resend } from "resend";
+import { ReactElement } from "react";
 
 export const sendEmail = async (
   to: string,
   subject: string,
-  orderId: number,
-  totalAmount: number,
-  paymentUrl: string
+  reactComponent: ReactElement
 ) => {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -14,10 +12,10 @@ export const sendEmail = async (
     from: "Next Pizza <onboarding@resend.dev>",
     to,
     subject,
-    react: PayOrderEmailTemplate({ orderId, totalAmount, paymentUrl }),
+    react: reactComponent,
   });
 
-  if (error) throw Error(`[sendEmail] error: ${error.message}`);
+  if (error) throw new Error(`[sendEmail] error: ${error.message}`);
 
   return data;
 };

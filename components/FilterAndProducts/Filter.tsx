@@ -11,11 +11,21 @@ import { useDoughTypeFilterStore } from "@/store/doughTypeFilterStore";
 import { useIngredientFilterStore } from "@/store/ingredientFilterStore";
 import qs from "qs";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 const Filter = () => {
   const { ingredients } = useFilterIngredients();
   const router = useRouter();
+
+  // const renderCount = useRef(0);
+
+  // renderCount.current += 1;
+
+  // console.log(`🔄 Рендеров компонента: ${renderCount.current}`);
+
+  // useEffect(() => {
+  //   console.log("✅ useEffect сработал после рендера");
+  // });
 
   const selectedCategory = useCategoryFilterStore((s) => s.selectedCategory);
   const selectedPriceRange = usePriceFilterStore((s) => s.priceRange);
@@ -29,6 +39,22 @@ const Filter = () => {
     (s) => s.selectedIngredients
   );
 
+  // const selectedFilters = useMemo(
+  //   () => ({
+  //     selectedCategory,
+  //     selectedPriceRange,
+  //     selectedPizzaSizes: Array.from(selectedPizzaSizes),
+  //     selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
+  //     selectedIngredients: Array.from(selectedIngredients),
+  //   }),
+  //   [
+  //     selectedCategory,
+  //     selectedPriceRange,
+  //     selectedPizzaSizes,
+  //     selectedPizzaDoughTypes,
+  //     selectedIngredients,
+  //   ]
+  // );
   const selectedFilters = {
     selectedCategory,
     selectedPriceRange,
@@ -36,15 +62,18 @@ const Filter = () => {
     selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
     selectedIngredients: Array.from(selectedIngredients),
   };
+  const query = useMemo(
+    () =>
+      qs.stringify(selectedFilters, {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      }),
+    [selectedFilters]
+  );
 
-  const query = qs.stringify(selectedFilters, {
-    arrayFormat: "repeat",
-    skipNulls: true,
-  });
-  
   useEffect(() => {
     router.replace(`?${query}`, { scroll: false });
-  }, [query]);
+  }, [query, router]);
 
   return (
     <div className="lg:w-[250px] md:w-[200px]">

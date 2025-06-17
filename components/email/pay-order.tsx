@@ -4,19 +4,31 @@ interface Props {
   orderId: number;
   totalAmount: number;
   paymentUrl: string;
+  items: string;
 }
 
 export const PayOrderEmailTemplate = ({
   orderId,
   totalAmount,
   paymentUrl,
-}: Props) => (
-  <div>
-    <h1>Заказ #{orderId}</h1>
+  items,
+}: Props) => {
+  const parsedItems: string[] = JSON.parse(items);
 
-    <p>
-      Оплатите заказ на сумму <b>{totalAmount} ₸</b>. Перейдите{" "}
-      <a href={paymentUrl}>по этой ссылке</a> для оплаты заказа.
-    </p>
-  </div>
-);
+  return (
+    <div>
+      <h1>Заказ #{orderId}</h1>
+
+      <p>
+        Оплатите заказ на сумму <b>{totalAmount} ₸</b>. Перейдите{" "}
+        <a href={paymentUrl}>по этой ссылке</a> для оплаты заказа.
+      </p>
+
+      <ul>
+        {parsedItems.map((i) => (
+          <li>{i}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};

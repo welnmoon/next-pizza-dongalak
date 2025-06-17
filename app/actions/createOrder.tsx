@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 
 import { render } from "@react-email/render";
 import { checkoutActionPayment } from "../(checkout)/checkout/checkout-action";
+import { PayOrderEmailTemplate } from "@/components/email/pay-order";
 
 export async function createOrder(data: ChekoutSchema) {
   try {
@@ -62,41 +63,33 @@ export async function createOrder(data: ChekoutSchema) {
         phone: data.number,
         address: data.adress,
         comment: data.comment,
-        totalAmount: userCart.totalAmount,
+        totalAmount: total,
         status: OrderStatus.PENDING,
         items: JSON.stringify(userCart.items),
         userId: userCart?.user?.id,
       },
     });
-    // let url = "";
-    // try {
-    //   const baseUrl =
-    //     process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    //   const res = await fetch(`${baseUrl}/api/payment`, {
-    //     method: "POST",
-    //   });
-    //   if (!res.ok) {
-    //     throw new Error(`HTTP error! status: ${res.status}`);
-    //   }
-    //   const data = await res.json();
-    //   console.log("Ответ от сервера:", data);
-    //   if (data.url) {
-    //     url = data.url as string;
-    //   } else {
-    //     console.error("URL не найден в ответе");
-    //   }
-    // } catch (error) {
-    //   console.error("Произошла ошибка:", error);
-    // }
 
-    const url = await checkoutActionPayment();
+    let url = await checkoutActionPayment({
+      orderId: order.id,
+      name: userCart.items.map((i) => i.productItem.product.name).toString(),
+      unit_amount: order.totalAmount,
+    });
+
+    const itemNames = userCart.items.map(
+      (i) =>
+        `${i.productItem.product.name} x ${i.quantity} = ${i.productItem.price * i.quantity}`
+    );
 
     await sendEmail(
       data.email,
-      "Next Pizza / Оплатите заказ #" + order.id,
-      order.id,
-      total,
-      url.url
+      `Next Pizza / Оплатите заказ #${order.id}`,
+      <PayOrderEmailTemplate
+        orderId={order.id}
+        totalAmount={total}
+        paymentUrl={url.url!}
+        items={String(userCart.items)}
+      />
     );
 
     // теперь может очистить
