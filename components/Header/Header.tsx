@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import HeaderActions from "./HeaderActions/HeaderActions";
 import Logotype from "../Logotype/Logotype";
@@ -20,6 +20,8 @@ const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
   useEffect(() => {
     if (searchParams.has("paid")) {
       toast.success("Заказ успешно оплачен!");
+    } else if (searchParams.has("notpaid")) {
+      toast.error("Вы не оплатили заказ");
     }
   }, []);
   return (

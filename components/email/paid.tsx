@@ -7,7 +7,11 @@ interface Props {
 }
 
 export const PaidEmailTemplate = ({ orderId, totalAmount, items }: Props) => {
-  const parsedItems: string[] = JSON.parse(items);
+  let parsedItems: string[] = JSON.parse(items);
+
+  if(!parsedItems) {
+    parsedItems = ['Нету продуктов, или ошибка при получении продуктов']
+  }
 
   return (
     <div>
@@ -18,8 +22,8 @@ export const PaidEmailTemplate = ({ orderId, totalAmount, items }: Props) => {
       </p>
 
       <ul>
-        {parsedItems.map((i) => (
-          <li>{i}</li>
+        {parsedItems.map((i, index) => (
+          <li key={index}>{i}</li>
         ))}
       </ul>
     </div>

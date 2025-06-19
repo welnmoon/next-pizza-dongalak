@@ -6,7 +6,6 @@ import { prisma } from "@/prisma/prisma-client";
 import { OrderStatus } from "@prisma/client";
 import { cookies } from "next/headers";
 
-import { render } from "@react-email/render";
 import { checkoutActionPayment } from "../(checkout)/checkout/checkout-action";
 import { PayOrderEmailTemplate } from "@/components/email/pay-order";
 
@@ -70,7 +69,7 @@ export async function createOrder(data: ChekoutSchema) {
       },
     });
 
-    let stripeSession = await checkoutActionPayment({
+    const stripeSession = await checkoutActionPayment({
       orderId: order.id,
       name: userCart.items.map((i) => i.productItem.product.name).toString(),
       unit_amount: order.totalAmount,
@@ -78,7 +77,7 @@ export async function createOrder(data: ChekoutSchema) {
 
     await prisma.order.update({
       where: { id: order.id },
-      data: { paymentId: String(stripeSession.payment_intent) },
+      data: { paymentId: stripeSession.id },
     });
 
     const itemNames = userCart.items.map(

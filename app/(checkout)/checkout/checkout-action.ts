@@ -1,5 +1,8 @@
 "use server";
 
+import { PaidEmailTemplate } from "@/components/email/paid";
+import { PayOrderEmailTemplate } from "@/components/email/pay-order";
+
 import { sendEmail } from "@/lib/sendEmail";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@/prisma/prisma-client";
@@ -16,7 +19,7 @@ export async function checkoutActionPayment({
   orderId,
 }: checkoutActionPaymentType) {
   try {
-    console.log("[checkout-action] console.log(name)", name);
+    console.log("[checkout-action]", name);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -25,7 +28,7 @@ export async function checkoutActionPayment({
           price_data: {
             currency: "kzt",
             product_data: {
-              name: `${unit_amount + " " + name}`, // TODO - выводится сумма  = 0
+              name: `${unit_amount + " " + name}`,
             },
             unit_amount: unit_amount * 100,
           },
@@ -33,13 +36,37 @@ export async function checkoutActionPayment({
         },
       ],
       success_url: "http://localhost:3000/home/?paid",
-      cancel_url: "http://localhost:3000/checkout/cancel",
+      cancel_url: "http://localhost:3000/home/?notpaid",
+
+      metadata: {
+        orderId: orderId.toString(),
+      },
     });
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+    });
+
+    await sendEmail(
+      session.customer_email!,
+      `Next Pizza / Счёт на оплату заказа #${orderId}`,
+      PayOrderEmailTemplate({
+        orderId,
+        totalAmount: order?.totalAmount!,
+        items: JSON.stringify(order?.items),
+        paymentUrl: session.url!,
+      })
+      // PaidEmailTemplate({
+      //   items: JSON.stringify(order?.items),
+      //   orderId,
+      //   totalAmount: unit_amount,
+      // })
+    );
 
     await prisma.order.update({
       where: { id: orderId },
       data: {
-        paymentId: session.payment_intent as string,
+        paymentId: session.id,
       },
     });
 
