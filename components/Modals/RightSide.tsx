@@ -55,6 +55,7 @@ const RightSide = ({
   const matchedItem = items.find(matchFn);
 
   const handleAddToCart = async () => {
+    if (isLoading) return;
     if (!matchedItem) return alert("Такой товар не найден!");
     setIsLoading(true);
 
@@ -68,8 +69,20 @@ const RightSide = ({
       console.error(error);
     }
 
-    setTimeout(() => setIsSuccess(false), 3000);
+    setTimeout(() => setIsSuccess(false), 5000);
   };
+
+  let buttonContent;
+  if (isLoading) {
+    buttonContent = (
+      <div className="loader border-white w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" />
+    );
+  } else if (isSuccess) {
+    buttonContent = <CircleCheck className="text-white w-5 h-5" />;
+  } else {
+    buttonContent = `Добавить в корзину за ${matchedItem?.price} ₸`;
+  }
+
   return (
     <div
       className={cn(
@@ -170,19 +183,14 @@ const RightSide = ({
       {/* Кнопка снизу */}
       <button
         onClick={handleAddToCart}
-        disabled={isLoading}
+        disabled={isLoading || isSuccess}
         className={cn(
           "mt-6 text-white text-sm py-3 w-full rounded-xl font-semibold transition flex items-center justify-center",
-          isSuccess ? "bg-orange-500" : "bg-orange-500 hover:bg-orange-600"
+          isSuccess ? "bg-orange-500" : "bg-orange-500 hover:bg-orange-600",
+          isLoading && "bg-gray-300"
         )}
       >
-        {isLoading ? (
-          <div className="loader border-white w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" />
-        ) : isSuccess ? (
-          <CircleCheck className="text-white w-5 h-5" />
-        ) : (
-          `Добавить в корзину за ${matchedItem?.price} ₸`
-        )}
+        {buttonContent}
       </button>
     </div>
   );

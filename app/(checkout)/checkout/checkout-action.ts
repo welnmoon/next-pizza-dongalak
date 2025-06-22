@@ -47,13 +47,22 @@ export async function checkoutActionPayment({
       where: { id: orderId },
     });
 
+    const orderItems =
+      typeof order?.items === "string" ? JSON.parse(order.items) : order?.items;
+    const itemNames = (orderItems as any[]).map(
+      (i) =>
+        `${i.productItem.product.name} x ${i.quantity} = ${
+          i.productItem.price * i.quantity
+        }`
+    );
+
     await sendEmail(
-      session.customer_email!,
+      order?.email!,
       `Next Pizza / Счёт на оплату заказа #${orderId}`,
       PayOrderEmailTemplate({
         orderId,
         totalAmount: order?.totalAmount!,
-        items: JSON.stringify(order?.items),
+        items: JSON.stringify(itemNames),
         paymentUrl: session.url!,
       })
       // PaidEmailTemplate({

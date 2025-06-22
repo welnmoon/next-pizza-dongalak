@@ -43,12 +43,21 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+      const orderItems =
+        typeof order.items === "string" ? JSON.parse(order.items) : order.items;
+      const itemNames = (orderItems as any[]).map(
+        (i) =>
+          `${i.productItem.product.name} x ${i.quantity} = ${
+            i.productItem.price * i.quantity
+          }`
+      );
+
       await sendEmail(
         order.email,
         `Next Pizza / Спасибо за оплату заказа #${order.id}`,
         PaidEmailTemplate({
           orderId: order.id,
-          items: String(order.items),
+          items: JSON.stringify(itemNames),
           totalAmount: order.totalAmount,
         })
       );

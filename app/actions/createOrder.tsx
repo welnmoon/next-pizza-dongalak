@@ -64,7 +64,7 @@ export async function createOrder(data: ChekoutSchema) {
         comment: data.comment,
         totalAmount: total,
         status: OrderStatus.PENDING,
-        items: JSON.stringify(userCart.items),
+        items: userCart.items,
         userId: userCart?.user?.id,
       },
     });
