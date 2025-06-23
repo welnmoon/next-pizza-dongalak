@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormContext } from "react-hook-form";
 import { ClearButton } from "./ClearButton";
+import { cn } from "@/lib/utils";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -38,7 +39,7 @@ const FormInput = ({
   return (
     <div>
       {label && (
-        <Label className="text-[14px] font-bold mb-1">
+        <Label className={cn("text-[14px] font-bold mb-1", className)}>
           {label} {required && <span className="text-red-500">*</span>}
         </Label>
       )}
@@ -48,9 +49,12 @@ const FormInput = ({
           {...register(name)}
           type={type}
           placeholder={placeholder}
-          className={`text-[16px] px-4 py-3 border-gray-100 ${
-            errorText && "border-red-400"
-          }`}
+          className={cn(
+            `text-[16px] px-4 py-3 border-gray-100 ${
+              errorText && "border-red-400"
+            }`,
+            className
+          )}
         />
         {value && <ClearButton onClick={onClear} />}
       </div>

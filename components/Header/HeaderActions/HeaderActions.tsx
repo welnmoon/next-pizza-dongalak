@@ -1,4 +1,3 @@
-import { CartDrawer } from "@/components/Cart/CartDrawer";
 import ButtonCart from "../../Buttons/ButtonCart";
 import ButtonMain from "../../Buttons/ButtonMain";
 
