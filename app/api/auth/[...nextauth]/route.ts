@@ -1,10 +1,11 @@
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions, SessionStrategy } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
 import { compare, hash } from "bcrypt";
+import { UserRole } from "@prisma/client";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID || "",
@@ -21,7 +22,9 @@ export const authOptions = {
         },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
+        if (!credentials) {
+          throw new Error("Неверные данные");
+        }
 
         const findUser = await prisma.user.findFirst({
           where: {
@@ -30,7 +33,7 @@ export const authOptions = {
         });
 
         if (!findUser) {
-          return null;
+          throw new Error("Пользователь не найден");
         }
 
         const isPasswordValid = await compare(
@@ -39,10 +42,12 @@ export const authOptions = {
         );
 
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Неверный пароль");
         }
 
-        if (!findUser.verified) return null;
+        if (!findUser.verified) {
+          throw new Error("Пользователь не подтвержден");
+        }
 
         return {
           id: String(findUser.id),
@@ -55,13 +60,13 @@ export const authOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as SessionStrategy,
   },
   callbacks: {
     async jwt({ token }) {
       const findUser = await prisma.user.findFirst({
         where: {
-          email: token.email,
+          email: token.email as string,
         },
       });
       if (findUser) {
@@ -75,13 +80,13 @@ export const authOptions = {
     },
     async session({ session, token }) {
       if (session?.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
+        session.user.id = token.id as string;
+        session.user.role = token.role as UserRole;
       }
       return session;
     },
     async signIn({ user, account, profile }) {
-      if (account.provider !== "credentials") {
+      if (account!.provider !== "credentials") {
         const existingUser = await prisma.user.findFirst({
           where: { email: user.email },
         });
@@ -91,9 +96,10 @@ export const authOptions = {
             data: {
               email: user.email,
               fullName: profile?.name || user.name || "OAuth User",
-              password: await hash(user.password, 10), // Password is not used for OAuth users
-              provider: account.provider,
-              providerId: account.providerAccountId,
+              password: "", // OAuth пользователи не имеют пароля
+              provider: account!.provider,
+              providerId: account!.providerAccountId,
+              verified: new Date(),
             },
           });
         }

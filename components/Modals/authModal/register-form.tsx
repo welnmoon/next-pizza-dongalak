@@ -38,6 +38,9 @@ const RegisterForm = ({ handleAuthTypeChange }: Props) => {
       handleAuthTypeChange(); // Switch to login form after successful registration
     } catch (error) {
       console.log("error [REGISTER] ", error);
+      const message =
+        error instanceof Error ? error.message : "Ошибка регистрации";
+      toast.error(message);
     }
   };
 

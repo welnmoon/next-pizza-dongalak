@@ -3,13 +3,14 @@ import { Button } from "../ui/button";
 import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import AuthModal from "../Modals/authModal/authModal";
+import Link from "next/link";
 
 interface Props {
   text: string;
   user?: boolean;
 }
 
-const ButtonMain = ({ text, user }: Props) => {
+const ProfileButton = ({ text, user }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const session = useSession();
   return (
@@ -23,9 +24,11 @@ const ButtonMain = ({ text, user }: Props) => {
         </Button>
       )}
       {session.status === "authenticated" && (
-        <Button className="rounded-full bg-orange-100 border border-orange-200 text-orange-500 hover:bg-orange-500 hover:text-white">
-          <User /> Профиль
-        </Button>
+        <Link href={`/profile`}>
+          <Button className="rounded-full bg-orange-100 border border-orange-200 text-orange-500 hover:bg-orange-500 hover:text-white">
+            <User /> Профиль
+          </Button>
+        </Link>
       )}
       {session.status === "loading" && (
         <Button className="rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white">
@@ -38,4 +41,4 @@ const ButtonMain = ({ text, user }: Props) => {
   );
 };
 
-export default ButtonMain;
+export default ProfileButton;

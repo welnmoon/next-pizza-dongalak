@@ -25,10 +25,11 @@ const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
       const resp = await signIn("credentials", {
         ...data,
         redirect: false,
+        callbackUrl: "/home",
       });
 
       if (!resp?.ok) {
-        throw Error();
+        throw new Error(resp?.error || "Не удалось войти в аккаунт");
       }
 
       toast.success("Вы успешно вошли в аккаунт");
@@ -63,13 +64,13 @@ const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
         {/*Providers*/}
         <div className="flex gap-4 w-full">
           <Button
-            onClick={() => signIn("github")}
+            onClick={() => signIn("github", { callbackUrl: "/home" })}
             className=" w-1/2 px-4 py-2 bg-black text-white rounded hover:bg-gray-900"
           >
             Войти с GitHub
           </Button>
           <Button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/home" })}
             className="w-1/2 px-4 py-2 bg-white text-black rounded hover:bg-orange-600"
           >
             Войти с Google

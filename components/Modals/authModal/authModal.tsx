@@ -1,7 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { signIn } from "next-auth/react";
 import LoginForm from "./login-form";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import RegisterForm from "./register-form";
 
