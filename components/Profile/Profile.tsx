@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import FormInput from "../Checkout/Form/FormInput";
 import SignOutButton from "../Buttons/SignOutBtn";
+import { useSession } from "next-auth/react";
 
 interface UserProfile {
   fullName: string;
@@ -21,6 +22,7 @@ interface UserProfile {
 
 const ProfileClient = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const session = useSession();
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -38,7 +40,12 @@ const ProfileClient = () => {
           redirect("/auth/not-authenticated");
         }
       }
+      console.log("User res:", res);
       const data: UserProfile = await res.json();
+      console.log("User data:", data);
+      if (!data) {
+        redirect("/auth/not-authenticated");
+      }
       setUser(data);
       form.reset({
         fullName: data.fullName || "",
@@ -47,15 +54,15 @@ const ProfileClient = () => {
         password: "",
         confirmPassword: "",
       });
-
-      fetchUserProfile();
     };
+    fetchUserProfile();
   }, []);
 
   const onSubmit = async (data: ProfileSchemaType) => {};
   return (
     <>
       <FormProvider {...form}>
+        {session.data?.user.name}
         <form
           className="flex flex-col gap-6"
           onSubmit={form.handleSubmit(onSubmit)}
