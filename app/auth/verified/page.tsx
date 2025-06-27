@@ -10,7 +10,7 @@ const VerifiedPage = () => {
       </p>
       <div className="flex justify-center mt-6">
         <a
-          href="/"
+          href="/home"
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
           Перейти на главную страницу

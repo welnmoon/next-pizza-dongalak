@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const VerifyUserTemplate = ({ code, userId }: Props) => {
-  const verifyUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?code=${code}&userId=${userId}`;
+  const verifyUrl = `http://localhost:3000/api/auth/verify?code=${code}&userId=${userId}`;
 
   return (
     <div>

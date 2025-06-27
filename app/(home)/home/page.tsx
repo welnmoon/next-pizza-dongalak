@@ -1,5 +1,6 @@
 import CategoriesAndSort from "@/components/CategoriesAndSort/CategoriesAndSort";
 import FilterAndProducts from "@/components/FilterAndProducts/FilterAndProducts";
+import Stories from "@/components/stories/Stories";
 
 export default function Home({
   searchParams,
@@ -9,6 +10,7 @@ export default function Home({
   return (
     <div className="">
       <CategoriesAndSort />
+      <Stories />
       <FilterAndProducts searchParams={searchParams} />
     </div>
   );

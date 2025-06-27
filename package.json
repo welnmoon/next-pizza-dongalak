@@ -37,6 +37,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
+    "react-insta-stories": "^2.8.0",
     "react-spinners": "^0.17.0",
     "react-use": "^17.6.0",
     "resend": "^4.5.2",

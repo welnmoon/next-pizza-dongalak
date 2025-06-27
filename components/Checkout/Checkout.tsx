@@ -10,7 +10,6 @@ import AdressSection from "./AdressSection";
 import { FormProvider, useForm } from "react-hook-form";
 import { checkoutSchema, ChekoutSchema } from "./chekoutSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import CheckboxCartSkeleton from "./CheckboxCartSkeleton";
 import { createOrder } from "@/app/actions/createOrder";
 
 const Checkout = () => {

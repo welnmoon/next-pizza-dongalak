@@ -55,6 +55,6 @@ export async function GET(request: Request) {
   });
 
   return NextResponse.redirect(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/auth/verified`
+    `http://localhost:3000/auth/verified`
   );
 }
