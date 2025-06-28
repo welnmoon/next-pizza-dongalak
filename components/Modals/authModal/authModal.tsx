@@ -2,6 +2,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import LoginForm from "./login-form";
 import { useState } from "react";
 import RegisterForm from "./register-form";
+import Link from "next/link";
 
 interface Props {
   open: boolean;
@@ -23,7 +24,13 @@ const AuthModal = ({ open, setOpen }: Props) => {
               handleAuthTypeChange={handleAuthTypeChange}
             />
           )}
-          {authType === "register" && <RegisterForm handleAuthTypeChange={handleAuthTypeChange}/>}
+          {authType === "register" && (
+            <RegisterForm handleAuthTypeChange={handleAuthTypeChange} />
+          )}
+
+          <p className="text-sm text-gray-500 mt-4">
+            <Link href={"/home"}>Вернуться на главную страницу</Link>
+          </p>
         </div>
       </DialogContent>
     </Dialog>

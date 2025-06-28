@@ -1,5 +1,6 @@
 import { prisma } from "@/prisma/prisma-client";
-import { getOrCreateGuestCartToken } from "@/utils/cart";
+import { cookies } from "next/headers";
+import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -46,7 +47,12 @@ export async function GET(request: Request) {
     );
   }
 
-  const token = getOrCreateGuestCartToken();
+  const cookiesStore = cookies();
+  let token = (await cookiesStore).get("cartToken")?.value;
+  if (!token) {
+    token = `guest-${randomUUID()}`;
+    (await cookiesStore).set("cartToken", token, { path: "/" });
+  }
   const guestCart = await prisma.cart.findFirst({
     where: { token },
   });
@@ -76,7 +82,6 @@ export async function GET(request: Request) {
       },
     });
   }
-  
 
   await prisma.verificationCode.delete({
     where: { id: findCodeWithUser.id },

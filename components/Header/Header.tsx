@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { useHeaderVisibility } from "@/context/HeaderVisibilityContext";
 
 interface Props {
   className?: string;
@@ -16,6 +17,7 @@ interface Props {
 
 const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
   const searchParams = useSearchParams();
+  const { headerRef } = useHeaderVisibility();
 
   useEffect(() => {
     if (searchParams.has("paid")) {
@@ -25,7 +27,7 @@ const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
     }
   }, []);
   return (
-    <header className={cn("flex justify-between", className)}>
+    <header ref={headerRef} className={cn("flex justify-between", className)}>
       <Logotype />
       {hasSearch ? <HeaderSearch /> : null}
       <HeaderActions hasCart={hasCart} />

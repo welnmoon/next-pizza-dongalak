@@ -5,6 +5,8 @@ import FormInput from "@/components/Checkout/Form/FormInput";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { IoLogoGithub } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
 
 interface Props {
   setOpen: (open: boolean) => void;
@@ -65,14 +67,16 @@ const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
         <div className="flex gap-4 w-full">
           <Button
             onClick={() => signIn("github", { callbackUrl: "/home" })}
-            className=" w-1/2 px-4 py-2 bg-black text-white rounded hover:bg-gray-900"
+            className="flex gap-2 flex-1 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
           >
+            <IoLogoGithub />
             Войти с GitHub
           </Button>
           <Button
             onClick={() => signIn("google", { callbackUrl: "/home" })}
-            className="w-1/2 px-4 py-2 bg-white text-black rounded hover:bg-orange-600"
+            className="flex gap-2 flex-1 px-4 py-2 bg-white text-black rounded hover:bg-gray-100 border border-gray-100 "
           >
+            <FcGoogle />
             Войти с Google
           </Button>
         </div>

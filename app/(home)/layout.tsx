@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import Container from "@/components/Container";
+import { HeaderVisibilityProvider } from "@/context/HeaderVisibilityContext";
 
 export const metadata: Metadata = {
   title: "Dongalak",
@@ -15,12 +16,14 @@ export default function HomeLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <div className={`mt-6 mb-6 w-full`}>
-      <Container>
-        <Header />
-      </Container>
-      {children}
-      {modal}
-    </div>
+    <HeaderVisibilityProvider>
+      <div className={`mt-6 mb-6 w-full`}>
+        <Container>
+          <Header />
+        </Container>
+        {children}
+        {modal}
+      </div>
+    </HeaderVisibilityProvider>
   );
 }

@@ -3,21 +3,22 @@ import Link from "next/link";
 
 const Logotype = () => {
   return (
-    <Link href="/home">
-      <div className="flex gap-2 items-center">
-        <div className="text-black">
-          <Image
-            alt="Dongalak Logo"
-            src={"/pizzaIcon.png"}
-            width={40}
-            height={40}
-          />
-        </div>
-        <div>
-          <h1 className="font-bold text-2xl font-extrabold uppercase">
-            Dongalak
+    <Link href="/home" className="hover:opacity-90 transition-opacity duration-200">
+      <div className="flex items-center gap-3">
+        <Image
+          alt="Dongalak Logo"
+          src="/pizzaIcon.png"
+          width={48}
+          height={48}
+          className="rounded-full shadow-sm"
+        />
+        <div className="leading-tight">
+          <h1 className="text-xl sm:text-2xl font-black uppercase text-black tracking-wide">
+            DONGALAK
           </h1>
-          <p className="text-gray-600">вкусней уже некуда</p>
+          <p className="text-sm sm:text-base text-gray-500 font-medium">
+            вкусней уже некуда
+          </p>
         </div>
       </div>
     </Link>
