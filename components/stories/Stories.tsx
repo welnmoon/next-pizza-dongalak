@@ -44,6 +44,18 @@ const Stories = () => {
     }
   };
 
+  useEffect(() => {
+    if (selectedStory) {
+      document.body.style.overflow = "hidden"; // Блокируем scroll
+    } else {
+      document.body.style.overflow = ""; // Возвращаем scroll
+    }
+
+    return () => {
+      document.body.style.overflow = ""; // На всякий случай — при размонтировании
+    };
+  }, [selectedStory]);
+
   return (
     <Container className="flex gap-4 mb-10 overflow-x-auto scrollbar-hide">
       {stories.length === 0 &&
@@ -65,20 +77,26 @@ const Stories = () => {
 
       {selectedStory && (
         <div className="absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-30">
-          <button className="absolute top-4 right-4 p-2 bg-white z-40">
+          <button className="absolute top-4 right-4 p-2 bg-white z-40 rounded-full">
             <X onClick={() => setSelectedStory(null)} />
           </button>
           {selectedStory.items && selectedStory.items.length > 0 && (
-            <ReactInstaStories
-              key={selectedStory.id}
-              onAllStoriesEnd={handleNextStory}
-              stories={selectedStory.items.map((i) => ({
-                url: i.sourceUrl,
-              }))}
-              defaultInterval={3000}
-              width={520}
-              height={800}
-            />
+            <div className="rounded-3xl overflow-hidden shadow-xl">
+              <ReactInstaStories
+                storyContainerStyles={{
+                  borderRadius: "100px",
+                }}
+                key={selectedStory.id}
+                onAllStoriesEnd={handleNextStory}
+                stories={selectedStory.items.map((i) => ({
+                  url: i.sourceUrl,
+                }))}
+                defaultInterval={3000}
+                width={520}
+                height={800}
+                progressContainerStyles={{ marginTop: "10px" }}
+              />
+            </div>
           )}
 
           {selectedStory.items && selectedStory.items.length === 0 && (

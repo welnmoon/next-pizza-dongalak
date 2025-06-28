@@ -1,3 +1,5 @@
+'use client";';
+
 import Providers from "@/components/providers";
 import { Nunito } from "next/font/google";
 

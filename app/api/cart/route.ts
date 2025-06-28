@@ -45,6 +45,10 @@ export async function POST(req: NextRequest) {
     cart = await prisma.cart.create({ data: { token } });
   }
 
+  if (!productItemId) {
+    return NextResponse.json({ cart });
+  }
+
   const candidateItems = await prisma.cartItem.findMany({
     where: {
       cartId: cart.id,

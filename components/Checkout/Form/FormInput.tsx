@@ -13,6 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   type?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 const FormInput = ({
@@ -22,6 +23,7 @@ const FormInput = ({
   placeholder,
   type,
   className,
+  disabled,
 }: Props) => {
   const {
     register,
@@ -49,6 +51,7 @@ const FormInput = ({
           {...register(name)}
           type={type}
           placeholder={placeholder}
+          disabled={disabled}
           className={cn(
             `text-[16px] px-4 py-3 border-gray-100 ${
               errorText && "border-red-400"
@@ -56,7 +59,7 @@ const FormInput = ({
             className
           )}
         />
-        {value && <ClearButton onClick={onClear} />}
+        {value && !disabled && <ClearButton onClick={onClear} />}
       </div>
 
       {errorText && (

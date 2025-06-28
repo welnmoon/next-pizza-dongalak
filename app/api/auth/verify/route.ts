@@ -1,4 +1,5 @@
 import { prisma } from "@/prisma/prisma-client";
+import { getOrCreateGuestCartToken } from "@/utils/cart";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -45,16 +46,41 @@ export async function GET(request: Request) {
     );
   }
 
-  await prisma.user.update({
-    where: { id: userId },
-    data: { verified: new Date() },
+  const token = getOrCreateGuestCartToken();
+  const guestCart = await prisma.cart.findFirst({
+    where: { token },
   });
+  if (guestCart) {
+    // Привязать существующую корзину
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        verified: new Date(),
+        cart: {
+          connect: { id: guestCart.id },
+        },
+      },
+    });
+  } else {
+    // Создать новую корзину
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        verified: new Date(),
+        cart: {
+          create: {
+            token,
+            totalAmount: 0,
+          },
+        },
+      },
+    });
+  }
+  
 
   await prisma.verificationCode.delete({
     where: { id: findCodeWithUser.id },
   });
 
-  return NextResponse.redirect(
-    `http://localhost:3000/auth/verified`
-  );
+  return NextResponse.redirect(`http://localhost:3000/auth/verified`);
 }

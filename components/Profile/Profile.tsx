@@ -11,18 +11,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import FormInput from "../Checkout/Form/FormInput";
 import SignOutButton from "../Buttons/SignOutBtn";
-import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 interface UserProfile {
   fullName: string;
   email: string;
   phone: string;
-  address: string;
+  adress: string;
 }
 
 const ProfileClient = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
-  const session = useSession();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -40,16 +40,16 @@ const ProfileClient = () => {
           redirect("/auth/not-authenticated");
         }
       }
-      console.log("User res:", res);
+
       const data: UserProfile = await res.json();
-      console.log("User data:", data);
+
       if (!data) {
         redirect("/auth/not-authenticated");
       }
       setUser(data);
       form.reset({
         fullName: data.fullName || "",
-        address: data.address || "",
+        address: data.adress || "",
         number: data.phone || "",
         password: "",
         confirmPassword: "",
@@ -58,48 +58,78 @@ const ProfileClient = () => {
     fetchUserProfile();
   }, []);
 
-  const onSubmit = async (data: ProfileSchemaType) => {};
+  const onSubmit = async (data: ProfileSchemaType) => {
+    setLoading(true);
+    const res = await fetch("/api/user/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fullName: data.fullName,
+        number: data.number,
+        address: data.address,
+        password: data.password,
+      }),
+    });
+
+    if (res.ok) {
+      const updated: UserProfile = await res.json();
+      setUser(updated);
+      form.reset({
+        fullName: updated.fullName || "",
+        address: updated.adress || "",
+        number: updated.phone || "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
+    setLoading(false);
+    toast.success("Профиль успешно обновлен!");
+  };
   return (
     <>
       <FormProvider {...form}>
-        {session.data?.user.name}
-        <form
-          className="flex flex-col gap-6"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormInput
-            name="fullName"
-            label="ФИО"
-            required
-            placeholder="Фамилия"
-          />
-          <FormInput
-            name="number"
-            label="Номер телефона"
-            required
-            placeholder="Фамилия"
-          />
-          <FormInput
-            name="address"
-            label="Адрес"
-            placeholder="Email"
-            type="email"
-          />
-          <FormInput
-            name="password"
-            label="Пароль"
-            required
-            placeholder="87071234567"
-          />
-          <FormInput
-            name="confirmPassword"
-            label="Подтвердите пароль"
-            required
-            placeholder="87071234567"
-          />
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex flex-col gap-6 mt-10" style={{ width: "400px" }}>
+            <FormInput
+              name="fullName"
+              label="ФИО"
+              required
+              placeholder="Фамилия"
+            />
+            <FormInput
+              name="number"
+              label="Номер телефона"
+              disabled={true}
+              type="tel"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              placeholder="Номер телефона"
+            />
+            <FormInput
+              name="address"
+              label="Адрес"
+              placeholder="Email"
+              type="email"
+            />
+            <FormInput
+              name="password"
+              label="Пароль"
+              required
+              placeholder="87071234567"
+            />
+            <FormInput
+              name="confirmPassword"
+              label="Подтвердите пароль"
+              required
+              placeholder="87071234567"
+            />
+            <Button type="submit">
+              {loading ? "Сохраняем..." : "Сохранить"}
+            </Button>
+          </div>
         </form>
       </FormProvider>
-      <Button type="submit">Сохранить</Button>
 
       <SignOutButton />
     </>
