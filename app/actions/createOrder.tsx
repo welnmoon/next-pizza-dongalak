@@ -60,7 +60,7 @@ export async function createOrder(data: ChekoutSchema) {
         fullName: data.lastName + " " + data.name,
         email: data.email,
         phone: data.number,
-        address: data.adress,
+        address: data.address,
         comment: data.comment,
         totalAmount: total,
         status: OrderStatus.PENDING,

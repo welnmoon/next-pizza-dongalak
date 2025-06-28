@@ -7,13 +7,10 @@ import ProfileClient from "@/components/Profile/Profile";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-
-
-
 const ProfilePage = async () => {
   const session = await getServerSession(authOptions);
 
-  if (!session) {
+  if (!session?.user.email) {
     return redirect("/auth/not-authenticated");
   }
 

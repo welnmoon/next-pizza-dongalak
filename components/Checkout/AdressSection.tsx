@@ -1,11 +1,11 @@
 import Title3 from "./Title3";
 import FormInput from "./Form/FormInput";
-import { placeHolderAdress } from "@/constants/constants";
+import { placeHolderaddress } from "@/constants/constants";
 import { Textarea } from "../ui/textarea";
 import FormTextArea from "./Form/FormTextarea";
 
-const AdressSection = () => {
-  const adress = placeHolderAdress({ city: "Алматы" });
+const addressSection = () => {
+  const address = placeHolderaddress({ city: "Алматы" });
   return (
     <div className="bg-white rounded-md w-full">
       <div className="p-4">
@@ -16,10 +16,10 @@ const AdressSection = () => {
 
       <div className="p-4 pb-10 pt-6 flex flex-col gap-6">
         <FormInput
-          name="adress"
+          name="address"
           label="Введите адрес"
           required
-          placeholder={adress}
+          placeholder={address}
         />
         <FormTextArea
           name="comment"
@@ -31,4 +31,4 @@ const AdressSection = () => {
   );
 };
 
-export default AdressSection;
+export default addressSection;

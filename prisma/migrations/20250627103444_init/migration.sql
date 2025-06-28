@@ -12,7 +12,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "verified" TIMESTAMP(3),
-    "adress" TEXT,
+    "address" TEXT,
     "phone" TEXT,
     "provider" TEXT,
     "providerId" TEXT,

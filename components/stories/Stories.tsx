@@ -100,7 +100,7 @@ const Stories = () => {
           )}
 
           {selectedStory.items && selectedStory.items.length === 0 && (
-            <div>
+            <div className="rounded-3xl overflow-hidden shadow-xl">
               <ReactInstaStories
                 onAllStoriesEnd={() => setSelectedStory(null)}
                 stories={
@@ -112,6 +112,7 @@ const Stories = () => {
                 key={selectedStory.id}
                 width={520}
                 height={800}
+                progressContainerStyles={{ marginTop: "10px" }}
                 storyInnerContainerStyles={{
                   display: "flex",
                   alignItems: "center",

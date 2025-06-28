@@ -6,7 +6,7 @@ import { useCartStore } from "@/store/cartState";
 import { useEffect, useState, useTransition } from "react";
 import PersonalInfo from "./PersonalInfo";
 import TotalSection from "./TotalSection";
-import AdressSection from "./AdressSection";
+import addressSection from "./addressSection";
 import { FormProvider, useForm } from "react-hook-form";
 import { checkoutSchema, ChekoutSchema } from "./chekoutSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,7 +61,7 @@ const Checkout = () => {
         >
           <CartSection loading={loading} items={items} />
           <PersonalInfo />
-          <AdressSection />
+          <addressSection />
         </div>
         <div>
           <TotalSection

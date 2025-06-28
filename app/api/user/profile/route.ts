@@ -19,7 +19,7 @@ export async function GET(req: Request) {
       fullName: true,
       email: true,
       phone: true,
-      adress: true,
+      address: true,
     },
   });
 
@@ -46,7 +46,7 @@ export async function PUT(req: Request) {
   const data: any = {};
   if (fullName) data.fullName = fullName;
   if (number) data.phone = number;
-  if (address) data.adress = address;
+  if (address) data.address = address;
   if (password) {
     const hashed = await hash(password, 10);
     data.password = hashed;
@@ -59,7 +59,7 @@ export async function PUT(req: Request) {
       fullName: true,
       email: true,
       phone: true,
-      adress: true,
+      address: true,
     },
   });
 

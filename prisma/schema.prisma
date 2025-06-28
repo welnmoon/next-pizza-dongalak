@@ -15,7 +15,7 @@ model User {
   role             UserRole          @default(USER)
   verified         DateTime?
 
-    adress          String?
+    address          String?
   phone            String?
 
   provider         String?

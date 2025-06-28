@@ -1,4 +1,4 @@
-export const placeHolderAdress = ({
+export const placeHolderaddress = ({
   city = "Алматы",
 }: {
   city: string;

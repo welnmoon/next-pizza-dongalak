@@ -17,7 +17,7 @@ interface UserProfile {
   fullName: string;
   email: string;
   phone: string;
-  adress: string;
+  address: string;
 }
 
 const ProfileClient = () => {
@@ -43,13 +43,18 @@ const ProfileClient = () => {
 
       const data: UserProfile = await res.json();
 
+      // if (!data.email) {
+      //   redirect("/auth/not-authenticated");
+      // } // надо на сервере проверять
+
+      // Если нет данных, то редирект на страницу авторизации
       if (!data) {
         redirect("/auth/not-authenticated");
       }
       setUser(data);
       form.reset({
         fullName: data.fullName || "",
-        address: data.adress || "",
+        address: data.address || "",
         number: data.phone || "",
         password: "",
         confirmPassword: "",
@@ -78,7 +83,7 @@ const ProfileClient = () => {
       setUser(updated);
       form.reset({
         fullName: updated.fullName || "",
-        address: updated.adress || "",
+        address: updated.address || "",
         number: updated.phone || "",
         password: "",
         confirmPassword: "",
@@ -106,17 +111,18 @@ const ProfileClient = () => {
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               placeholder="Номер телефона"
             />
+
             <FormInput
               name="address"
               label="Адрес"
-              placeholder="Email"
+              placeholder="Ваш адрес"
               type="email"
             />
             <FormInput
               name="password"
               label="Пароль"
               required
-              placeholder="87071234567"
+              placeholder="Новый пароль"
             />
             <FormInput
               name="confirmPassword"

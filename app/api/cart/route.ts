@@ -1,34 +1,56 @@
 // app/api/cart/route.ts
 import { prisma } from "@/prisma/prisma-client";
-import { cookies } from "next/headers";
+import { randomUUID } from "crypto";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const token = req.cookies.get("cartToken")?.value;
-  if (!token) {
-    return NextResponse.json({});
-  }
-  const cart = await prisma.cart.findFirst({
-    where: {
-      token,
-    },
-    include: {
-      items: {
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          productItem: {
-            include: {
-              product: true,
-            },
+  // 1. Получаем userId, если пользователь авторизован
+  const session = await getServerSession();
+  const userId = Number(session?.user?.id);
+
+  let cart;
+  if (userId) {
+    cart = await prisma.cart.findFirst({
+      where: { userId },
+      include: {
+        items: {
+          orderBy: {
+            createdAt: "desc",
           },
-          ingredients: true,
+          include: {
+            productItem: {
+              include: {
+                product: true,
+              },
+            },
+            ingredients: true,
+          },
         },
       },
-    },
-  });
-
+    });
+  } else {
+    const token = req.cookies.get("cartToken")?.value;
+    if (!token) return NextResponse.json({});
+    cart = await prisma.cart.findFirst({
+      where: { token },
+      include: {
+        items: {
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            productItem: {
+              include: {
+                product: true,
+              },
+            },
+            ingredients: true,
+          },
+        },
+      },
+    });
+  }
   return NextResponse.json(cart);
 }
 
@@ -36,9 +58,16 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { productItemId, quantity = 1, ingredientsIds = [] } = body;
 
-  const cookiesStore = cookies();
-  let token = (await cookiesStore).get("cartToken")?.value!;
+  // 1. Получаем userId, если пользователь авторизован
+  const session = await getServerSession();
+  const userId = session?.user?.id;
 
+  let token = req.cookies.get("cartToken")?.value;
+  let setCookie = false;
+  if (!token) {
+    token = `guest-${randomUUID()}`;
+    setCookie = true;
+  }
   let cart = await prisma.cart.findFirst({ where: { token } });
 
   if (!cart) {
@@ -46,7 +75,11 @@ export async function POST(req: NextRequest) {
   }
 
   if (!productItemId) {
-    return NextResponse.json({ cart });
+    const response = NextResponse.json({ cart });
+    if (setCookie) {
+      response.cookies.set("cartToken", token, { path: "/" });
+    }
+    return response;
   }
 
   const candidateItems = await prisma.cartItem.findMany({
@@ -87,7 +120,11 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  return NextResponse.json({ success: true });
+  const response = NextResponse.json({ success: true });
+  if (setCookie) {
+    response.cookies.set("cartToken", token, { path: "/" });
+  }
+  return response;
 }
 
 export async function PATCH(req: NextRequest) {

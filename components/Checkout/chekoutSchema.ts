@@ -8,7 +8,7 @@ export const checkoutSchema = z.object({
     .string()
     .regex(/^\d+$/, "Введите только цифры")
     .min(10, "Минимум 10 цифр"),
-  adress: z
+  address: z
     .string()
     .min(5, "Адрес слишком короткий")
     .max(100, "Адрес слишком длиннный"),
