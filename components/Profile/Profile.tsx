@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import FormInput from "../Checkout/Form/FormInput";
 import SignOutButton from "../Buttons/SignOutBtn";
 import toast from "react-hot-toast";
+import ProfileForm from "./profile-form";
 
 interface UserProfile {
   fullName: string;
@@ -27,7 +28,25 @@ const ProfileClient = () => {
   const form = useForm({
     resolver: zodResolver(profileSchema),
     mode: "onChange",
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      address: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
+
+  const watched = form.watch();
+
+  const isChanged =
+    watched.fullName !== user?.fullName ||
+    watched.email !== user.email ||
+    watched.phone !== user.phone ||
+    watched.address !== user.address ||
+    watched.password !== "" ||
+    watched.confirmPassword !== "";
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -42,20 +61,16 @@ const ProfileClient = () => {
       }
 
       const data: UserProfile = await res.json();
-
-      // if (!data.email) {
-      //   redirect("/auth/not-authenticated");
-      // } // надо на сервере проверять
-
-      // Если нет данных, то редирект на страницу авторизации
+      
       if (!data) {
         redirect("/auth/not-authenticated");
       }
       setUser(data);
       form.reset({
         fullName: data.fullName || "",
+        email: data.email || "",
         address: data.address || "",
-        number: data.phone || "",
+        phone: data.phone || "",
         password: "",
         confirmPassword: "",
       });
@@ -72,9 +87,10 @@ const ProfileClient = () => {
       },
       body: JSON.stringify({
         fullName: data.fullName,
-        number: data.number,
+        phone: data.phone,
         address: data.address,
         password: data.password,
+        email: data?.email, // email не меняем, берем из профиля
       }),
     });
 
@@ -83,8 +99,9 @@ const ProfileClient = () => {
       setUser(updated);
       form.reset({
         fullName: updated.fullName || "",
+        email: updated.email || "",
         address: updated.address || "",
-        number: updated.phone || "",
+        phone: updated.phone || "",
         password: "",
         confirmPassword: "",
       });
@@ -95,46 +112,11 @@ const ProfileClient = () => {
   return (
     <>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-6 mt-10" style={{ width: "400px" }}>
-            <FormInput
-              name="fullName"
-              label="ФИО"
-              required
-              placeholder="Фамилия"
-            />
-            <FormInput
-              name="number"
-              label="Номер телефона"
-              disabled={true}
-              type="tel"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              placeholder="Номер телефона"
-            />
-
-            <FormInput
-              name="address"
-              label="Адрес"
-              placeholder="Ваш адрес"
-              type="email"
-            />
-            <FormInput
-              name="password"
-              label="Пароль"
-              required
-              placeholder="Новый пароль"
-            />
-            <FormInput
-              name="confirmPassword"
-              label="Подтвердите пароль"
-              required
-              placeholder="87071234567"
-            />
-            <Button type="submit">
-              {loading ? "Сохраняем..." : "Сохранить"}
-            </Button>
-          </div>
-        </form>
+        <ProfileForm
+          onSubmit={onSubmit}
+          loading={loading}
+          isChanged={isChanged}
+        />
       </FormProvider>
 
       <SignOutButton />
