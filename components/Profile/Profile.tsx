@@ -6,23 +6,25 @@ import {
   profileSchema,
   ProfileSchemaType,
 } from "@/components/Profile/profileSchema";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { redirect } from "next/navigation";
-import FormInput from "../Checkout/Form/FormInput";
+
 import SignOutButton from "../Buttons/SignOutBtn";
 import toast from "react-hot-toast";
 import ProfileForm from "./profile-form";
 
-interface UserProfile {
+export interface UserProfile {
   fullName: string;
   email: string;
-  phone: string;
-  address: string;
+  phone?: string;
+  address?: string;
 }
 
-const ProfileClient = () => {
-  const [user, setUser] = useState<UserProfile | null>(null);
+interface Props {
+  data: UserProfile;
+}
+
+const ProfileClient = ({ data }: Props) => {
+  const [user, setUser] = useState<UserProfile | null>(data);
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -49,34 +51,15 @@ const ProfileClient = () => {
     watched.confirmPassword !== "";
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      const res = await fetch("/api/user/profile", {
-        method: "GET",
-        cache: "no-store",
-      });
-      if (!res.ok) {
-        if (res.status === 401) {
-          redirect("/auth/not-authenticated");
-        }
-      }
-
-      const data: UserProfile = await res.json();
-      
-      if (!data) {
-        redirect("/auth/not-authenticated");
-      }
-      setUser(data);
-      form.reset({
-        fullName: data.fullName || "",
-        email: data.email || "",
-        address: data.address || "",
-        phone: data.phone || "",
-        password: "",
-        confirmPassword: "",
-      });
-    };
-    fetchUserProfile();
-  }, []);
+    form.reset({
+      fullName: data.fullName || "",
+      email: data.email || "",
+      address: data.address || "",
+      phone: data.phone || "",
+      password: "",
+      confirmPassword: "",
+    });
+  }, [data, form]);
 
   const onSubmit = async (data: ProfileSchemaType) => {
     setLoading(true);

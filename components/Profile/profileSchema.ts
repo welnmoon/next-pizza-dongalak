@@ -16,12 +16,14 @@ export const profileSchema = z
       .string()
       .min(6, "Минимум 6 символов")
       .max(20, "Максимум 20 символов")
-      .optional(),
+      .optional()
+      .or(z.literal("")),
     confirmPassword: z
       .string()
       .min(6, "Минимум 6 символов")
       .max(20, "Максимум 20 символов")
-      .optional(),
+      .optional()
+      .or(z.literal("")),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Пароли не совпадают",

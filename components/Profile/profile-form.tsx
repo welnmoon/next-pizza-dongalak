@@ -48,6 +48,7 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
             !isChanged || !form.formState.isValid || form.formState.isSubmitting
           }
           type="submit"
+          className="bg-orange-500 hover:bg-orange-600"
         >
           {loading ? "Сохраняем..." : "Сохранить"}
         </Button>
