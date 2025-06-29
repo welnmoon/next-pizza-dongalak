@@ -1,16 +1,17 @@
+import FormInput from "@/components/Checkout/Form/FormInput";
+import { ProfileSchemaType } from "@/components/Profile/profileSchema";
+import { Button } from "@/components/ui/button";
 import { useFormContext } from "react-hook-form";
-import FormInput from "../Checkout/Form/FormInput";
-import { ProfileSchemaType } from "./profileSchema";
-import { Button } from "../ui/button";
+import { UserSchemaType } from "./userSchema";
 
 interface Props {
-  onSubmit: (data: ProfileSchemaType) => Promise<void>;
+  onSubmit: (data: UserSchemaType) => Promise<void>;
   loading: boolean;
   isChanged: boolean;
 }
 
-const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
-  const form = useFormContext<ProfileSchemaType>();
+const UserForm = ({ onSubmit, isChanged, loading }: Props) => {
+  const form = useFormContext<UserSchemaType>();
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-6 mt-10" style={{ width: "400px" }}>
@@ -37,6 +38,17 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
           placeholder="Ваш адрес"
           type="address"
         />
+        <label className="text-sm font-medium" htmlFor="role">
+          Роль пользователя
+        </label>
+        <select
+          id="role"
+          {...form.register("role")}
+          className="border border-gray-300 rounded px-3 py-2"
+        >
+          <option value="USER">Обычный пользователь</option>
+          <option value="ADMIN">Администратор</option>
+        </select>
         <FormInput name="password" label="Пароль" placeholder="Новый пароль" />
         <FormInput
           name="confirmPassword"
@@ -57,4 +69,4 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
   );
 };
 
-export default ProfileForm;
+export default UserForm;
