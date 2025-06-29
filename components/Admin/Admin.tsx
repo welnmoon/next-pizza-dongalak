@@ -2,9 +2,10 @@ import AdminHeader from "./Header/Header";
 
 const Admin = () => {
   return (
-    <div>
-      <AdminHeader />
-    </div>
+    <>
+      
+      
+    </>
   );
 };
 

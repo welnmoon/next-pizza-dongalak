@@ -5,7 +5,7 @@ const PersonalInfo = () => {
   return (
     <div className="bg-white rounded-md w-full">
       <div className="p-4">
-        <Title3 title="3. Адрес доставки" />
+        <Title3 title="2. Персональная информация" />
       </div>
       <hr className="w-full" />
       {/*Main*/}

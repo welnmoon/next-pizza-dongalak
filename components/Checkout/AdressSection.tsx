@@ -1,10 +1,9 @@
 import Title3 from "./Title3";
 import FormInput from "./Form/FormInput";
 import { placeHolderaddress } from "@/constants/constants";
-import { Textarea } from "../ui/textarea";
 import FormTextArea from "./Form/FormTextarea";
 
-const addressSection = () => {
+const AddressSection = () => {
   const address = placeHolderaddress({ city: "Алматы" });
   return (
     <div className="bg-white rounded-md w-full">
@@ -31,4 +30,4 @@ const addressSection = () => {
   );
 };
 
-export default addressSection;
+export default AddressSection;

@@ -1,3 +1,4 @@
+import "./globals.css";
 
 import Providers from "@/components/providers";
 import { Nunito } from "next/font/google";
