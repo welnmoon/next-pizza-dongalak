@@ -1,4 +1,5 @@
-import { UserProfile } from "@/components/Profile/Profile";
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -21,7 +22,7 @@ interface Props {
   setOpenModal: (openModal: boolean) => void;
 }
 const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
-  const [user, setUser] = useState<UserProfile | null>(
+  const [user, setUser] = useState(
     selectedUser
       ? {
           ...selectedUser,
@@ -58,7 +59,7 @@ const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
 
   const onSubmit = async (data: UserSchemaType) => {
     setLoading(true);
-    const res = await fetch("/api/user/profile", {
+    const res = await fetch(`/api/admin/users/${user?.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -69,18 +70,19 @@ const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
         address: data.address,
         password: data.password,
         role: data.role,
-        email: data?.email, // email не меняем, берем из профиля
+        email: data?.email,
       }),
     });
 
     if (res.ok) {
-      const updated: UserProfile = await res.json();
+      const updated = await res.json();
       setUser(updated);
       form.reset({
         fullName: updated.fullName || "",
         email: updated.email || "",
         address: updated.address || "",
         phone: updated.phone || "",
+        role: updated.role,
         password: "",
         confirmPassword: "",
       });
