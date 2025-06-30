@@ -15,13 +15,15 @@ import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { userSchema, UserSchemaType } from "./userSchema";
 import UserForm from "./user-form";
+import { formatDate } from "@/utils/formatDate";
+import { useSession } from "next-auth/react";
 
 interface Props {
   openModal: boolean;
   selectedUser: User;
   setOpenModal: (openModal: boolean) => void;
 }
-const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
+const UserModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
   const [user, setUser] = useState(
     selectedUser
       ? {
@@ -32,6 +34,8 @@ const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
       : null
   );
   const [loading, setLoading] = useState(false);
+
+  const session = useSession();
 
   const form = useForm({
     resolver: zodResolver(userSchema),
@@ -76,6 +80,13 @@ const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
 
     if (res.ok) {
       const updated = await res.json();
+
+      if (updated.id === session?.data?.user.id && updated.role !== "ADMIN") {
+        toast("Вы были понижены. Перенаправление...");
+        window.location.href = "/";
+        return;
+      }
+
       setUser(updated);
       form.reset({
         fullName: updated.fullName || "",
@@ -114,4 +125,4 @@ const AdminModal = ({ openModal, selectedUser, setOpenModal }: Props) => {
   );
 };
 
-export default AdminModal;
+export default UserModal;

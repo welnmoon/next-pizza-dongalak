@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import AdminModal from "@/components/Admin/admin-modal/user/admin-modal";
+import AdminModal from "@/components/Admin/users/user-modal";
 import { User } from "@prisma/client";
 import { useState } from "react";
 

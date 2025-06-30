@@ -7,7 +7,7 @@ export function SidebarNav() {
 
   return (
     <div>
-      <nav className="flex flex-col gap-4">
+      <nav className="flex flex-col mr-4">
         <a
           href="/admin/users"
           className={clsx(

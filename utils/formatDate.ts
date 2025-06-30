@@ -1,4 +1,4 @@
-function formatDate(date?: Date | null) {
+export function formatDate(date?: Date | null) {
   return date
     ? new Date(date).toLocaleString("ru-RU", {
         day: "2-digit",
