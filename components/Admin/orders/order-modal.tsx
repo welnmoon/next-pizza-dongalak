@@ -89,7 +89,7 @@ const OrderModal = ({ openModal, selectedOrder, setOpenModal }: Props) => {
         <DialogHeader>
           <DialogTitle>Подробнее о пользователе</DialogTitle>
           <DialogDescription></DialogDescription>
-          <p>Создан: {formatDate(order.createdAt)}</p>
+          <p>Создан: {formatDate(order?.createdAt ?? new Date())}</p>
 
           {/* <FormProvider {...form}>
             <UserForm
@@ -100,13 +100,13 @@ const OrderModal = ({ openModal, selectedOrder, setOpenModal }: Props) => {
           </FormProvider> */}
 
           <div>
-            <p>Имя: {order.fullName}</p>
-            <p>Email: {order.email}</p>
-            <p>Телефон: {order.phone}</p>
-            <p>Заказ: {order.items?.toString()}</p>
-            <p>Адрес: {order.address}</p>
-            <p>Статус: {order.status}</p>
-            <p>Комментарий: {order.comment}</p>
+            <p>Имя: {order?.fullName}</p>
+            <p>Email: {order?.email}</p>
+            <p>Телефон: {order?.phone}</p>
+            <p>Заказ: {order?.items?.toString()}</p>
+            <p>Адрес: {order?.address}</p>
+            <p>Статус: {order?.status}</p>
+            <p>Комментарий: {order?.comment}</p>
           </div>
         </DialogHeader>
       </DialogContent>
