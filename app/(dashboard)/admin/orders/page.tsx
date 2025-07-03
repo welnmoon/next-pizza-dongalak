@@ -1,4 +1,4 @@
-import Orders from "@/components/Admin/orders/Orders";
+import Orders from "@/components/Admin/content/orders/Orders";
 import { prisma } from "@/prisma/prisma-client";
 import { OrderWithUser } from "@/types/admin/Order";
 

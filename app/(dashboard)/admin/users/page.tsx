@@ -1,4 +1,4 @@
-import Users from "@/components/Admin/users/users";
+import Users from "@/components/Admin/content/users/users";
 import { prisma } from "@/prisma/prisma-client";
 
 const UsersPage = async () => {

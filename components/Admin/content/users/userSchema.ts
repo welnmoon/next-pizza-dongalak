@@ -5,6 +5,7 @@ export const userSchema = z
     fullName: z
       .string()
       .min(2, "Имя слишком короткое")
+      .max(20, "Имя слишком длинное")
       .optional()
       .or(z.literal("")),
     email: z.string().email("Некорректный email").optional(),

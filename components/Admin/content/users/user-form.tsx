@@ -1,5 +1,4 @@
 import FormInput from "@/components/Checkout/Form/FormInput";
-import { ProfileSchemaType } from "@/components/Profile/profileSchema";
 import { Button } from "@/components/ui/button";
 import { useFormContext } from "react-hook-form";
 import { UserSchemaType } from "./userSchema";

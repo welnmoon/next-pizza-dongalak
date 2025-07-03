@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import AdminModal from "@/components/Admin/users/user-modal";
 import { User } from "@prisma/client";
 import { useState } from "react";
+import UserModal from "./user-modal";
 
 interface Props {
   users: User[];
@@ -24,11 +24,20 @@ interface Props {
 const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [updatedUsers, setUpdatedUsers] = useState(users);
 
-  const handleOpenModal = (user: User) => {
+  const handleOpenModal = (user: User, ordersId: number) => {
     console.log(user);
     setSelectedUser(user);
     setOpenModal(true);
+  };
+
+  const updateUser = (updatedUser: User) => {
+    setUpdatedUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+      )
+    );
   };
 
   return (
@@ -51,7 +60,7 @@ const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {updatedUsers.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium">{user.fullName}</TableCell>
               <TableCell>{user.email}</TableCell>
@@ -66,7 +75,7 @@ const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
               <TableCell className="text-right">
                 <div className="flex justify-end items-center gap-2">
                   <FaPen
-                    onClick={() => handleOpenModal(user)}
+                    onClick={() => handleOpenModal(user, ordersByUser[user.id])}
                     color="gray"
                     className="cursor-pointer"
                   />
@@ -79,10 +88,11 @@ const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
       </Table>
 
       {selectedUser && (
-        <AdminModal
+        <UserModal
           openModal={openModal}
           selectedUser={selectedUser!}
           setOpenModal={setOpenModal}
+          updateUser={updateUser}
         />
       )}
     </div>

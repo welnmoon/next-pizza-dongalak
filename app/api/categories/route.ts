@@ -5,3 +5,5 @@ export async function GET() {
   const categories = await prisma.category.findMany();
   return NextResponse.json(categories);
 }
+
+

@@ -27,6 +27,7 @@ const Orders = ({ orders }: Props) => {
   const handleOpenModal = (order: OrderWithUser) => {
     setSelectedOrder(order);
     setOpenModal(true);
+    console.log("order", order);
   };
 
   return (
