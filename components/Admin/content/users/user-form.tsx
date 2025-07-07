@@ -1,4 +1,4 @@
-import FormInput from "@/components/Checkout/Form/FormInput";
+import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
 import { useFormContext } from "react-hook-form";
 import { UserSchemaType } from "./userSchema";

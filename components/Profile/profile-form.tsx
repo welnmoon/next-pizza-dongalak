@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import FormInput from "../Checkout/Form/FormInput";
+import FormInput from "../Form/FormInput";
 import { ProfileSchemaType } from "./profileSchema";
 import { Button } from "../ui/button";
 

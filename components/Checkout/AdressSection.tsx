@@ -1,7 +1,7 @@
 import Title3 from "./Title3";
-import FormInput from "./Form/FormInput";
+import FormInput from "../Form/FormInput";
 import { placeHolderaddress } from "@/constants/constants";
-import FormTextArea from "./Form/FormTextarea";
+import FormTextArea from "../Form/FormTextarea";
 
 const AddressSection = () => {
   const address = placeHolderaddress({ city: "Алматы" });

@@ -5,9 +5,9 @@ import { prisma } from "@/prisma/prisma-client";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = context.params;
   const { name } = await req.json();
   const session = await getServerSession(authOptions);
 
@@ -27,6 +27,14 @@ export async function PATCH(
     },
     data: {
       name: name,
+    },
+    include: {
+      products: {
+        include: {
+          items: true,
+          ingredients: true,
+        },
+      },
     },
   });
 

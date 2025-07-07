@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { formLoginSchema, TFormLoginValues } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormInput from "@/components/Checkout/Form/FormInput";
+import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";

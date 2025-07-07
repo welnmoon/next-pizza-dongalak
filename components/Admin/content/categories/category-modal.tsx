@@ -13,11 +13,12 @@ import { PrintCategoryProducts } from "@/utils/admin/categories/print-category-p
 import { formatDate } from "@/utils/formatDate";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { categorySchema, CategorySchemaType } from "./categorySchema";
-import FormInput from "@/components/Checkout/Form/FormInput";
+import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 interface Props {
   openModal: boolean;
@@ -43,6 +44,13 @@ const CategoryModal = ({
       name: selectedCategory.name,
     },
   });
+
+  useEffect(() => {
+    if (selectedCategory) {
+      form.reset({ name: selectedCategory.name });
+    }
+  }, [selectedCategory, form]);
+
   const watched = form.watch();
 
   const isChanged = watched.name !== selectedCategory.name;
@@ -59,6 +67,7 @@ const CategoryModal = ({
     if (!res.ok) [console.error("Ошибка при обновлении категории")];
     const updatedCategory: CategoryWithProducts = await res.json();
     updateCategories(updatedCategory);
+    toast.success(`Категория обновлена на ${updatedCategory.name}`);
     setLoading(false);
   };
   return (
@@ -74,8 +83,9 @@ const CategoryModal = ({
                 name="name"
                 placeholder="Название категории"
                 label="Категория"
+                className="mb-2"
               />
-              <Button type="submit">
+              <Button className="bg-gray-500" type="submit">
                 {loading ? "...Сохраняем" : "Сохранить"}
               </Button>
             </form>

@@ -8,14 +8,21 @@ import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useHeaderVisibility } from "@/context/HeaderVisibilityContext";
+import { Session } from "next-auth";
 
 interface Props {
   className?: string;
   hasSearch?: boolean;
   hasCart?: boolean;
+  session: Session | null;
 }
 
-const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
+const Header = ({
+  className,
+  hasSearch = true,
+  hasCart = true,
+  session,
+}: Props) => {
   const searchParams = useSearchParams();
   const { headerRef } = useHeaderVisibility();
 
@@ -30,7 +37,7 @@ const Header = ({ className, hasSearch = true, hasCart = true }: Props) => {
     <header ref={headerRef} className={cn("flex justify-between", className)}>
       <Logotype />
       {hasSearch ? <HeaderSearch /> : null}
-      <HeaderActions hasCart={hasCart} />
+      <HeaderActions hasCart={hasCart} session={session}/>
     </header>
   );
 };

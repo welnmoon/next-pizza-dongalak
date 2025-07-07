@@ -31,7 +31,6 @@ const OrderModal = ({ openModal, selectedOrder, setOpenModal }: Props) => {
     return null;
   }
 
-  console.log("ORDER ITEMS", selectedOrder?.items);
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>

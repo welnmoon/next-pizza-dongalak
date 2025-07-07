@@ -29,6 +29,7 @@ const Categories = ({ categories }: Props) => {
     setCategoriesList((prevCategories) =>
       prevCategories.map((c) => (c.id === category.id ? category : c))
     );
+    setSelectedCategory(category);
   };
 
   const handleOpenModal = ({

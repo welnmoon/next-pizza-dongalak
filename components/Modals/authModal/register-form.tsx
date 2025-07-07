@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formRegisterSchema, TFormRegisterValues } from "./schema";
 import { FormProvider, useForm } from "react-hook-form";
-import FormInput from "@/components/Checkout/Form/FormInput";
+import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 

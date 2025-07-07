@@ -1,45 +1,20 @@
 "use client";
-import { usePathname } from "next/navigation";
-import clsx from "clsx"; // или classnames
+
+import SidebarLink from "./sidebar-link";
 
 export function SidebarNav() {
-  const pathname = usePathname();
-
   return (
     <div className="">
       <nav className="flex flex-col gap-4 mr-4">
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-bold">Пользователи</h2>
-          <a
-            href="/admin/users"
-            className={clsx(
-              "py-2",
-              pathname.includes("/users") && "font-bold text-blue-600"
-            )}
-          >
-            Пользователи
-          </a>
-          <a
-            href="/admin/orders"
-            className={clsx(
-              "py-2",
-              pathname.includes("/orders") && "font-bold text-blue-600"
-            )}
-          >
-            Заказы
-          </a>
+          <SidebarLink path="users" name="Пользователи" />
+          <SidebarLink path="orders" name="Заказы" />
         </div>
         <div className="flex flex-col gap-2 ">
           <h2 className="text-2xl font-bold">Продукты</h2>
-          <a
-            href="/admin/categories"
-            className={clsx(
-              "py-2",
-              pathname.includes("/payments") && "font-bold text-blue-600"
-            )}
-          >
-            Категории
-          </a>
+          <SidebarLink path="categories" name="Категории" />
+          <SidebarLink path="products" name="Продукты" />
         </div>
       </nav>
     </div>

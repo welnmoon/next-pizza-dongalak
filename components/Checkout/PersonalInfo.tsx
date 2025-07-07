@@ -1,5 +1,5 @@
 import Title3 from "./Title3";
-import FormInput from "./Form/FormInput";
+import FormInput from "../Form/FormInput";
 
 const PersonalInfo = () => {
   return (
