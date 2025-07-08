@@ -22,6 +22,9 @@ import {
 import FormInput from "@/components/Form/FormInput";
 import { FormSelect } from "@/components/Form/FormSelect";
 import { FormSelectOptions } from "@/types/Form/FormSelect";
+import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+import UploadForm from "../upload/UploadForm";
 
 interface Props {
   products: ProductWithIngredientsItemsCategories[];
@@ -32,6 +35,7 @@ const Products = ({ products, categories }: Props) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] =
     useState<ProductWithIngredientsItemsCategories | null>(null);
+  const [uploadedImgUrl, setUploadedImgUrl] = useState("");
 
   const handleOpenModal = (product: ProductWithIngredientsItemsCategories) => {
     setSelectedProduct(product);
@@ -48,8 +52,32 @@ const Products = ({ products, categories }: Props) => {
     },
   });
 
-  const onSubmit = (product: CreateRegularProductType) => {
-    console.log(product);
+  const onSubmit = async (product: CreateRegularProductType) => {
+    try {
+      const res = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error("Ошибка при создании:", error.message);
+        toast.error("Ошибка при создании продукта");
+        return;
+      }
+
+      const data = await res.json();
+      console.log("Создан продукт:", data);
+
+      form.reset();
+
+      toast.success(`Продукт ${data.name} успешно создан`);
+    } catch (err) {
+      console.error("Ошибка запроса:", err);
+    }
   };
 
   return (
@@ -63,17 +91,21 @@ const Products = ({ products, categories }: Props) => {
             placeholder="Название продукта"
             label="Название продукта"
           />
-          <FormInput
+          {/* <FormInput
             name="imageUrl"
             placeholder="Ссылка на вашу картинку"
             label="Картинка продукта"
-          />
+          /> */}
+          <UploadForm onUpload={setUploadedImgUrl} />
           <FormSelect
             name="categoryId"
             options={categories}
             placeholder="Выберите категорию"
             label="Категория"
           />
+          <Button type="submit">
+            {form.formState.isSubmitting ? "Создание..." : "Создать"}
+          </Button>
         </form>
       </FormProvider>
 

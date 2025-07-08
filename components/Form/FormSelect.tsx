@@ -32,7 +32,7 @@ export const FormSelect = ({
         </Label>
       )}
       <select
-        {...register(name)}
+        {...register(name, { valueAsNumber: true })}
         className={cn(
           "w-full border px-3 py-2 rounded",
           errorText && "border-red-500",
