@@ -18,8 +18,9 @@ const UploadForm = ({ onUpload }: { onUpload?: (url: string) => void }) => {
     });
 
     const data = await res.json();
+
     setImageUrl(data.imageUrl);
-    if (onUpload) onUpload(data.imageUrl); // <-- Добавь это
+    if (onUpload) onUpload(data.imageUrl);
   };
 
   return (

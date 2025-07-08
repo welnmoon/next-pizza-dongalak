@@ -9,9 +9,10 @@ export async function POST(req: NextRequest) {
     where: {
       name,
       categoryId,
-      imageUrl,
     },
   });
+
+  console.log("Проверка на дубликат:", { name, categoryId, imageUrl }, isExist);
 
   if (isExist)
     return NextResponse.json(

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
 import ProductModal from "./product-modal";
 import { FormProvider, useForm } from "react-hook-form";
@@ -52,7 +52,13 @@ const Products = ({ products, categories }: Props) => {
     },
   });
 
+  useEffect(() => {
+    form.setValue("imageUrl", uploadedImgUrl);
+  }, [uploadedImgUrl]);
+
   const onSubmit = async (product: CreateRegularProductType) => {
+    console.log("SUBMIT DATA:", product);
+    console.log("ERRORS:", form.formState.errors);
     try {
       const res = await fetch("/api/products", {
         method: "POST",
@@ -96,14 +102,19 @@ const Products = ({ products, categories }: Props) => {
             placeholder="Ссылка на вашу картинку"
             label="Картинка продукта"
           /> */}
-          <UploadForm onUpload={setUploadedImgUrl} />
+          <UploadForm
+            onUpload={(url) => {
+              form.setValue("imageUrl", url, { shouldValidate: true }); // 👈 сразу сюда
+              setUploadedImgUrl(url);
+            }}
+          />
           <FormSelect
             name="categoryId"
             options={categories}
             placeholder="Выберите категорию"
             label="Категория"
           />
-          <Button type="submit">
+          <Button type="submit" onClick={() => console.log(form.getValues())}>
             {form.formState.isSubmitting ? "Создание..." : "Создать"}
           </Button>
         </form>
