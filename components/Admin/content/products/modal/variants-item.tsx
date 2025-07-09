@@ -18,7 +18,12 @@ const VariantsItem = ({ variant }: Props) => {
             {variant.size} см • {PIZZA_TYPE_LABELS[variant.pizzaType || 1]}
           </p>
         ) : (
-          <p>У этого продукта нету вариантов</p>
+          <p>
+            Вариант 1{" "}
+            <span className="text-sm text-gray-500">
+              (Этот продукт может иметь лишь 1 вариант)
+            </span>
+          </p>
         )}
 
         <p className="font-semibold">{variant.price} ₸</p>

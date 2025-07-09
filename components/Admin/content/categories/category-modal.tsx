@@ -19,6 +19,7 @@ import { categorySchema, CategorySchemaType } from "./categorySchema";
 import FormInput from "@/components/Form/FormInput";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
+import Warning from "@/components/Notifications/Warning";
 
 interface Props {
   openModal: boolean;
@@ -77,19 +78,24 @@ const CategoryModal = ({
           <DialogTitle className="sticky top-0 bg-white p-2 shadow  rounded-md z-10">
             Подробнее о категории
           </DialogTitle>
-          <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput
-                name="name"
-                placeholder="Название категории"
-                label="Категория"
-                className="mb-2"
-              />
-              <Button className="bg-gray-500" type="submit">
-                {loading ? "...Сохраняем" : "Сохранить"}
-              </Button>
-            </form>
-          </FormProvider>
+          {selectedCategory.id === 1 ? (
+            <Warning text="Увы, но вы не можете менять данную категорию" />
+          ) : (
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormInput
+                  name="name"
+                  placeholder="Название категории"
+                  label="Категория"
+                  className="mb-2"
+                />
+                <Button className="bg-gray-500" type="submit">
+                  {loading ? "...Сохраняем" : "Сохранить"}
+                </Button>
+              </form>
+            </FormProvider>
+          )}
+
           <p className="text-sm text-gray-500">
             Создан: {formatDate(selectedCategory?.createdAt ?? new Date())}
           </p>

@@ -15,6 +15,7 @@ interface Props {
 
 const ProductGroupList = ({ categoryId, products, groupTitle }: Props) => {
   const filteredProducts = products.filter((p) => p.categoryId === categoryId);
+  console.log(filteredProducts);
 
   return (
     <div className="w-full">

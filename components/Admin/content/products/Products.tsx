@@ -12,7 +12,7 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
-import ProductModal from "./product-modal";
+import ProductModal from "./modal/product-modal";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -36,6 +36,7 @@ const Products = ({ products, categories }: Props) => {
   const [selectedProduct, setSelectedProduct] =
     useState<ProductWithIngredientsItemsCategories | null>(null);
   const [uploadedImgUrl, setUploadedImgUrl] = useState("");
+  const [resetUploadForm, setResetUploadForm] = useState(false);
 
   const handleOpenModal = (product: ProductWithIngredientsItemsCategories) => {
     setSelectedProduct(product);
@@ -57,8 +58,6 @@ const Products = ({ products, categories }: Props) => {
   }, [uploadedImgUrl]);
 
   const onSubmit = async (product: CreateRegularProductType) => {
-    console.log("SUBMIT DATA:", product);
-    console.log("ERRORS:", form.formState.errors);
     try {
       const res = await fetch("/api/products", {
         method: "POST",
@@ -79,6 +78,7 @@ const Products = ({ products, categories }: Props) => {
       console.log("Создан продукт:", data);
 
       form.reset();
+      setResetUploadForm(true);
 
       toast.success(`Продукт ${data.name} успешно создан`);
     } catch (err) {
@@ -91,7 +91,10 @@ const Products = ({ products, categories }: Props) => {
       <h2 className="text-2xl font-semibold mb-4">Продукты</h2>
 
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
           <FormInput
             name="name"
             placeholder="Название продукта"
@@ -103,6 +106,7 @@ const Products = ({ products, categories }: Props) => {
             label="Картинка продукта"
           /> */}
           <UploadForm
+            resetUploadForm={resetUploadForm}
             onUpload={(url) => {
               form.setValue("imageUrl", url, { shouldValidate: true }); // 👈 сразу сюда
               setUploadedImgUrl(url);
@@ -114,7 +118,7 @@ const Products = ({ products, categories }: Props) => {
             placeholder="Выберите категорию"
             label="Категория"
           />
-          <Button type="submit" onClick={() => console.log(form.getValues())}>
+          <Button type="submit">
             {form.formState.isSubmitting ? "Создание..." : "Создать"}
           </Button>
         </form>

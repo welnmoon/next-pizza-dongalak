@@ -14,9 +14,10 @@ import { useState } from "react";
 import { formatDate } from "@/utils/formatDate";
 import { useSession } from "next-auth/react";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
-import ProductModalIngredients from "./modal/ingredients";
+import ProductModalIngredients from "./ingredients";
 import { FaPen } from "react-icons/fa";
-import ProductModalVariants from "./modal/variants";
+import ProductModalVariants from "./variants";
+import Warning from "@/components/Notifications/Warning";
 
 interface Props {
   openModal: boolean;
@@ -50,6 +51,12 @@ const ProductModal = ({ openModal, selectedProduct, setOpenModal }: Props) => {
             </h2>
             <FaPen color="gray" className=" cursor-pointer" /> {/*!!!*/}
           </div>
+          {selectedProduct.items.length === 0 && (
+            <Warning
+              text="НЕ ВИДИТЕ ПРОДУКТ В МАГАЗИНЕ? СОЗДАЙТЕ ХОТЯ-БЫ ОДНУ ВАРИАЦИЮ
+              ПРОДУКТА"
+            />
+          )}
 
           {/*--------------Ингредиенты----------------*/}
 
@@ -61,9 +68,10 @@ const ProductModal = ({ openModal, selectedProduct, setOpenModal }: Props) => {
 
           {/*-------------Варианты-----------------*/}
 
-          {selectedProduct.items.length > 1 && (
-            <ProductModalVariants variants={selectedProduct.items} />
-          )}
+          <ProductModalVariants
+            selectedProduct={selectedProduct}
+            variants={selectedProduct.items}
+          />
         </DialogHeader>
       </DialogContent>
     </Dialog>
