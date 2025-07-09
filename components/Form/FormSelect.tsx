@@ -10,6 +10,7 @@ export const FormSelect = ({
   placeholder,
   required,
   className,
+  disabled,
 }: {
   name: string;
   label?: string;
@@ -17,6 +18,7 @@ export const FormSelect = ({
   placeholder?: string;
   required?: boolean;
   className?: string;
+  disabled?: boolean;
 }) => {
   const {
     register,
@@ -32,6 +34,7 @@ export const FormSelect = ({
         </Label>
       )}
       <select
+        disabled={disabled}
         {...register(name, { valueAsNumber: true })}
         className={cn(
           "w-full border px-3 py-2 rounded",

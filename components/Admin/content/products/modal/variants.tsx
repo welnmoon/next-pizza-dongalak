@@ -1,7 +1,7 @@
 import { Ingredient, ProductItem } from "@prisma/client";
 import { FaPen } from "react-icons/fa";
 import { IoIosAdd } from "react-icons/io";
-import VariantsItem from "./variants-item";
+import EditableVariantItem from "./variants-item";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,7 @@ import {
 } from "./addProductItemSchema";
 import FormInput from "@/components/Form/FormInput";
 import { FormSelect } from "@/components/Form/FormSelect";
-import { PIZZA_TYPE_LABELS } from "@/prisma/constants";
+import { PIZZA_SIZES, PIZZA_TYPE_LABELS } from "@/prisma/constants";
 import { FormSelectOptions } from "@/types/Form/FormSelect";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
@@ -25,12 +25,19 @@ interface Props {
 
 const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
   const [addingProduct, setAddingProduct] = useState(false);
+  const [editingProducts, setEditingProducts] = useState(false);
+
   const pizzaTypeOptions: FormSelectOptions[] = Object.entries(
     PIZZA_TYPE_LABELS
   ).map(([value, label]) => ({
     label,
     value: Number(value),
   }));
+  const PIZZA_SIZE_OPTIONS = PIZZA_SIZES.map((size) => ({
+    label: `${size} см`,
+    value: size,
+  }));
+
   const isPizza = selectedProduct.category.name.toLowerCase().includes("пицц");
 
   const form = useForm<ProductItemSchemaType>({
@@ -38,16 +45,23 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
     defaultValues: {
       pizzaType: "",
       price: "",
-      size: "",
     },
   });
 
   const onSubmit = async (data: ProductItemSchemaType) => {
     try {
-      const res = await fetch(`api/products/addItem/${selectedProduct.id}`, {
+      toast.dismiss();
+      const payload = {
+        ...data,
+        price: Number(data.price),
+        size: data.size ? Number(data.size) : undefined,
+        pizzaType: data.pizzaType ? Number(data.pizzaType) : undefined,
+      };
+
+      const res = await fetch(`/api/products/addItem/${selectedProduct.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -57,6 +71,7 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
       form.reset();
       toast.success("Вариант продукта создан");
     } catch (error) {
+      toast.dismiss();
       toast.error("Ошибка при создании варианта");
       console.error("Ошибка запроса:", error);
     }
@@ -70,7 +85,10 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
           size={35}
           className="text-gray-500 cursor-pointer"
         />
-        <FaPen className="text-gray-500 cursor-pointer" />
+        <FaPen
+          onClick={() => setEditingProducts(true)}
+          className="text-gray-500 cursor-pointer"
+        />
       </div>
       {addingProduct && (
         <FormProvider {...form}>
@@ -80,6 +98,7 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
           >
             {/* Всегда: цена */}
             <FormInput
+              disabled={form.formState.isSubmitting}
               name="price"
               label="Цена (₸)"
               placeholder="Введите цену"
@@ -89,13 +108,16 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
             {/* Только для пиццы: размеры и тип теста */}
             {isPizza && (
               <>
-                <FormInput
-                  name="size"
-                  label="Размер (см)"
-                  placeholder="Введите диаметр"
-                  type="number"
-                />
                 <FormSelect
+                  disabled={form.formState.isSubmitting}
+                  name="size"
+                  label="Размер пиццы"
+                  placeholder="Выберите размер"
+                  options={PIZZA_SIZE_OPTIONS}
+                />
+
+                <FormSelect
+                  disabled={form.formState.isSubmitting}
                   name="pizzaType"
                   label="Тип теста"
                   placeholder="Выберите тесто"
@@ -105,7 +127,11 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
             )}
 
             <div className="flex gap-2">
-              <Button type="submit">Создать вариант</Button>
+              <Button type="submit">
+                {form.formState.isSubmitting
+                  ? "Создание..."
+                  : "Создать вариант"}
+              </Button>
               <Button
                 type="button"
                 variant="ghost"
@@ -119,7 +145,12 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
       )}
       <div className="flex gap-2 flex-wrap">
         {variants.map((v) => (
-          <VariantsItem variant={v} />
+          <EditableVariantItem
+            key={v.id}
+            variant={v}
+            productId={selectedProduct.id}
+            isPizza={isPizza}
+          />
         ))}
       </div>
     </div>

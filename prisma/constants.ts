@@ -230,3 +230,5 @@ export const PIZZA_TYPE_LABELS: Record<number, string> = {
   1: "Традиционное",
   2: "Тонкое",
 };
+
+export const PIZZA_SIZES = [20, 30, 40];
