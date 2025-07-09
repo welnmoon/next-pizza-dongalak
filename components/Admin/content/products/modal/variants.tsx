@@ -25,7 +25,6 @@ interface Props {
 
 const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
   const [addingProduct, setAddingProduct] = useState(false);
-  const [editingProducts, setEditingProducts] = useState(false);
 
   const pizzaTypeOptions: FormSelectOptions[] = Object.entries(
     PIZZA_TYPE_LABELS
@@ -83,10 +82,6 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
         <IoIosAdd
           onClick={() => setAddingProduct(true)}
           size={35}
-          className="text-gray-500 cursor-pointer"
-        />
-        <FaPen
-          onClick={() => setEditingProducts(true)}
           className="text-gray-500 cursor-pointer"
         />
       </div>

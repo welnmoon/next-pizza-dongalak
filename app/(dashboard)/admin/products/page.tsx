@@ -14,13 +14,20 @@ const ProductsPage = async () => {
     });
 
   const categories = await prisma.category.findMany();
+  const allIngredients = await prisma.ingredient.findMany();
 
   const categoryOptions: FormSelectOptions[] = categories.map((c) => ({
     label: c.name,
     value: c.id,
   }));
 
-  return <Products products={products} categories={categoryOptions} />;
+  return (
+    <Products
+      products={products}
+      categories={categoryOptions}
+      allIngredients={allIngredients}
+    />
+  );
 };
 
 export default ProductsPage;

@@ -25,13 +25,15 @@ import { FormSelectOptions } from "@/types/Form/FormSelect";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import UploadForm from "../upload/UploadForm";
+import { Ingredient } from "@prisma/client";
 
 interface Props {
   products: ProductWithIngredientsItemsCategories[];
   categories: FormSelectOptions[];
+  allIngredients: Ingredient[];
 }
 
-const Products = ({ products, categories }: Props) => {
+const Products = ({ products, categories, allIngredients }: Props) => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedProduct, setSelectedProduct] =
     useState<ProductWithIngredientsItemsCategories | null>(null);
@@ -132,12 +134,15 @@ const Products = ({ products, categories }: Props) => {
             <TableHead>Категория</TableHead>
             <TableHead>Ингредиенты</TableHead>
             <TableHead>Варианты</TableHead>
-            <TableHead className="text-right">Действия</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {products.map((product) => (
-            <TableRow key={product.id}>
+            <TableRow
+              className="cursor-pointer"
+              onClick={() => handleOpenModal(product)}
+              key={product.id}
+            >
               <TableCell className="font-medium">{product.name}</TableCell>
               <TableCell>{product.category?.name || "-"}</TableCell>
               <TableCell>
@@ -165,21 +170,13 @@ const Products = ({ products, categories }: Props) => {
                   "-"
                 )}
               </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end items-center gap-2">
-                  <FaPen
-                    onClick={() => handleOpenModal(product)}
-                    color="gray"
-                    className="cursor-pointer"
-                  />
-                </div>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
       <ProductModal
+        allIngredients={allIngredients}
         openModal={openModal}
         setOpenModal={setOpenModal}
         selectedProduct={selectedProduct!}

@@ -18,13 +18,20 @@ import ProductModalIngredients from "./ingredients";
 import { FaPen } from "react-icons/fa";
 import ProductModalVariants from "./variants";
 import Warning from "@/components/Notifications/Warning";
+import { Ingredient } from "@prisma/client";
 
 interface Props {
   openModal: boolean;
   selectedProduct: ProductWithIngredientsItemsCategories;
   setOpenModal: (openModal: boolean) => void;
+  allIngredients: Ingredient[];
 }
-const ProductModal = ({ openModal, selectedProduct, setOpenModal }: Props) => {
+const ProductModal = ({
+  openModal,
+  selectedProduct,
+  setOpenModal,
+  allIngredients,
+}: Props) => {
   const session = useSession();
   const [loading, setLoading] = useState(false);
 
@@ -62,6 +69,8 @@ const ProductModal = ({ openModal, selectedProduct, setOpenModal }: Props) => {
 
           {selectedProduct.ingredients.length > 0 && (
             <ProductModalIngredients
+              selectedProductId={selectedProduct.id}
+              allIngredients={allIngredients}
               ingredients={selectedProduct.ingredients}
             />
           )}
