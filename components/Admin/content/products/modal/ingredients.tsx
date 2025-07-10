@@ -7,12 +7,14 @@ interface Props {
   ingredients: Ingredient[];
   allIngredients: Ingredient[];
   selectedProductId: number;
+  setIngredientsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 //TODO - Сделать иконки работающими
 const ProductModalIngredients = ({
   ingredients,
   allIngredients,
   selectedProductId,
+  setIngredientsUpdated,
 }: Props) => {
   const [editing, setEditing] = useState(false);
   const selectedIds = ingredients.map((ing) => ing.id);
@@ -38,7 +40,7 @@ const ProductModalIngredients = ({
         result.status === "added" ? "Ингредиент добавлен" : "Ингредиент удалён"
       );
 
-      // 🚨 Обнови состояние через fetch или передай callback из родителя
+      setIngredientsUpdated(true);
     } catch (err) {
       toast.error("Ошибка при изменении ингредиента");
       console.error(err);

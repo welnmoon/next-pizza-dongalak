@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { formatDate } from "@/utils/formatDate";
 import { useSession } from "next-auth/react";
@@ -33,9 +33,23 @@ const ProductModal = ({
   allIngredients,
 }: Props) => {
   const session = useSession();
-  const [loading, setLoading] = useState(false);
+  const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
+  const [product, setProduct] =
+    useState<ProductWithIngredientsItemsCategories>();
 
-  if (!selectedProduct) {
+  useEffect(() => {
+    if (!ingredientsUpdated) return;
+
+    const fetchProduct = async () => {
+      const res = await fetch(`/api/admin/products/${selectedProduct.id}`);
+      const freshProduct = await res.json();
+      setProduct(freshProduct);
+      setIngredientsUpdated(false);
+    };
+    fetchProduct();
+  }, [ingredientsUpdated]);
+
+  if (!product) {
     return null;
   } //TODO - Сделать иконки работающими
 
@@ -44,21 +58,21 @@ const ProductModal = ({
       <DialogContent className="w-[90%] h-[90%] mx-auto overflow-y-scroll px-10">
         <DialogHeader>
           <DialogTitle className="sticky top-0 bg-white p-2 shadow  rounded-md z-10">
-            Подробнее о продукте {selectedProduct.name}
+            Подробнее о продукте {product.name}
           </DialogTitle>
           <p className="text-sm text-gray-500">
-            Создан: {formatDate(selectedProduct?.createdAt ?? new Date())}
+            Создан: {formatDate(product?.createdAt ?? new Date())}
           </p>
 
           {/*--------------Категория----------------*/}
           <div className="flex gap-4 text-center items-center">
             <h2 className="text-2xl text-medium">Категория:</h2>
             <h2 className="bg-orange-200 text-orange-600 w-max px-3 rounded-lg">
-              {selectedProduct.category.name}
+              {product.category.name}
             </h2>
             <FaPen color="gray" className=" cursor-pointer" /> {/*!!!*/}
           </div>
-          {selectedProduct.items.length === 0 && (
+          {product.items.length === 0 && (
             <Warning
               text="НЕ ВИДИТЕ ПРОДУКТ В МАГАЗИНЕ? СОЗДАЙТЕ ХОТЯ-БЫ ОДНУ ВАРИАЦИЮ
               ПРОДУКТА"
@@ -67,19 +81,20 @@ const ProductModal = ({
 
           {/*--------------Ингредиенты----------------*/}
 
-          {selectedProduct.ingredients.length > 0 && (
+          {product.ingredients.length > 0 && (
             <ProductModalIngredients
-              selectedProductId={selectedProduct.id}
+              selectedProductId={product.id}
               allIngredients={allIngredients}
-              ingredients={selectedProduct.ingredients}
+              ingredients={product.ingredients}
+              setIngredientsUpdated={setIngredientsUpdated}
             />
           )}
 
           {/*-------------Варианты-----------------*/}
 
           <ProductModalVariants
-            selectedProduct={selectedProduct}
-            variants={selectedProduct.items}
+            selectedProduct={product}
+            variants={product.items}
           />
         </DialogHeader>
       </DialogContent>
