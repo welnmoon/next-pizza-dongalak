@@ -35,17 +35,29 @@ const ProductModal = ({
   const session = useSession();
   const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
   const [product, setProduct] =
-    useState<ProductWithIngredientsItemsCategories>();
+    useState<ProductWithIngredientsItemsCategories>(selectedProduct);
+
+  useEffect(() => {
+    setProduct(selectedProduct);
+  }, [selectedProduct]);
 
   useEffect(() => {
     if (!ingredientsUpdated) return;
 
     const fetchProduct = async () => {
-      const res = await fetch(`/api/admin/products/${selectedProduct.id}`);
-      const freshProduct = await res.json();
-      setProduct(freshProduct);
-      setIngredientsUpdated(false);
+      try {
+        const res = await fetch(`/api/admin/products/${selectedProduct.id}`, {
+          cache: "no-cache",
+        });
+        const freshProduct = await res.json();
+        setProduct(freshProduct); // Обновим состояние
+      } catch (error) {
+        console.error("Ошибка при обновлении продукта:", error);
+      } finally {
+        setIngredientsUpdated(false); // После успешного запроса
+      }
     };
+
     fetchProduct();
   }, [ingredientsUpdated]);
 
@@ -64,13 +76,16 @@ const ProductModal = ({
             Создан: {formatDate(product?.createdAt ?? new Date())}
           </p>
 
+          <div>
+            <img className="w-50 h-50" src={selectedProduct.imageUrl} alt="" />
+          </div>
+
           {/*--------------Категория----------------*/}
           <div className="flex gap-4 text-center items-center">
             <h2 className="text-2xl text-medium">Категория:</h2>
             <h2 className="bg-orange-200 text-orange-600 w-max px-3 rounded-lg">
               {product.category.name}
             </h2>
-            <FaPen color="gray" className=" cursor-pointer" /> {/*!!!*/}
           </div>
           {product.items.length === 0 && (
             <Warning
@@ -81,14 +96,12 @@ const ProductModal = ({
 
           {/*--------------Ингредиенты----------------*/}
 
-          {product.ingredients.length > 0 && (
-            <ProductModalIngredients
-              selectedProductId={product.id}
-              allIngredients={allIngredients}
-              ingredients={product.ingredients}
-              setIngredientsUpdated={setIngredientsUpdated}
-            />
-          )}
+          <ProductModalIngredients
+            selectedProductId={product.id}
+            allIngredients={allIngredients}
+            ingredients={product.ingredients}
+            setIngredientsUpdated={setIngredientsUpdated}
+          />
 
           {/*-------------Варианты-----------------*/}
 

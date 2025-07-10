@@ -13,6 +13,12 @@ import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { CategoryWithProducts } from "@/types/admin/Category";
 import CategoryModal from "./category-modal";
+import { FormProvider, useForm } from "react-hook-form";
+import { categorySchema, CategorySchemaType } from "./categorySchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import FormInput from "@/components/Form/FormInput";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   categories: CategoryWithProducts[];
@@ -41,9 +47,52 @@ const Categories = ({ categories }: Props) => {
     setSelectedCategory(category);
   };
 
+  const form = useForm<CategorySchemaType>({
+    resolver: zodResolver(categorySchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  const onSubmit = async (data: CategorySchemaType) => {
+    try {
+      const res = await fetch(`/api/categories`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        throw Error();
+      }
+
+      toast.success("Категория создана");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-4">Заказы</h2>
+      <h2 className="text-2xl font-semibold mb-4">Категории</h2>
+
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormInput
+            name="name"
+            placeholder="Название категории"
+            label="Название категории"
+          />
+          <Button type="submit">
+            {form.formState.isSubmitting
+              ? "Сохранение..."
+              : "Создать категорию"}
+          </Button>
+        </form>
+      </FormProvider>
 
       <Table>
         <TableCaption>Список категорий и их продуктов</TableCaption>

@@ -1,5 +1,4 @@
-import { Ingredient, ProductItem } from "@prisma/client";
-import { FaPen } from "react-icons/fa";
+import { ProductItem } from "@prisma/client";
 import { IoIosAdd } from "react-icons/io";
 import EditableVariantItem from "./variants-item";
 import { useState } from "react";
