@@ -33,6 +33,7 @@ const ProductModal = ({
   allIngredients,
 }: Props) => {
   const session = useSession();
+  const [variantsUpdated, setVariantsUpdated] = useState(false);
   const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
   const [product, setProduct] =
     useState<ProductWithIngredientsItemsCategories>(selectedProduct);
@@ -42,7 +43,7 @@ const ProductModal = ({
   }, [selectedProduct]);
 
   useEffect(() => {
-    if (!ingredientsUpdated) return;
+    if (!ingredientsUpdated && !variantsUpdated) return;
 
     const fetchProduct = async () => {
       try {
@@ -54,12 +55,13 @@ const ProductModal = ({
       } catch (error) {
         console.error("Ошибка при обновлении продукта:", error);
       } finally {
-        setIngredientsUpdated(false); // После успешного запроса
+        setIngredientsUpdated(false);
+        setVariantsUpdated(false);
       }
     };
 
     fetchProduct();
-  }, [ingredientsUpdated]);
+  }, [ingredientsUpdated, variantsUpdated]);
 
   if (!product) {
     return null;
@@ -108,6 +110,7 @@ const ProductModal = ({
           <ProductModalVariants
             selectedProduct={product}
             variants={product.items}
+            setVariantsUpdated={setVariantsUpdated}
           />
         </DialogHeader>
       </DialogContent>

@@ -26,10 +26,12 @@ export default function EditableVariantItem({
   variant,
   isPizza,
   productId,
+  setVariantsUpdated,
 }: {
   variant: ProductItem;
   isPizza: boolean;
   productId: number;
+  setVariantsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const form = useForm<ProductItemSchemaType>({
     resolver: zodResolver(productItemSchema),
@@ -62,6 +64,7 @@ export default function EditableVariantItem({
 
       if (!res.ok) throw Error();
       toast.success("Вариант обновлён");
+      setVariantsUpdated(true);
     } catch (error) {
       toast.error("Ошибка при обновлении");
     }

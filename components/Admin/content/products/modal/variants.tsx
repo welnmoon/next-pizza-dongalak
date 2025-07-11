@@ -19,10 +19,15 @@ import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
 interface Props {
   variants: ProductItem[];
   selectedProduct: ProductWithIngredientsItemsCategories;
+  setVariantsUpdated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 //TODO - Сделать иконки работающими
 
-const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
+const ProductModalVariants = ({
+  variants,
+  selectedProduct,
+  setVariantsUpdated,
+}: Props) => {
   const [addingProduct, setAddingProduct] = useState(false);
 
   const pizzaTypeOptions: FormSelectOptions[] = Object.entries(
@@ -68,6 +73,8 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
 
       form.reset();
       toast.success("Вариант продукта создан");
+      setVariantsUpdated(true);
+      setAddingProduct(false);
     } catch (error) {
       toast.dismiss();
       toast.error("Ошибка при создании варианта");
@@ -144,6 +151,7 @@ const ProductModalVariants = ({ variants, selectedProduct }: Props) => {
             variant={v}
             productId={selectedProduct.id}
             isPizza={isPizza}
+            setVariantsUpdated={setVariantsUpdated}
           />
         ))}
       </div>
