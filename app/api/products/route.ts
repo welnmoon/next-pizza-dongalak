@@ -12,12 +12,11 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log("Проверка на дубликат:", { name, categoryId, imageUrl }, isExist);
 
   if (isExist)
     return NextResponse.json(
       { message: "Продукт уже существует" },
-      { status: 409 } // Conflict
+      { status: 409 }
     );
 
   try {

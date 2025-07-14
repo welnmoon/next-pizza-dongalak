@@ -15,6 +15,7 @@ export function SidebarNav() {
           <h2 className="text-2xl font-bold">Продукты</h2>
           <SidebarLink path="categories" name="Категории" />
           <SidebarLink path="products" name="Продукты" />
+          <SidebarLink path="ingredients" name="Ингредиенты" />
         </div>
       </nav>
     </div>

@@ -2,6 +2,7 @@
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Container from "@/components/Container";
+import ProfileOrders from "@/components/Profile/orders";
 import ProfileClient, { UserProfile } from "@/components/Profile/Profile";
 import { prisma } from "@/prisma/prisma-client";
 
@@ -25,6 +26,12 @@ const ProfilePage = async () => {
     },
   });
 
+  const orders = await prisma.order.findMany({
+    where: {
+      userId: Number(session.user.id),
+    },
+  });
+
   if (!user) {
     redirect("/auth/not-authenticated");
   }
@@ -38,7 +45,7 @@ const ProfilePage = async () => {
   return (
     <Container>
       <ProfileClient data={userData} />
-      {/*TODO - Orders*/}
+      <ProfileOrders orders={orders} />
     </Container>
   );
 };

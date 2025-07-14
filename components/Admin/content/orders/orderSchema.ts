@@ -2,11 +2,11 @@ import { z } from "zod";
 
 export const orderWithUserSchema = z.object({
   id: z.number(),
-  userId: z.number().nullable(), // может быть null
+  userId: z.number().nullable(),
   totalAmount: z.number(),
   status: z.enum(["PENDING", "SUCCEEDED", "CANCELLED"]),
   paymentId: z.string().nullable(),
-  items: z.any(), // если items — это JSON, можно уточнить тип если знаешь структуру
+  items: z.any(),
   fullName: z
     .string()
     .min(2, "Имя слишком короткое")

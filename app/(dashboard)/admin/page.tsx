@@ -7,7 +7,7 @@ const AdminPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session || session.user.role !== "ADMIN") {
-    redirect("/home"); // TODO - нужно создать страницу типа (Хочешь войти в админку? Устройся к нам на работу!)
+    redirect("/home"); 
   }
   return <>ЭТО ГЛАВНАЯ СТРАНИЦА АДМИНКИ</>;
 };
