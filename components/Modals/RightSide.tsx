@@ -2,11 +2,10 @@ import { cn } from "@/lib/utils";
 import { Ingredient, Product, ProductItem } from "@prisma/client";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
-import { DialogTitle } from "../ui/dialog";
 import { PIZZA_TYPE_LABELS } from "@/prisma/constants";
 import { CircleCheck } from "lucide-react";
 import { useCartStore } from "@/store/cartState";
-import { addItemToCart } from "@/services/cart";
+import { Button } from "../ui/button";
 
 interface Props {
   classNames?: string;
@@ -33,7 +32,6 @@ const RightSide = ({
   selectedDoughTypes,
   setSelectedDoughTypes,
   selectedIngredients,
-  total,
   ingredients,
   handleSetSelectedIngredients,
 }: Props) => {
@@ -181,7 +179,7 @@ const RightSide = ({
       </div>
 
       {/* Кнопка снизу */}
-      <button
+      <Button
         onClick={handleAddToCart}
         disabled={isLoading || isSuccess}
         className={cn(
@@ -191,7 +189,7 @@ const RightSide = ({
         )}
       >
         {buttonContent}
-      </button>
+      </Button>
     </div>
   );
 };

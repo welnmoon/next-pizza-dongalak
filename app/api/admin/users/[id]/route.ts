@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/prisma-client";
 import { hash } from "bcrypt";
+import { UserRole } from "@prisma/client";
 
 export async function PUT(
   req: NextRequest,
@@ -22,11 +23,17 @@ export async function PUT(
   const body = await req.json();
   const { fullName, phone, address, password, role } = body;
 
-  const data: any = {};
+  const data = {
+    fullName: "",
+    phone: null,
+    address: null,
+    role: UserRole.USER as UserRole, // Default role
+    password: "",
+  };
   if (fullName) data.fullName = fullName;
   if (phone) data.phone = phone;
   if (address) data.address = address;
-  if (role && ["USER", "ADMIN"].includes(role)) data.role = role;
+  if (role && ["USER", "ADMIN"].includes(role)) data.role = role as UserRole;
   if (password) {
     data.password = await hash(password, 10);
   }
@@ -39,6 +46,9 @@ export async function PUT(
 
     return NextResponse.json(updatedUser);
   } catch (e) {
-    return NextResponse.json({ message: "Ошибка обновления" }, { status: 500 });
+    return NextResponse.json(
+      { message: `Ошибка обновления ${e}` },
+      { status: 500 }
+    );
   }
 }

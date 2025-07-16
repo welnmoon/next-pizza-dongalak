@@ -8,6 +8,10 @@ import { cookies } from "next/headers";
 
 import { checkoutActionPayment } from "../(checkout)/checkout/checkout-action";
 import { PayOrderEmailTemplate } from "@/components/email/pay-order";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { taxCalculate } from "@/lib/taxCalculate";
+import { deliveryCost } from "@/constants/constants";
 
 export async function createOrder(data: ChekoutSchema) {
   try {
@@ -16,6 +20,8 @@ export async function createOrder(data: ChekoutSchema) {
     if (!cartToken) {
       throw new Error("Cart token not found");
     }
+
+    const session = await getServerSession(authOptions);
 
     const userCart = await prisma.cart.findFirst({
       where: {
@@ -53,7 +59,10 @@ export async function createOrder(data: ChekoutSchema) {
     if (total === 0) {
       throw new Error("Cart is empty");
     }
+
+    const sessionUserId = Number(session?.user?.id);
     // создали заказ
+
     const order = await prisma.order.create({
       data: {
         token: cartToken,
@@ -65,14 +74,17 @@ export async function createOrder(data: ChekoutSchema) {
         totalAmount: total,
         status: OrderStatus.PENDING,
         items: userCart.items,
-        userId: userCart?.user?.id,
+        userId:
+          (isNaN(sessionUserId) ? undefined : sessionUserId) ??
+          userCart?.user?.id,
       },
     });
 
     const stripeSession = await checkoutActionPayment({
       orderId: order.id,
       name: userCart.items.map((i) => i.productItem.product.name).toString(),
-      unit_amount: order.totalAmount,
+      unit_amount:
+        order.totalAmount + taxCalculate(order.totalAmount) + deliveryCost,
     });
 
     await prisma.order.update({

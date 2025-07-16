@@ -1,14 +1,13 @@
 "use client";
 
 import * as Slider from "@radix-ui/react-slider";
-import { useState } from "react";
 import PriceInput from "../Buttons/PriceInput";
 import { usePriceFilterStore } from "@/store/priceFilterStore";
 
-interface Props {
-  priceFrom: number;
-  priceTo: number;
-}
+// interface Props {
+//   priceFrom: number;
+//   priceTo: number;
+// }
 
 const PriceRangeSlider = () => {
   // const [range, setRange] = useState<[number, number]>([1000, 5000]);

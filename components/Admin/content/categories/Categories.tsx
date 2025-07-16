@@ -8,8 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FaPen } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { CategoryWithProducts } from "@/types/admin/Category";
 import CategoryModal from "./category-modal";
@@ -126,12 +124,14 @@ const Categories = ({ categories }: Props) => {
         </TableBody>
       </Table>
 
-      <CategoryModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        selectedCategory={selectedCategory!}
-        updateCategories={updateCategories}
-      />
+      {selectedCategory && (
+        <CategoryModal
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          selectedCategory={selectedCategory!}
+          updateCategories={updateCategories}
+        />
+      )}
     </div>
   );
 };

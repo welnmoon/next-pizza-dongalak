@@ -3,16 +3,13 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { formatDate } from "@/utils/formatDate";
-import { useSession } from "next-auth/react";
 import { Ingredient } from "@prisma/client";
 import { FormProvider, useForm } from "react-hook-form";
 import { IngredientSchema, IngredientSchemaType } from "./ingredientSchema";
@@ -31,8 +28,6 @@ const IngredientModal = ({
   selectedIngredient,
   setOpenModal,
 }: Props) => {
-  const session = useSession();
-  const [loading, setLoading] = useState(false);
   const form = useForm<IngredientSchemaType>({
     resolver: zodResolver(IngredientSchema),
     defaultValues: {
@@ -46,7 +41,7 @@ const IngredientModal = ({
         name: selectedIngredient.name,
       });
     }
-  }, [selectedIngredient]);
+  }, [selectedIngredient, form]);
 
   const watch = form.watch();
   const isChanged = watch.name !== selectedIngredient?.name;

@@ -26,7 +26,7 @@ const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [updatedUsers, setUpdatedUsers] = useState(users);
 
-  const handleOpenModal = (user: User, ordersId: number) => {
+  const handleOpenModal = (user: User) => {
     console.log(user);
     setSelectedUser(user);
     setOpenModal(true);
@@ -75,7 +75,7 @@ const Users = ({ users, ordersByUser, orderSumsByUser }: Props) => {
               <TableCell className="text-right">
                 <div className="flex justify-end items-center gap-2">
                   <FaPen
-                    onClick={() => handleOpenModal(user, ordersByUser[user.id])}
+                    onClick={() => handleOpenModal(user)}
                     color="gray"
                     className="cursor-pointer"
                   />

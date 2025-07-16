@@ -9,7 +9,6 @@ interface Props {
 const IngredientCheckboxes = ({ data }: Props) => {
   const has = useIngredientFilterStore((s) => s.has);
   const toggle = useIngredientFilterStore((s) => s.toggle);
-  const selected = useIngredientFilterStore((s) => s.selectedIngredients); // подписка
 
   return (
     <Checkboxes

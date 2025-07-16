@@ -3,18 +3,13 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-
-import { useState } from "react";
 
 import { formatDate } from "@/utils/formatDate";
 import { useSession } from "next-auth/react";
 import { OrderWithUser } from "@/types/admin/Order";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { PrintOrders } from "@/utils/admin/orders/print-order-items";
 import OrderInfoTable from "./order-info-table";
 
@@ -24,13 +19,9 @@ interface Props {
   setOpenModal: (openModal: boolean) => void;
 }
 const OrderModal = ({ openModal, selectedOrder, setOpenModal }: Props) => {
-  const session = useSession();
-  const [loading, setLoading] = useState(false);
-
   if (!selectedOrder) {
     return null;
   }
-
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>

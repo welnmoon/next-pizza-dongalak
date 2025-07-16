@@ -40,3 +40,37 @@ export async function PATCH(
 
   return NextResponse.json(updatedCategory);
 }
+
+export async function DELETE({ params }: { params: { id: string } }) {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    return NextResponse.json({ message: "Не авторизован" }, { status: 401 });
+  }
+
+  const isAdmin = session.user.role === "ADMIN";
+
+  if (!isAdmin) {
+    return NextResponse.json({ message: "Нет доступа" }, { status: 403 });
+  }
+
+  const deletedCategory = await prisma.category.delete({
+    where: {
+      id: Number(params.id),
+    },
+  });
+
+  const isExist = await prisma.category.findFirst({
+    where: {
+      id: deletedCategory.id,
+    },
+  });
+
+  if (isExist) {
+    return NextResponse.json(
+      { message: "Категория не удалена" },
+      { status: 400 }
+    );
+  }
+
+  return NextResponse.json({ message: "Категория удалена" }, { status: 200 });
+}

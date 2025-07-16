@@ -1,6 +1,5 @@
 "use server";
 
-import { PaidEmailTemplate } from "@/components/email/paid";
 import { PayOrderEmailTemplate } from "@/components/email/pay-order";
 
 import { sendEmail } from "@/lib/sendEmail";
@@ -12,7 +11,13 @@ interface checkoutActionPaymentType {
   name: string;
   orderId: number;
 }
-
+type OrderItem = {
+  productItem: {
+    product: { name: string };
+    price: number;
+  };
+  quantity: number;
+};
 export async function checkoutActionPayment({
   name,
   unit_amount,
@@ -49,19 +54,22 @@ export async function checkoutActionPayment({
 
     const orderItems =
       typeof order?.items === "string" ? JSON.parse(order.items) : order?.items;
-    const itemNames = (orderItems as any[]).map(
+    const items = Array.isArray(orderItems) ? (orderItems as OrderItem[]) : [];
+    const itemNames = items.map(
       (i) =>
         `${i.productItem.product.name} x ${i.quantity} = ${
           i.productItem.price * i.quantity
         }`
     );
-
+    if (!order || !order.email || !order.totalAmount) {
+      throw new Error("Order not found or missing email/totalAmount");
+    }
     await sendEmail(
       order?.email!,
       `Next Pizza / Счёт на оплату заказа #${orderId}`,
       PayOrderEmailTemplate({
         orderId,
-        totalAmount: order?.totalAmount!,
+        totalAmount: order.totalAmount,
         items: JSON.stringify(itemNames),
         paymentUrl: session.url!,
       })
@@ -80,8 +88,14 @@ export async function checkoutActionPayment({
     });
 
     return session;
-  } catch (error: any) {
+  } catch (error) {
     console.error("Ошибка создания сессии Stripe:", error);
-    throw new Error("Ошибка при создании платежной сессии: " + error.message);
+    if (error instanceof Error) {
+      throw new Error("Ошибка при создании платежной сессии: " + error.message);
+    } else {
+      throw new Error(
+        "Ошибка при создании платежной сессии: Неизвестная ошибка"
+      );
+    }
   }
 }

@@ -58,10 +58,6 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { productItemId, quantity = 1, ingredientsIds = [] } = body;
 
-  // 1. Получаем userId, если пользователь авторизован
-  const session = await getServerSession();
-  const userId = session?.user?.id;
-
   let token = req.cookies.get("cartToken")?.value;
   let setCookie = false;
   if (!token) {

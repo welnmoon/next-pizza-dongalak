@@ -5,6 +5,7 @@ import Container from "@/components/Container";
 import { HeaderVisibilityProvider } from "@/context/HeaderVisibilityContext";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import Footer from "@/components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "Dongalak",
@@ -22,12 +23,13 @@ export default async function HomeLayout({
   if (!session) return null;
   return (
     <HeaderVisibilityProvider>
-      <div className={`mt-6 mb-6 w-full`}>
+      <div className={`mt-6 w-full`}>
         <Container>
-          <Header session={session}/>
+          <Header session={session} />
         </Container>
         {children}
         {modal}
+        <Footer />
       </div>
     </HeaderVisibilityProvider>
   );

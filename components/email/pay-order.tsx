@@ -26,7 +26,7 @@ export const PayOrderEmailTemplate = ({
 
       <ul>
         {parsedItems.map((i) => (
-          <li>{i}</li>
+          <li key={i}>{i}</li>
         ))}
       </ul>
     </div>

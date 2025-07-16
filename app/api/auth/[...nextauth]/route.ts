@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions, SessionStrategy } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import { UserRole } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {

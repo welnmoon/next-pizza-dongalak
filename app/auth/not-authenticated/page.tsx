@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const NotAuthPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-1/4 bg-gray-100 p-4 rounded-md">
@@ -5,9 +7,9 @@ const NotAuthPage = () => {
       <p className="text-gray-600 mb-6">
         Пожалуйста, войдите в свою учетную запись, чтобы продолжить.
       </p>
-      <a href="/auth" className="text-blue-500 hover:underline">
+      <Link href="/auth" className="text-blue-500 hover:underline">
         Войти
-      </a>
+      </Link>
     </div>
   );
 };

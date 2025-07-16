@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormContext } from "react-hook-form";
 import { ClearButton } from "./ClearButton";
@@ -11,18 +10,9 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder: string;
   required?: boolean;
-  type?: string;
-  className?: string;
 }
 
-const FormTextArea = ({
-  name,
-  label,
-  required,
-  placeholder,
-  type,
-  className,
-}: Props) => {
+const FormTextArea = ({ name, label, required, placeholder }: Props) => {
   const {
     register,
     formState: { errors },

@@ -16,10 +16,6 @@ const TotalSection = ({
   const tax = itemsPriceWithTax - totalPrice;
   const delivery = totalPrice === 0 ? 0 : 1000; // фиксируем доставку под картинку
 
-  const handleClick = async () => {
-    
-  };
-
   return (
     <div className="bg-white rounded-xl w-[450px] flex flex-col gap-6 px-6 py-6">
       {/* Итого */}

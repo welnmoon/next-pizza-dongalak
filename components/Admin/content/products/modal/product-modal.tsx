@@ -3,19 +3,15 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { useEffect, useState } from "react";
 
 import { formatDate } from "@/utils/formatDate";
-import { useSession } from "next-auth/react";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
 import ProductModalIngredients from "./ingredients";
-import { FaPen } from "react-icons/fa";
 import ProductModalVariants from "./variants";
 import Warning from "@/components/Notifications/Warning";
 import { Ingredient } from "@prisma/client";
@@ -32,7 +28,6 @@ const ProductModal = ({
   setOpenModal,
   allIngredients,
 }: Props) => {
-  const session = useSession();
   const [variantsUpdated, setVariantsUpdated] = useState(false);
   const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
   const [product, setProduct] =
@@ -61,7 +56,7 @@ const ProductModal = ({
     };
 
     fetchProduct();
-  }, [ingredientsUpdated, variantsUpdated]);
+  }, [ingredientsUpdated, variantsUpdated, selectedProduct.id]);
 
   if (!product) {
     return null;

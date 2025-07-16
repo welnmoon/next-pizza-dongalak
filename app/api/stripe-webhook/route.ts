@@ -6,6 +6,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { OrderStatus } from "@prisma/client";
 import { prisma } from "@/prisma/prisma-client";
 
+type OrderItem = {
+  productItem: {
+    product: { name: string };
+    price: number;
+  };
+  quantity: number;
+};
+
 export async function POST(req: NextRequest) {
   console.log("[Stripe-webhook] ");
   const sig = req.headers.get("stripe-signature")!;
@@ -45,7 +53,10 @@ export async function POST(req: NextRequest) {
     try {
       const orderItems =
         typeof order.items === "string" ? JSON.parse(order.items) : order.items;
-      const itemNames = (orderItems as any[]).map(
+      const items = Array.isArray(orderItems)
+        ? (orderItems as OrderItem[])
+        : [];
+      const itemNames = items.map(
         (i) =>
           `${i.productItem.product.name} x ${i.quantity} = ${
             i.productItem.price * i.quantity

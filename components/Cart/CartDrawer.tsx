@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import CartDrawerItem from "./CartDrawerItem";
@@ -26,13 +26,13 @@ export function CartDrawer({ children }: Props) {
   const fetchCartItems = useCartStore((state) => state.fetchCartItems);
   const items = useCartStore((state) => state.items);
   const loading = useCartStore((state) => state.loadingCart);
-  const error = useCartStore((state) => state.error);
 
   const totalPrice = cartItemsTotalPrice({ items });
   const itemsPriceWithTax = totalPrice! + taxCalculate(totalPrice!);
+
   useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, [fetchCartItems]);
 
   if (loading)
     return (

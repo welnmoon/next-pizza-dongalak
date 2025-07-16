@@ -66,7 +66,10 @@ export default function EditableVariantItem({
       toast.success("Вариант обновлён");
       setVariantsUpdated(true);
     } catch (error) {
-      toast.error("Ошибка при обновлении");
+      toast.error(
+        "Ошибка при обновлении: " +
+          (error instanceof Error ? error.message : "Неизвестная ошибка")
+      );
     }
   };
 

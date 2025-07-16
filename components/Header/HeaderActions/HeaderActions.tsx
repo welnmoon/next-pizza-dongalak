@@ -1,4 +1,4 @@
-import { getServerSession, Session } from "next-auth";
+import { Session } from "next-auth";
 import ButtonCart from "../../Buttons/ButtonCart";
 import ProfileButton from "../../Buttons/ProfileButton";
 import { RiAdminFill } from "react-icons/ri";

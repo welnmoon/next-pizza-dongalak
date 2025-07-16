@@ -15,7 +15,7 @@ export function PrintUserOrderItems({ orders }: Props): ReactNode {
             order.items.map((item: any, i: number) => (
               <div
                 key={i}
-                className="border rounded p-4 mb-4 shadow flex flex-col gap-2"
+                className="border rounded p-4 mb-4 shadow flex flex-col gap-2 "
               >
                 <div className="flex gap-4 items-center">
                   <img

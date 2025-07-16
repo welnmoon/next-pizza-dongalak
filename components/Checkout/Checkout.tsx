@@ -13,7 +13,6 @@ import { createOrder } from "@/app/actions/createOrder";
 import AddressSection from "./AdressSection";
 
 const Checkout = () => {
-  const [submitting, setSubmitting] = useState(false);
   const [pending, setTransition] = useTransition();
   const fetchCartItems = useCartStore((state) => state.fetchCartItems);
   const items = useCartStore((state) => state.items);
@@ -21,9 +20,10 @@ const Checkout = () => {
   const totalPriceFn = useCartStore((state) => state.total);
   const totalPrice = totalPriceFn();
   const itemsPriceWithTax = totalPrice! + taxCalculate(totalPrice!);
+  
   useEffect(() => {
     fetchCartItems();
-  }, []);
+  }, [fetchCartItems]);
 
   const form = useForm<ChekoutSchema>({
     resolver: zodResolver(checkoutSchema),
@@ -31,26 +31,11 @@ const Checkout = () => {
   });
 
   const onSubmit = async (data: ChekoutSchema) => {
-    // try {
-    //   setSubmitting(true);
     setTransition(async () => {
       const url = await createOrder(data);
       console.log(url);
       if (url) location.href = url;
     });
-
-    //   const res = await fetch("/api/payment", {
-    //     method: "POST",
-    //   });
-    //   const data = await res.json();
-
-    //   console.log("Ответ от сервера:", data);
-    //   window.location.href = data.url;
-    //   // });
-    // } catch (err) {
-    //   console.log(err);
-    //   setSubmitting(false);
-    // }
   };
 
   return (

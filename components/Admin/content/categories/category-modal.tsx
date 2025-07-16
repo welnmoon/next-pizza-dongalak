@@ -3,10 +3,8 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { CategoryWithProducts } from "@/types/admin/Category";
 import { PrintCategoryProducts } from "@/utils/admin/categories/print-category-products";
@@ -37,6 +35,7 @@ const CategoryModal = ({
   if (!selectedCategory) return null;
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   const form = useForm({
     resolver: zodResolver(categorySchema),
@@ -52,9 +51,7 @@ const CategoryModal = ({
     }
   }, [selectedCategory, form]);
 
-  const watched = form.watch();
 
-  const isChanged = watched.name !== selectedCategory.name;
 
   const onSubmit = async (data: CategorySchemaType) => {
     setLoading(true);
@@ -71,6 +68,34 @@ const CategoryModal = ({
     toast.success(`Категория обновлена на ${updatedCategory.name}`);
     setLoading(false);
   };
+
+  const onDeleteCategory = async (id: number) => {
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/categories/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw Error();
+      }
+      setDeleting(false);
+      toast.success("Категория удалена");
+      setOpenModal(false);
+      // updateCategories({ ...selectedCategory, id: 0, name: "" });
+    } catch (error) {
+      setDeleting(false);
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log(error);
+      }
+      toast.error("Категория не удалена");
+    }
+  };
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
       <DialogContent className="w-[90%] h-[90%] mx-auto overflow-y-scroll px-10">
@@ -81,19 +106,27 @@ const CategoryModal = ({
           {selectedCategory.id === 1 ? (
             <Warning text="Увы, но вы не можете менять данную категорию" />
           ) : (
-            <FormProvider {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <FormInput
-                  name="name"
-                  placeholder="Название категории"
-                  label="Категория"
-                  className="mb-2"
-                />
-                <Button className="bg-gray-500" type="submit">
-                  {loading ? "...Сохраняем" : "Сохранить"}
-                </Button>
-              </form>
-            </FormProvider>
+            <div>
+              <FormProvider {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormInput
+                    name="name"
+                    placeholder="Название категории"
+                    label="Категория"
+                    className="mb-2"
+                  />
+                  <Button className="bg-gray-500" type="submit">
+                    {loading ? "...Сохраняем" : "Сохранить"}
+                  </Button>
+                </form>
+              </FormProvider>
+              <Button
+                className="bg-red-500"
+                onClick={() => onDeleteCategory(selectedCategory.id)}
+              >
+                {deleting ? "...Удаляем" : "Удалить категорию"}
+              </Button>
+            </div>
           )}
 
           <p className="text-sm text-gray-500">

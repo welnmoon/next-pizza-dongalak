@@ -6,9 +6,7 @@ interface Props {
 }
 
 const DoughTypeCheckboxes = ({ data }: Props) => {
-  const selectedSizes = useDoughTypeFilterStore(
-    (s) => s.selectedPizzaDoughTypes
-  );
+
   const has = useDoughTypeFilterStore((s) => s.has);
   const toggle = useDoughTypeFilterStore((s) => s.toggleDoughType);
 

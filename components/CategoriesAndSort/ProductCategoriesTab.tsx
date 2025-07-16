@@ -13,7 +13,6 @@ const ProductCategoriesTab = () => {
   const activeCategory = useActiveCategory(categories.map((c) => c.id));
 
   const setActiveTab = useCategoryFilterStore((s) => s.toggle);
-  const activeTab = useCategoryFilterStore((s) => s.selectedCategory);
 
   const handleClick = (id: number) => {
     setActiveTab(id);

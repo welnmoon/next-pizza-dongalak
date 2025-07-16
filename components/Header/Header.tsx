@@ -32,12 +32,12 @@ const Header = ({
     } else if (searchParams.has("notpaid")) {
       toast.error("Вы не оплатили заказ");
     }
-  }, []);
+  }, [searchParams]);
   return (
     <header ref={headerRef} className={cn("flex justify-between", className)}>
       <Logotype />
       {hasSearch ? <HeaderSearch /> : null}
-      <HeaderActions hasCart={hasCart} session={session}/>
+      <HeaderActions hasCart={hasCart} session={session!} />
     </header>
   );
 };

@@ -3,7 +3,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Container from "@/components/Container";
 import ProfileOrders from "@/components/Profile/orders";
-import ProfileClient, { UserProfile } from "@/components/Profile/Profile";
+import ProfileClient from "@/components/Profile/Profile";
 import { prisma } from "@/prisma/prisma-client";
 
 import { getServerSession } from "next-auth";

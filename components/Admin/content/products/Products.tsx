@@ -8,8 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FaPen } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
 import ProductModal from "./modal/product-modal";
@@ -57,7 +55,7 @@ const Products = ({ products, categories, allIngredients }: Props) => {
 
   useEffect(() => {
     form.setValue("imageUrl", uploadedImgUrl);
-  }, [uploadedImgUrl]);
+  }, [uploadedImgUrl, form]);
 
   const onSubmit = async (product: CreateRegularProductType) => {
     try {

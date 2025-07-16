@@ -43,7 +43,16 @@ const Products = async ({ searchParams }: Props) => {
         } else {
           // Все остальные продукты без фильтра
           const dbProducts = await prisma.product.findMany({
-            where: { categoryId: cat.id },
+            where: {
+              categoryId: cat.id,
+              items: {
+                some: {
+                  price: {
+                    gt: 0,
+                  },
+                },
+              },
+            },
             include: {
               ingredients: true,
               items: true,

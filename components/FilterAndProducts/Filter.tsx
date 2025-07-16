@@ -11,7 +11,7 @@ import { useDoughTypeFilterStore } from "@/store/doughTypeFilterStore";
 import { useIngredientFilterStore } from "@/store/ingredientFilterStore";
 import qs from "qs";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 
 const Filter = () => {
   const { ingredients } = useFilterIngredients();
@@ -55,20 +55,28 @@ const Filter = () => {
   //     selectedIngredients,
   //   ]
   // );
-  const selectedFilters = {
-    selectedCategory,
-    selectedPriceRange,
-    selectedPizzaSizes: Array.from(selectedPizzaSizes),
-    selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
-    selectedIngredients: Array.from(selectedIngredients),
-  };
   const query = useMemo(
     () =>
-      qs.stringify(selectedFilters, {
-        arrayFormat: "repeat",
-        skipNulls: true,
-      }),
-    [selectedFilters]
+      qs.stringify(
+        {
+          selectedCategory,
+          selectedPriceRange,
+          selectedPizzaSizes: Array.from(selectedPizzaSizes),
+          selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
+          selectedIngredients: Array.from(selectedIngredients),
+        },
+        {
+          arrayFormat: "repeat",
+          skipNulls: true,
+        }
+      ),
+    [
+      selectedCategory,
+      selectedPriceRange,
+      selectedPizzaSizes,
+      selectedPizzaDoughTypes,
+      selectedIngredients,
+    ]
   );
 
   useEffect(() => {

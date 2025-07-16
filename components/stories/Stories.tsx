@@ -1,7 +1,6 @@
 "use client";
 
 import { Api } from "@/services/api-client";
-import { Story, StoryItem } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Container from "../Container";
 import { Skeleton } from "../ui/skeleton";
@@ -77,7 +76,10 @@ const Stories = () => {
 
       {selectedStory && (
         <div className="absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-30">
-          <button className="absolute top-4 right-4 p-2 bg-white z-40 rounded-full">
+          <button
+            title="X button"
+            className="absolute top-4 right-4 p-2 bg-white z-40 rounded-full"
+          >
             <X onClick={() => setSelectedStory(null)} />
           </button>
           {selectedStory.items && selectedStory.items.length > 0 && (

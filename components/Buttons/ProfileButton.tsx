@@ -7,10 +7,9 @@ import Link from "next/link";
 
 interface Props {
   text: string;
-  user?: boolean;
 }
 
-const ProfileButton = ({ text, user }: Props) => {
+const ProfileButton = ({ text }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const session = useSession();
   return (

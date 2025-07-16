@@ -22,5 +22,5 @@ export const calculateTotalPrice = ({
     0
   );
 
-  return base?.price! + ingredientsPrice;
+  return (base?.price! || 0) + ingredientsPrice;
 };

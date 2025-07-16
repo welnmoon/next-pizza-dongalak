@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
-export async function GET(req: Request) {
+export async function GET() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
@@ -43,7 +43,12 @@ export async function PUT(req: Request) {
   const body = await req.json();
   const { fullName, number, address, password } = body;
 
-  const data: any = {};
+  const data = {
+    fullName: "",
+    phone: "",
+    address: "",
+    password: "",
+  };
   if (fullName) data.fullName = fullName;
   if (number) data.phone = number;
   if (address) data.address = address;

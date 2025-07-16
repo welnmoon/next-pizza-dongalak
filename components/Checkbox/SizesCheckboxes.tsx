@@ -1,4 +1,3 @@
-import { useCategoryFilterStore } from "@/store/categoryFilterStore";
 import Checkboxes from "./Checkboxes";
 import { usePizzaSizeFilterStore } from "@/store/pizzaSizeFilterStore";
 
@@ -7,7 +6,6 @@ interface Props {
 }
 
 const SizesCheckboxes = ({ data }: Props) => {
-  const selectedSizes = usePizzaSizeFilterStore((s) => s.selectedPizzaSizes);
   const has = usePizzaSizeFilterStore((s) => s.has);
   const toggle = usePizzaSizeFilterStore((s) => s.togglePizzaSize);
 

@@ -39,7 +39,7 @@ export async function PATCH(
     return NextResponse.json(updatedItem, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Ошибка при обновлении вариации" },
+      { message: `Ошибка при обновлении вариации, ${error}` },
       { status: 500 }
     );
   }
