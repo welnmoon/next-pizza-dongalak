@@ -22,5 +22,11 @@ export const calculateTotalPrice = ({
     0
   );
 
-  return (base?.price! || 0) + ingredientsPrice;
+  if (!base) {
+    throw new Error(
+      "Base product item not found for the selected size and dough type."
+    );
+  }
+
+  return base.price + ingredientsPrice;
 };

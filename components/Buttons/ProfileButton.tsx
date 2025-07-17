@@ -1,6 +1,6 @@
 import { User } from "lucide-react";
 import { Button } from "../ui/button";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import AuthModal from "../Modals/authModal/authModal";
 import Link from "next/link";

@@ -3,7 +3,7 @@
 import CartSection from "@/components/Checkout/CartSection";
 import { taxCalculate } from "@/lib/taxCalculate";
 import { useCartStore } from "@/store/cartState";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import PersonalInfo from "./PersonalInfo";
 import TotalSection from "./TotalSection";
 import { FormProvider, useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ const Checkout = () => {
   const totalPriceFn = useCartStore((state) => state.total);
   const totalPrice = totalPriceFn();
   const itemsPriceWithTax = totalPrice! + taxCalculate(totalPrice!);
-  
+
   useEffect(() => {
     fetchCartItems();
   }, [fetchCartItems]);

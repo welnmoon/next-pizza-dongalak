@@ -65,7 +65,7 @@ export async function checkoutActionPayment({
       throw new Error("Order not found or missing email/totalAmount");
     }
     await sendEmail(
-      order?.email!,
+      order.email,
       `Next Pizza / Счёт на оплату заказа #${orderId}`,
       PayOrderEmailTemplate({
         orderId,

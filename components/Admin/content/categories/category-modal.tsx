@@ -32,8 +32,6 @@ const CategoryModal = ({
   selectedCategory,
   updateCategories,
 }: Props) => {
-  if (!selectedCategory) return null;
-
   const [loading, setLoading] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
 
@@ -51,7 +49,7 @@ const CategoryModal = ({
     }
   }, [selectedCategory, form]);
 
-
+  if (!selectedCategory) return null;
 
   const onSubmit = async (data: CategorySchemaType) => {
     setLoading(true);
@@ -62,7 +60,7 @@ const CategoryModal = ({
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) [console.error("Ошибка при обновлении категории")];
+    if (!res.ok) console.error("Ошибка при обновлении категории");
     const updatedCategory: CategoryWithProducts = await res.json();
     updateCategories(updatedCategory);
     toast.success(`Категория обновлена на ${updatedCategory.name}`);

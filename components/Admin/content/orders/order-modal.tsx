@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 
 import { formatDate } from "@/utils/formatDate";
-import { useSession } from "next-auth/react";
 import { OrderWithUser } from "@/types/admin/Order";
 import { PrintOrders } from "@/utils/admin/orders/print-order-items";
 import OrderInfoTable from "./order-info-table";

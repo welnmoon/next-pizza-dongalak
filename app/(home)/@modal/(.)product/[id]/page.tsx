@@ -1,13 +1,14 @@
 import ProductModal from "@/components/Modals/ProductModal";
 import { prisma } from "@/prisma/prisma-client";
 
-interface Props {
+interface ProductModalPageProps {
   params: {
     id: string;
   };
 }
 
-const ProductModalPage = async ({ params }: Props) => {
+
+const Page = async ({ params }: ProductModalPageProps) => {
   const product = await prisma.product.findFirst({
     where: { id: Number(params.id) },
     include: {
@@ -27,4 +28,4 @@ const ProductModalPage = async ({ params }: Props) => {
   );
 };
 
-export default ProductModalPage;
+export default Page;
