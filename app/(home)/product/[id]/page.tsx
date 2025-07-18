@@ -3,11 +3,12 @@ import ProductCard from "@/components/FilterAndProducts/ProductCard";
 import ProductDetail from "@/components/Modals/ProductDetail/ProductDetail";
 import { prisma } from "@/prisma/prisma-client";
 
-interface Props {
+interface PageProps {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] };
 }
 
-const ProductPage = async ({ params }: Props) => {
+const ProductPage = async ({ params }: PageProps) => {
   // const product = await prisma.product.findFirst({
   //   where: {
   //     id: Number(params.id),

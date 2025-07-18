@@ -1,14 +1,14 @@
 import ProductModal from "@/components/Modals/ProductModal";
 import { prisma } from "@/prisma/prisma-client";
 
-interface ProductModalPageProps {
+interface PageProps {
   params: {
     id: string;
   };
+  searchParams: { [key: string]: string | string[] };
 }
 
-
-const Page = async ({ params }: ProductModalPageProps) => {
+const Page = async ({ params }: PageProps) => {
   const product = await prisma.product.findFirst({
     where: { id: Number(params.id) },
     include: {
