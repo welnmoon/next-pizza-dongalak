@@ -3,30 +3,7 @@ import ProductCard from "@/components/FilterAndProducts/ProductCard";
 import ProductDetail from "@/components/Modals/ProductDetail/ProductDetail";
 import { prisma } from "@/prisma/prisma-client";
 
-interface PageProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] };
-}
-
-const ProductPage = async ({ params }: PageProps) => {
-  // const product = await prisma.product.findFirst({
-  //   where: {
-  //     id: Number(params.id),
-  //   },
-  //   include: {
-  //     ingredients: true,
-  //     category: {
-  //       include: {
-  //         products: {
-  //           include: {
-  //             items: true,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
-
+export default async function ProductPage({ params }) {
   const product = await prisma.product.findFirst({
     where: { id: Number(params.id) },
     include: {
@@ -80,6 +57,4 @@ const ProductPage = async ({ params }: PageProps) => {
       </Container>
     </div>
   );
-};
-
-export default ProductPage;
+}
