@@ -32,7 +32,7 @@ export default async function ProductPage({ params }) {
           ingredients={product.ingredients}
           items={product.items}
         />
-        {product.category.products.length > 1 && (
+        {product.category?.products.length > 1 && (
           <div className="mt-16">
             <h2 className="text-xl font-bold mb-4">Из этой категории</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-6">

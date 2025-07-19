@@ -41,7 +41,7 @@ const ProductModalVariants = ({
     value: size,
   }));
 
-  const isPizza = selectedProduct.category.name.toLowerCase().includes("пицц");
+  const isPizza = selectedProduct.category?.name.toLowerCase().includes("пицц");
 
   const form = useForm<ProductItemSchemaType>({
     resolver: zodResolver(productItemSchema),

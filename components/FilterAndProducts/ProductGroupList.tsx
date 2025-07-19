@@ -21,12 +21,12 @@ const ProductGroupList = ({ categoryId, products, groupTitle }: Props) => {
     <div className="w-full">
       <h1 className="font-semibold text-2xl mb-4">{groupTitle}</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full">
-        {filteredProducts.length > 0 ? (
+        {filteredProducts?.length > 0 ? (
           filteredProducts.map((product) => (
             <ProductCard
               key={product.id}
               id={product.id}
-              categoryId={product.categoryId}
+              categoryId={product?.categoryId}
               image={product.image}
               ingredients={product.ingredients}
               price={product.price}

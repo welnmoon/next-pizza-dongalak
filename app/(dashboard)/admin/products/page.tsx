@@ -21,6 +21,10 @@ const ProductsPage = async () => {
     value: c.id,
   }));
 
+  if (!products || !categories || !allIngredients) {
+    return <div>Нет данных для отображения</div>;
+  }
+
   return (
     <Products
       products={products}

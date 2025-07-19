@@ -81,7 +81,7 @@ const ProductModal = ({
           <div className="flex gap-4 text-center items-center">
             <h2 className="text-2xl text-medium">Категория:</h2>
             <h2 className="bg-orange-200 text-orange-600 w-max px-3 rounded-lg">
-              {product.category.name}
+              {product.category?.name}
             </h2>
           </div>
           {product.items.length === 0 && (

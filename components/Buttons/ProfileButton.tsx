@@ -7,6 +7,7 @@ import Link from "next/link";
 
 interface Props {
   text: string;
+  user?: boolean;
 }
 
 const ProfileButton = ({ text }: Props) => {
