@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Products from "@/components/Admin/content/products/Products";
 import { prisma } from "@/prisma/prisma-client";
 import { ProductWithIngredientsItemsCategories } from "@/types/admin/Products";
@@ -16,14 +18,14 @@ const ProductsPage = async () => {
   const categories = await prisma.category.findMany();
   const allIngredients = await prisma.ingredient.findMany();
 
+  if (!products || !categories || !allIngredients) {
+    return <div>Нет данных для отображения</div>;
+  }
+
   const categoryOptions: FormSelectOptions[] = categories.map((c) => ({
     label: c.name,
     value: c.id,
   }));
-
-  if (!products || !categories || !allIngredients) {
-    return <div>Нет данных для отображения</div>;
-  }
 
   return (
     <Products

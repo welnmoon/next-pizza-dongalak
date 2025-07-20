@@ -57,6 +57,7 @@ const Products = ({ products, categories, allIngredients }: Props) => {
     form.setValue("imageUrl", uploadedImgUrl);
   }, [uploadedImgUrl, form]);
 
+
   const onSubmit = async (product: CreateRegularProductType) => {
     try {
       const res = await fetch("/api/products", {

@@ -1,12 +1,9 @@
-import type { Metadata } from "next";
+"use client";
+
 import "./global.css";
 import Header from "@/components/Header/Header";
 import Container from "@/components/Container";
 import { useSession } from "next-auth/react";
-
-export const metadata: Metadata = {
-  title: "Dongalak",
-};
 
 export default function CheckoutLayout({
   children,
