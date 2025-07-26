@@ -40,8 +40,8 @@ export async function checkoutActionPayment({
           quantity: 1,
         },
       ],
-      success_url: "http://localhost:3000/home/?paid",
-      cancel_url: "http://localhost:3000/home/?notpaid",
+      success_url: `${process.env.NEXT_PUBLIC_API_URL}/home/?paid`,
+      cancel_url: `${process.env.NEXT_PUBLIC_API_URL}/home/?notpaid`,
 
       metadata: {
         orderId: orderId.toString(),

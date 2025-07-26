@@ -87,5 +87,7 @@ export async function GET(request: Request) {
     where: { id: findCodeWithUser.id },
   });
 
-  return NextResponse.redirect(`http://localhost:3000/auth/verified`);
+  return NextResponse.redirect(
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/verified`
+  );
 }
