@@ -20,7 +20,6 @@ export default async function HomeLayout({
 }>) {
   const session = await getServerSession(authOptions);
 
-  if (!session) return null;
   return (
     <HeaderVisibilityProvider>
       <div className={`mt-6 w-full`}>
