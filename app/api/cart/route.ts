@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
   const userId = Number(session?.user?.id);
 
   let cart;
+  const token = req.cookies.get("cartToken")?.value;
   if (userId) {
     cart = await prisma.cart.findFirst({
       where: { userId },
@@ -29,29 +30,42 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+    // Если корзины нет, но есть cartToken — привязать гостевую корзину к пользователю
+    if (!cart && token) {
+      const guestCart = await prisma.cart.findFirst({ where: { token } });
+      if (guestCart) {
+        cart = await prisma.cart.update({
+          where: { id: guestCart.id },
+          data: { userId },
+          include: {
+            items: {
+              orderBy: { createdAt: "desc" },
+              include: {
+                productItem: { include: { product: true } },
+                ingredients: true,
+              },
+            },
+          },
+        });
+      }
+    }
   } else {
-    const token = req.cookies.get("cartToken")?.value;
-    if (!token) return NextResponse.json({});
+    if (!token) return NextResponse.json({ items: [] });
     cart = await prisma.cart.findFirst({
       where: { token },
       include: {
         items: {
           orderBy: {
-            createdAt: "desc",
-          },
+            createdAt: "desc" },
           include: {
-            productItem: {
-              include: {
-                product: true,
-              },
-            },
+            productItem: { include: { product: true } },
             ingredients: true,
           },
         },
       },
     });
   }
-  return NextResponse.json(cart);
+  return NextResponse.json(cart ?? { items: [] });
 }
 
 export async function POST(req: NextRequest) {

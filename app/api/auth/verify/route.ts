@@ -53,11 +53,15 @@ export async function GET(request: Request) {
     token = `guest-${randomUUID()}`;
     (await cookiesStore).set("cartToken", token, { path: "/" });
   }
-  const guestCart = await prisma.cart.findFirst({
-    where: { token },
-  });
-  if (guestCart) {
-    // Привязать существующую корзину
+  // Проверяем, есть ли уже корзина у пользователя
+  const userCart = await prisma.cart.findFirst({ where: { userId } });
+  const guestCart = await prisma.cart.findFirst({ where: { token } });
+  if (guestCart && !userCart) {
+    // Привязать гостевую корзину к пользователю
+    await prisma.cart.update({
+      where: { id: guestCart.id },
+      data: { userId },
+    });
     await prisma.user.update({
       where: { id: userId },
       data: {
@@ -67,8 +71,8 @@ export async function GET(request: Request) {
         },
       },
     });
-  } else {
-    // Создать новую корзину
+  } else if (!guestCart && !userCart) {
+    // Нет ни гостевой, ни пользовательской корзины — создать новую
     await prisma.user.update({
       where: { id: userId },
       data: {
@@ -79,6 +83,14 @@ export async function GET(request: Request) {
             totalAmount: 0,
           },
         },
+      },
+    });
+  } else {
+    // Уже есть корзина у пользователя — просто обновить verified
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        verified: new Date(),
       },
     });
   }
