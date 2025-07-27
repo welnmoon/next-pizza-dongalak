@@ -11,6 +11,11 @@ export async function GET(req: NextRequest) {
 
   let cart;
   const token = req.cookies.get("cartToken")?.value;
+  let setCookie = false;
+  if (!token) {
+    token = `guest-${randomUUID()}`;
+    setCookie = true;
+  }
   if (userId) {
     cart = await prisma.cart.findFirst({
       where: { userId },
@@ -50,7 +55,7 @@ export async function GET(req: NextRequest) {
       }
     }
   } else {
-    if (!token) return NextResponse.json({ items: [] });
+    if (!token) setCookie = true;
     cart = await prisma.cart.findFirst({
       where: { token },
       include: {
@@ -64,8 +69,20 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+    if (!cart) {
+      cart = await prisma.cart.create({ data: { token } });
+      setCookie = true;
+    }
   }
-  return NextResponse.json(cart ?? { items: [] });
+  const response = NextResponse.json(cart ?? { items: [] });
+  if (setCookie) {
+    response.cookies.set("cartToken", token, {
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+  }
+  return response;
 }
 
 export async function POST(req: NextRequest) {
