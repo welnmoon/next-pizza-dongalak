@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const userId = Number(session?.user?.id);
 
   let cart;
-  const token = req.cookies.get("cartToken")?.value;
+  let token = req.cookies.get("cartToken")?.value;
   let setCookie = false;
   if (!token) {
     token = `guest-${randomUUID()}`;
