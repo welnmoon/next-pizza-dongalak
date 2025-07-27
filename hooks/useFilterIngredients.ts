@@ -9,6 +9,7 @@ interface ReturnProps {
 export const useFilterIngredients = (): ReturnProps => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   useEffect(() => {
+    console.log("BASE_URL:", process.env.NEXT_PUBLIC_API_URL);
     Api.ingredients.getAll().then((ingredients) => setIngredients(ingredients));
   }, []);
 

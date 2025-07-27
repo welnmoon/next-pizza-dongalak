@@ -73,7 +73,11 @@ export async function POST(req: NextRequest) {
   if (!productItemId) {
     const response = NextResponse.json({ cart });
     if (setCookie) {
-      response.cookies.set("cartToken", token, { path: "/" });
+      response.cookies.set("cartToken", token, {
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
     }
     return response;
   }
@@ -118,7 +122,11 @@ export async function POST(req: NextRequest) {
 
   const response = NextResponse.json({ success: true });
   if (setCookie) {
-    response.cookies.set("cartToken", token, { path: "/" });
+  response.cookies.set("cartToken", token, {
+  path: "/",
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  });
   }
   return response;
 }

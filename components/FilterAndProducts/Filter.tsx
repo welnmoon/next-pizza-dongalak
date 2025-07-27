@@ -17,16 +17,6 @@ const Filter = () => {
   const { ingredients } = useFilterIngredients();
   const router = useRouter();
 
-  // const renderCount = useRef(0);
-
-  // renderCount.current += 1;
-
-  // console.log(`🔄 Рендеров компонента: ${renderCount.current}`);
-
-  // useEffect(() => {
-  //   console.log("✅ useEffect сработал после рендера");
-  // });
-
   const selectedCategory = useCategoryFilterStore((s) => s.selectedCategory);
   const selectedPriceRange = usePriceFilterStore((s) => s.priceRange);
   const selectedPizzaSizes = usePizzaSizeFilterStore(
@@ -39,22 +29,6 @@ const Filter = () => {
     (s) => s.selectedIngredients
   );
 
-  // const selectedFilters = useMemo(
-  //   () => ({
-  //     selectedCategory,
-  //     selectedPriceRange,
-  //     selectedPizzaSizes: Array.from(selectedPizzaSizes),
-  //     selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
-  //     selectedIngredients: Array.from(selectedIngredients),
-  //   }),
-  //   [
-  //     selectedCategory,
-  //     selectedPriceRange,
-  //     selectedPizzaSizes,
-  //     selectedPizzaDoughTypes,
-  //     selectedIngredients,
-  //   ]
-  // );
   const query = useMemo(
     () =>
       qs.stringify(
