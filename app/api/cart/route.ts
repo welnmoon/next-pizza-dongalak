@@ -1,5 +1,6 @@
 // app/api/cart/route.ts
 import { prisma } from "@/prisma/prisma-client";
+import { Cart } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -100,7 +101,7 @@ export async function POST(req: NextRequest) {
     setCookie = true;
   }
 
-  let cart: any = null;
+  let cart: Cart | null = null;
 
   if (userId) {
     // Сначала ищем корзину по userId
