@@ -46,7 +46,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       set({ loadingCart: true });
       const cart = await Api.cart.getCart();
       const parsedItems =
-        cart?.items.map((item) => ({
+        (cart?.items ?? []).map((item) => ({
           id: item.id,
           price: item.productItem.price,
           size: item.productItem.size ?? null,
@@ -56,7 +56,7 @@ export const useCartStore = create<CartState>((set, get) => ({
           name: item.productItem.product.name,
           quantity: item.quantity,
           ingredients: item.ingredients,
-        })) || [];
+        }));
       set({ items: parsedItems, loadingCart: false });
     } catch (error) {
       console.error("Ошибка при загрузке корзины", error);
@@ -147,7 +147,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
 function getCartDetails(data: CartWithItems | null): Partial<CartState> {
   const parsedItems =
-    data?.items.map((item) => ({
+    (data?.items ?? []).map((item) => ({
       id: item.id,
       price: item.productItem.price,
       size: item.productItem.size ?? null,
@@ -157,7 +157,7 @@ function getCartDetails(data: CartWithItems | null): Partial<CartState> {
       name: item.productItem.product.name,
       quantity: item.quantity,
       ingredients: item.ingredients,
-    })) || [];
+    }));
 
   return {
     items: parsedItems,
