@@ -40,8 +40,8 @@ export async function checkoutActionPayment({
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_API_URL}/home/?paid`,
-      cancel_url: `${process.env.NEXT_PUBLIC_API_URL}/home/?notpaid`,
+      success_url: `${process.env.NEXT_PUBLIC_API_URL?.startsWith('http') ? process.env.NEXT_PUBLIC_API_URL : 'https://next-pizza-dongalak-c16ry72eo-welnmoons-projects.vercel.app'}/home/?paid`,
+      cancel_url: `${process.env.NEXT_PUBLIC_API_URL?.startsWith('http') ? process.env.NEXT_PUBLIC_API_URL : 'https://next-pizza-dongalak-c16ry72eo-welnmoons-projects.vercel.app'}/home/?notpaid`,
 
       metadata: {
         orderId: orderId.toString(),
