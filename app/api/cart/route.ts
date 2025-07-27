@@ -61,7 +61,8 @@ export async function GET(req: NextRequest) {
       include: {
         items: {
           orderBy: {
-            createdAt: "desc" },
+            createdAt: "desc",
+          },
           include: {
             productItem: { include: { product: true } },
             ingredients: true,
@@ -89,16 +90,43 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { productItemId, quantity = 1, ingredientsIds = [] } = body;
 
+  const session = await getServerSession();
+  const userId = Number(session?.user?.id);
+
   let token = req.cookies.get("cartToken")?.value;
   let setCookie = false;
   if (!token) {
     token = `guest-${randomUUID()}`;
     setCookie = true;
   }
-  let cart = await prisma.cart.findFirst({ where: { token } });
 
-  if (!cart) {
-    cart = await prisma.cart.create({ data: { token } });
+  let cart: any = null;
+
+  if (userId) {
+    // Сначала ищем корзину по userId
+    cart = await prisma.cart.findFirst({ where: { userId } });
+    // Если нет — ищем по cartToken и привязываем к userId
+    if (!cart && token) {
+      const guestCart = await prisma.cart.findFirst({ where: { token } });
+      if (guestCart) {
+        cart = await prisma.cart.update({
+          where: { id: guestCart.id },
+          data: { userId },
+        });
+      }
+    }
+    // Если всё равно нет — создаём новую корзину с userId
+    if (!cart) {
+      cart = await prisma.cart.create({ data: { userId, token } });
+      setCookie = true;
+    }
+  } else {
+    // Гость
+    cart = await prisma.cart.findFirst({ where: { token } });
+    if (!cart) {
+      cart = await prisma.cart.create({ data: { token } });
+      setCookie = true;
+    }
   }
 
   if (!productItemId) {
@@ -153,11 +181,11 @@ export async function POST(req: NextRequest) {
 
   const response = NextResponse.json({ success: true });
   if (setCookie) {
-  response.cookies.set("cartToken", token, {
-  path: "/",
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
-  });
+    response.cookies.set("cartToken", token, {
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
   }
   return response;
 }
