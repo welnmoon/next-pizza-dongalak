@@ -74,14 +74,24 @@ export const authOptions: NextAuthOptions = {
         token.fullName = findUser.fullName;
         token.role = findUser.role;
         token.email = findUser.email;
+      } else {
+        // Если пользователя нет — очищаем токен
+        delete token.id;
+        delete token.fullName;
+        delete token.role;
+        delete token.email;
       }
-
       return token;
     },
     async session({ session, token }) {
-      if (session?.user) {
+      if (token.id && token.email) {
         session.user.id = token.id as string;
         session.user.role = token.role as UserRole;
+        session.user.email = token.email as string;
+        session.user.fullName = token.fullName as string;
+      } else {
+        // Если нет id/email — session.user не заполняем
+        session.user = undefined;
       }
       return session;
     },
