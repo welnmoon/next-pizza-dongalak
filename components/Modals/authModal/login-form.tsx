@@ -11,9 +11,14 @@ import { FcGoogle } from "react-icons/fc";
 interface Props {
   setOpen: (open: boolean) => void;
   handleAuthTypeChange: () => void;
+  callbackUrl?: string;
 }
 
-const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
+const LoginForm = ({
+  setOpen,
+  handleAuthTypeChange,
+  callbackUrl = "/home",
+}: Props) => {
   const form = useForm<TFormLoginValues>({
     resolver: zodResolver(formLoginSchema),
     defaultValues: {
@@ -27,7 +32,7 @@ const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
       const resp = await signIn("credentials", {
         ...data,
         redirect: false,
-        callbackUrl: "/home",
+        callbackUrl,
       });
 
       if (!resp?.ok) {
@@ -66,14 +71,14 @@ const LoginForm = ({ setOpen, handleAuthTypeChange }: Props) => {
         {/*Providers*/}
         <div className="flex gap-4 w-full">
           <Button
-            onClick={() => signIn("github", { callbackUrl: "/home" })}
+            onClick={() => signIn("github", { callbackUrl })}
             className="flex gap-2 flex-1 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
           >
             <IoLogoGithub />
             Войти с GitHub
           </Button>
           <Button
-            onClick={() => signIn("google", { callbackUrl: "/home" })}
+            onClick={() => signIn("google", { callbackUrl })}
             className="flex gap-2 flex-1 px-4 py-2 bg-white text-black rounded hover:bg-gray-100 border border-gray-100 "
           >
             <FcGoogle />

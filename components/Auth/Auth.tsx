@@ -16,18 +16,17 @@ const AuthClient = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center">
-      
       <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
         {authType === "login" ? (
           <LoginForm
             setOpen={redirectToMainPage}
             handleAuthTypeChange={handleAuthTypeChange}
+            callbackUrl="/home"
           />
         ) : (
           <RegisterForm handleAuthTypeChange={handleAuthTypeChange} />
         )}
       </div>
-      
     </div>
   );
 };
