@@ -39,7 +39,7 @@ const ProfileClient = ({ data }: Props) => {
             signOut();
           }
         }
-      } catch (e) {}
+      } catch {}
     };
     checkUser();
   }, []);
