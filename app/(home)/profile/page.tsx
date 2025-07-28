@@ -7,7 +7,6 @@ import ProfileClient from "@/components/Profile/Profile";
 import { prisma } from "@/prisma/prisma-client";
 
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 import { cookies } from "next/headers";
 
