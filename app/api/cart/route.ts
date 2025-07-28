@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    // Если корзины нет, но есть cartToken — привязать гостевую корзину к пользователю
+    // Если корзины нет, но е��ть cartToken — привязать гостевую корзину к пользователю
     if (!cart && token) {
       const guestCart = await prisma.cart.findFirst({ where: { token } });
       if (guestCart) {
@@ -78,11 +78,13 @@ export async function GET(req: NextRequest) {
   }
   const response = NextResponse.json(cart ?? { items: [] });
   if (setCookie) {
+    const oneYear = 60 * 60 * 24 * 365;
     response.cookies.set("cartToken", token, {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365, // 1 год
+      maxAge: oneYear,
+      expires: new Date(Date.now() + oneYear * 1000),
     });
   }
   return response;
@@ -134,11 +136,13 @@ export async function POST(req: NextRequest) {
   if (!productItemId) {
     const response = NextResponse.json({ cart });
     if (setCookie) {
+      const oneYear = 60 * 60 * 24 * 365;
       response.cookies.set("cartToken", token, {
         path: "/",
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 365, // 1 год
+        maxAge: oneYear,
+        expires: new Date(Date.now() + oneYear * 1000),
       });
     }
     return response;
@@ -184,11 +188,13 @@ export async function POST(req: NextRequest) {
 
   const response = NextResponse.json({ success: true });
   if (setCookie) {
+    const oneYear = 60 * 60 * 24 * 365;
     response.cookies.set("cartToken", token, {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 365, // 1 год
+      maxAge: oneYear,
+      expires: new Date(Date.now() + oneYear * 1000),
     });
   }
   return response;
