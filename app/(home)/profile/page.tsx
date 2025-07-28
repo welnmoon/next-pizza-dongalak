@@ -46,7 +46,7 @@ const ProfilePage = async () => {
     });
   } else {
     // Гость — ищем заказы по токену корзины
-    const cookiesStore = cookies();
+    const cookiesStore = await cookies();
     const cartToken = cookiesStore.get("cartToken")?.value;
     if (cartToken) {
       orders = await prisma.order.findMany({
