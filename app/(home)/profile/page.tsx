@@ -12,7 +12,12 @@ import { cookies } from "next/headers";
 
 const ProfilePage = async () => {
   const session = await getServerSession(authOptions);
-  let userData = null;
+  let userData: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+  } | null = null;
   let orders = [];
 
   if (session?.user?.id) {
