@@ -31,6 +31,16 @@ const ProfileClient = ({ data }: Props) => {
   const [loading, setLoading] = useState(false);
   const [openAuth, setOpenAuth] = useState(false);
 
+  // Восстановление cartToken из localStorage в cookies, если нужно
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("cartToken");
+      if (token && !document.cookie.includes("cartToken=")) {
+        document.cookie = `cartToken=${token}; path=/; max-age=31536000`;
+      }
+    }
+  }, []);
+
   // Проверка пользователя при монтировании
   useEffect(() => {
     const checkUser = async () => {
