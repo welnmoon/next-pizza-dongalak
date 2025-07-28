@@ -68,14 +68,25 @@ const ProfileClient = ({ data }: Props) => {
     watched.confirmPassword !== "";
 
   useEffect(() => {
-    form.reset({
-      fullName: data.fullName || "",
-      email: data.email || "",
-      address: data.address || "",
-      phone: data.phone || "",
-      password: "",
-      confirmPassword: "",
-    });
+    if (data) {
+      form.reset({
+        fullName: data.fullName || "",
+        email: data.email || "",
+        address: data.address || "",
+        phone: data.phone || "",
+        password: "",
+        confirmPassword: "",
+      });
+    } else {
+      form.reset({
+        fullName: "",
+        email: "",
+        address: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+      });
+    }
   }, [data, form]);
 
   const onSubmit = async (data: ProfileSchemaType) => {
