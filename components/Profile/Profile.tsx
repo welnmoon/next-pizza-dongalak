@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import SignOutButton from "../Buttons/SignOutBtn";
 import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
 import ProfileForm from "./profile-form";
 
 export interface UserProfile {
@@ -26,6 +27,22 @@ interface Props {
 const ProfileClient = ({ data }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(data);
   const [loading, setLoading] = useState(false);
+
+  // Проверка пользователя при монтировании
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const res = await fetch("/api/user/profile");
+        if (res.status === 404) {
+          const json = await res.json();
+          if (json.message === "Пользова��ель не найден") {
+            signOut();
+          }
+        }
+      } catch (e) {}
+    };
+    checkUser();
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
