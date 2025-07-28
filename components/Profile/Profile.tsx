@@ -12,6 +12,8 @@ import SignOutButton from "../Buttons/SignOutBtn";
 import toast from "react-hot-toast";
 import { signOut } from "next-auth/react";
 import ProfileForm from "./profile-form";
+import AuthModal from "../Modals/authModal/authModal";
+import { Button } from "../ui/button";
 
 export interface UserProfile {
   fullName: string;
@@ -27,6 +29,7 @@ interface Props {
 const ProfileClient = ({ data }: Props) => {
   const [user, setUser] = useState<UserProfile | null>(data);
   const [loading, setLoading] = useState(false);
+  const [openAuth, setOpenAuth] = useState(false);
 
   // Проверка пользователя при монтировании
   useEffect(() => {
@@ -120,6 +123,30 @@ const ProfileClient = ({ data }: Props) => {
     setLoading(false);
     toast.success("Профиль успешно обновлен!");
   };
+  if (!user) {
+    return (
+      <>
+        <div className="flex flex-col gap-4 mt-10" style={{ width: "400px" }}>
+          <p>
+            Вы не авторизованы. Войдите или зарегистрируйтесь, чтобы связать свои
+            заказы с аккаунтом.
+          </p>
+          <Button
+            onClick={() => setOpenAuth(true)}
+            className="bg-orange-500 text-white"
+          >
+            Войти или зарегистрироваться
+          </Button>
+        </div>
+        <AuthModal
+          open={openAuth}
+          setOpen={setOpenAuth}
+          callbackUrl="/profile"
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <FormProvider {...form}>

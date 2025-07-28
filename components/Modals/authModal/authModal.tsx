@@ -7,9 +7,10 @@ import Link from "next/link";
 interface Props {
   open: boolean;
   setOpen: (open: boolean) => void;
+  callbackUrl?: string;
 }
 
-const AuthModal = ({ open, setOpen }: Props) => {
+const AuthModal = ({ open, setOpen, callbackUrl }: Props) => {
   const [authType, setAuthType] = useState<"login" | "register">("login");
   const handleAuthTypeChange = () => {
     setAuthType((prevType) => (prevType === "login" ? "register" : "login"));
@@ -22,6 +23,7 @@ const AuthModal = ({ open, setOpen }: Props) => {
             <LoginForm
               setOpen={setOpen}
               handleAuthTypeChange={handleAuthTypeChange}
+              callbackUrl={callbackUrl}
             />
           )}
           {authType === "register" && (
