@@ -89,10 +89,8 @@ export const authOptions: NextAuthOptions = {
         session.user.role = token.role as UserRole;
         session.user.email = token.email as string;
         // session.user.fullName = token.fullName as string; // убрано для прохождения сборки
-      } else {
-        // Если нет id/email — session.user не заполняем
-        delete session.user;
       }
+      // Если нет id/email — session.user не трогаем (оставляем как есть)
       return session;
     },
     async signIn({ user, account, profile }) {
