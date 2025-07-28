@@ -5,6 +5,7 @@ import Container from "@/components/Container";
 import ProfileOrders from "@/components/Profile/orders";
 import ProfileClient from "@/components/Profile/Profile";
 import { prisma } from "@/prisma/prisma-client";
+import { Order } from "@prisma/client";
 
 import { getServerSession } from "next-auth";
 
@@ -18,7 +19,7 @@ const ProfilePage = async () => {
     phone?: string;
     address?: string;
   } | null = null;
-  let orders = [];
+  let orders: Order[] = [];
 
   if (session?.user?.id) {
     // Авторизованный пользователь
