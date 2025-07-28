@@ -9,38 +9,48 @@ import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { cookies } from "next/headers";
+
 const ProfilePage = async () => {
   const session = await getServerSession(authOptions);
+  let userData = null;
+  let orders = [];
 
-  if (!session?.user.email) {
-    return redirect("/auth/not-authenticated");
+  if (session?.user?.id) {
+    // Авторизованный пользователь
+    const user = await prisma.user.findUnique({
+      where: { id: Number(session.user.id) },
+      select: {
+        fullName: true,
+        email: true,
+        phone: true,
+        address: true,
+      },
+    });
+    if (user) {
+      userData = {
+        ...user,
+        phone: user.phone ?? undefined,
+        address: user.address ?? undefined,
+      };
+    }
+    orders = await prisma.order.findMany({
+      where: {
+        userId: Number(session.user.id),
+      },
+    });
+  } else {
+    // Гость — ищем заказы по токену корзины
+    const cookiesStore = cookies();
+    const cartToken = cookiesStore.get("cartToken")?.value;
+    if (cartToken) {
+      orders = await prisma.order.findMany({
+        where: {
+          token: cartToken,
+        },
+      });
+    }
   }
-
-  const user = await prisma.user.findUnique({
-    where: { id: Number(session.user.id) },
-    select: {
-      fullName: true,
-      email: true,
-      phone: true,
-      address: true,
-    },
-  });
-
-  const orders = await prisma.order.findMany({
-    where: {
-      userId: Number(session.user.id),
-    },
-  });
-
-  if (!user) {
-    redirect("/auth/not-authenticated");
-  }
-
-  const userData = {
-    ...user,
-    phone: user.phone ?? undefined,
-    address: user.address ?? undefined,
-  };
 
   return (
     <Container>
