@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
         // session.user.fullName = token.fullName as string; // убрано для прохождения сборки
       } else {
         // Если нет id/email — session.user не заполняем
-        session.user = undefined;
+        delete session.user;
       }
       return session;
     },
