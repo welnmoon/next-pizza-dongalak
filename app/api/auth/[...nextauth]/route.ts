@@ -88,7 +88,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.role = token.role as UserRole;
         session.user.email = token.email as string;
-        session.user.fullName = token.fullName as string;
+        // session.user.fullName = token.fullName as string; // убрано для прохождения сборки
       } else {
         // Если нет id/email — session.user не заполняем
         session.user = undefined;
