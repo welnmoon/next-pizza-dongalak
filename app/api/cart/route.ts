@@ -82,6 +82,7 @@ export async function GET(req: NextRequest) {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365, // 1 год
     });
   }
   return response;
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
         path: "/",
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 365, // 1 год
       });
     }
     return response;
@@ -186,6 +188,7 @@ export async function POST(req: NextRequest) {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365, // 1 год
     });
   }
   return response;
