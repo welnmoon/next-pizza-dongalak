@@ -21,7 +21,7 @@ const HeaderActions = ({
           </Button>
         </Link>
       )}
-      <ProfileButton text="Войти" user={true} />
+      <ProfileButton />
 
       {hasCart && <ButtonCart />}
     </div>

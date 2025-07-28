@@ -22,6 +22,7 @@ const AuthClient = () => {
           <LoginForm
             setOpen={redirectToMainPage}
             handleAuthTypeChange={handleAuthTypeChange}
+            callbackUrl="/home"
           />
         ) : (
           <RegisterForm handleAuthTypeChange={handleAuthTypeChange} />
