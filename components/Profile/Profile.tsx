@@ -21,7 +21,7 @@ export interface UserProfile {
 }
 
 interface Props {
-  data: UserProfile;
+  data: UserProfile | null;
 }
 
 const ProfileClient = ({ data }: Props) => {
