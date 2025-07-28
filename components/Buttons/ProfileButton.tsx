@@ -15,9 +15,10 @@ interface Props {
 const ProfileButton = ({ text }: Props) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const session = useSession();
+  const isAuthenticated = session.status === "authenticated" && session.data?.user?.id;
   return (
     <div>
-      {session.status === "unauthenticated" && (
+      {!isAuthenticated && (
         <Button
           onClick={() => setOpenModal(true)}
           className="rounded-full bg-transparent border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white"
@@ -25,7 +26,7 @@ const ProfileButton = ({ text }: Props) => {
           <User /> {text}
         </Button>
       )}
-      {session.status === "authenticated" && (
+      {isAuthenticated && (
         <Link href={`/profile`}>
           <Button className="rounded-full bg-orange-100 border border-orange-200 text-orange-500 hover:bg-orange-500 hover:text-white">
             <User /> Профиль
