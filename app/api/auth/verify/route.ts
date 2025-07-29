@@ -62,6 +62,17 @@ export async function GET(request: Request) {
       where: { id: guestCart.id },
       data: { userId },
     });
+    // Миграция заказов гостя к пользователю
+    await prisma.order.updateMany({
+      where: {
+        token: token,
+        userId: null,
+
+      },
+      data: {
+        userId,
+      },
+    });
     await prisma.user.update({
       where: { id: userId },
       data: {
