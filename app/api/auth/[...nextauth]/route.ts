@@ -4,6 +4,7 @@ import CredentialProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
 import { compare } from "bcrypt";
 import { UserRole } from "@prisma/client";
+import { cookies } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -111,6 +112,26 @@ export const authOptions: NextAuthOptions = {
             },
           });
         }
+      }
+
+      const cookiesStore = cookies();
+      const token = (await cookiesStore).get("cartToken")?.value;
+
+      if (token && user.id) {
+        const userId = Number(user.id);
+
+        const guestCart = await prisma.cart.findFirst({ where: { token } });
+        if (guestCart && !guestCart.userId) {
+          await prisma.cart.update({
+            where: { id: guestCart.id },
+            data: { userId },
+          });
+        }
+
+        await prisma.order.updateMany({
+          where: { token, userId: null },
+          data: { userId },
+        });
       }
 
       return true;
