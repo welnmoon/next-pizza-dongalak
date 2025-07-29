@@ -22,14 +22,16 @@ export default async function HomeLayout({
 
   return (
     <HeaderVisibilityProvider>
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Container>
+      <div className="min-h-screen flex flex-col">
+        <Container className="w-full mt-10">
           <Header session={session} />
         </Container>
-        <main style={{ flex: 1 }}>
+
+        <main className="flex-1">
           {children}
           {modal}
         </main>
+
         <Footer />
       </div>
     </HeaderVisibilityProvider>
