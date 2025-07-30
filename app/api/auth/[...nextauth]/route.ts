@@ -12,7 +12,11 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_ID || "",
       clientSecret: process.env.GITHUB_SECRET || "",
     }),
-    CredentialProvider({
+    CredentialProvider<{
+      email: string;
+      password: string;
+      cartToken?: string;
+    }>({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text", placeholder: "Email" },
@@ -21,6 +25,7 @@ export const authOptions: NextAuthOptions = {
           type: "password",
           placeholder: "Password",
         },
+        cartToken: { label: "cartToken", type: "text" },
       },
       async authorize(credentials) {
         if (!credentials) {
