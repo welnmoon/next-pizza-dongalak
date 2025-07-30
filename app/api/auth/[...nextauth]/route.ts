@@ -27,6 +27,8 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Неверные данные");
         }
 
+        const cartToken = credentials.cartToken as string | undefined;
+
         const findUser = await prisma.user.findFirst({
           where: {
             email: credentials.email,
@@ -39,7 +41,7 @@ export const authOptions: NextAuthOptions = {
 
         const isPasswordValid = await compare(
           credentials.password,
-          findUser.password
+          findUser.password,
         );
 
         if (!isPasswordValid) {
@@ -55,6 +57,7 @@ export const authOptions: NextAuthOptions = {
           email: findUser.email,
           fullName: findUser.fullName,
           role: findUser.role,
+          cartToken,
         };
       },
     }),
@@ -115,7 +118,9 @@ export const authOptions: NextAuthOptions = {
       }
 
       const cookiesStore = cookies();
-      const token = (await cookiesStore).get("cartToken")?.value;
+      const token =
+        (user as { cartToken?: string }).cartToken ||
+        cookiesStore.get("cartToken")?.value;
 
       if (token && user.id) {
         const userId = Number(user.id);
@@ -131,6 +136,15 @@ export const authOptions: NextAuthOptions = {
         await prisma.order.updateMany({
           where: { token, userId: null },
           data: { userId },
+        });
+
+        const oneYear = 60 * 60 * 24 * 365;
+        cookiesStore.set("cartToken", token, {
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: oneYear,
+          expires: new Date(Date.now() + oneYear * 1000),
         });
       }
 

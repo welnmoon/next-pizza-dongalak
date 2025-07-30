@@ -12,12 +12,14 @@ export const formRegisterSchema = formLoginSchema
     z.object({
       fullName: z.string().min(2, { message: "Error FN" }),
       confirmPassword: passwordSchema,
-    })
+    }),
   )
   .refine((data) => data.password === data.confirmPassword, {
     message: "Пароли не совпадают",
     path: ["confirmPasswrod"],
   });
 
-export type TFormLoginValues = z.infer<typeof formLoginSchema>;
+export type TFormLoginValues = z.infer<typeof formLoginSchema> & {
+  cartToken?: string;
+};
 export type TFormRegisterValues = z.infer<typeof formRegisterSchema>;

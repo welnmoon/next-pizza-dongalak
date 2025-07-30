@@ -31,6 +31,10 @@ const LoginForm = ({
     try {
       const resp = await signIn("credentials", {
         ...data,
+        cartToken:
+          typeof window !== "undefined"
+            ? localStorage.getItem("cartToken")
+            : undefined,
         redirect: false,
         callbackUrl,
       });
