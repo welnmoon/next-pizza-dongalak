@@ -3,16 +3,17 @@
 import { useState } from "react";
 import LoginForm from "../Modals/authModal/login-form";
 import RegisterForm from "../Modals/authModal/register-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const AuthClient = () => {
+  const router = useRouter();
   const [authType, setAuthType] = useState<"login" | "register">("login");
   const handleAuthTypeChange = () => {
     setAuthType((prevType) => (prevType === "login" ? "register" : "login"));
   };
 
   const redirectToMainPage = () => {
-    redirect("/home");
+    router.push("/home");
   };
   return (
     <div className="flex flex-col items-center justify-center">

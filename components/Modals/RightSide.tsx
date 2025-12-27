@@ -34,6 +34,7 @@ const RightSide = ({
   selectedIngredients,
   ingredients,
   handleSetSelectedIngredients,
+  total,
 }: Props) => {
   const addCartItem = useCartStore((s) => s.addCartItem);
 
@@ -78,7 +79,7 @@ const RightSide = ({
   } else if (isSuccess) {
     buttonContent = <CircleCheck className="text-white w-5 h-5" />;
   } else {
-    buttonContent = `Добавить в корзину за ${matchedItem?.price} ₸`;
+    buttonContent = `Добавить в корзину за ${total} ₸`;
   }
 
   return (

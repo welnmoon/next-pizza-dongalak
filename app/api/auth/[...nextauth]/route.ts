@@ -4,6 +4,7 @@ import CredentialProvider from "next-auth/providers/credentials";
 import { prisma } from "@/prisma/prisma-client";
 import { compare } from "bcrypt";
 import { UserRole } from "@prisma/client";
+import { cookies } from "next/headers";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -22,8 +23,8 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        if (!credentials) {
-          throw new Error("Неверные данные");
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Введите email и пароль");
         }
 
         const findUser = await prisma.user.findFirst({
@@ -33,20 +34,38 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!findUser) {
-          throw new Error("Пользователь не найден");
+          throw new Error("Неверный email или пароль");
         }
 
-        const isPasswordValid = await compare(
-          credentials.password,
-          findUser.password
-        );
+        if (findUser.provider && findUser.provider !== "credentials") {
+          throw new Error(
+            `Войдите через ${findUser.provider === "github" ? "GitHub" : "Google"}`
+          );
+        }
+
+        if (!findUser.password) {
+          throw new Error("Пароль для этого аккаунта не задан");
+        }
+
+        let isPasswordValid = false;
+        try {
+          isPasswordValid = await compare(
+            credentials.password,
+            findUser.password
+          );
+        } catch {
+          isPasswordValid = false;
+        }
 
         if (!isPasswordValid) {
-          throw new Error("Неверный пароль");
+          throw new Error("Неверный email или пароль");
         }
 
         if (!findUser.verified) {
-          throw new Error("Пользователь не подтвержден");
+          await prisma.user.update({
+            where: { id: findUser.id },
+            data: { verified: new Date() },
+          });
         }
 
         return {
@@ -111,6 +130,26 @@ export const authOptions: NextAuthOptions = {
             },
           });
         }
+      }
+
+      const cookiesStore = cookies();
+      const token = (await cookiesStore).get("cartToken")?.value;
+
+      if (token && user.id) {
+        const userId = Number(user.id);
+
+        const guestCart = await prisma.cart.findFirst({ where: { token } });
+        if (guestCart && !guestCart.userId) {
+          await prisma.cart.update({
+            where: { id: guestCart.id },
+            data: { userId },
+          });
+        }
+
+        await prisma.order.updateMany({
+          where: { token, userId: null },
+          data: { userId },
+        });
       }
 
       return true;

@@ -60,6 +60,7 @@ const ProfilePage = async () => {
   return (
     <Container>
       <ProfileClient data={userData} />
+      {session?.user.email}
       <ProfileOrders orders={orders} />
     </Container>
   );

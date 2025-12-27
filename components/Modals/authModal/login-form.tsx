@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { IoLogoGithub } from "react-icons/io5";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
 interface Props {
   setOpen: (open: boolean) => void;
@@ -19,6 +20,7 @@ const LoginForm = ({
   handleAuthTypeChange,
   callbackUrl = "/home",
 }: Props) => {
+  const router = useRouter();
   const form = useForm<TFormLoginValues>({
     resolver: zodResolver(formLoginSchema),
     defaultValues: {
@@ -35,15 +37,22 @@ const LoginForm = ({
         callbackUrl,
       });
 
-      if (!resp?.ok) {
+      if (!resp?.ok || resp.error) {
         throw new Error(resp?.error || "Не удалось войти в аккаунт");
       }
 
       toast.success("Вы успешно вошли в аккаунт");
       setOpen(false);
+      const targetUrl = resp.url || callbackUrl;
+      if (targetUrl) {
+        router.push(targetUrl);
+      }
+      router.refresh();
     } catch (error) {
       console.log("error [LOGIN] ", error);
-      toast.error("Не удалось войти в аккаунт");
+      const message =
+        error instanceof Error ? error.message : "Не удалось войти в аккаунт";
+      toast.error(message);
     }
   };
   return (
@@ -79,7 +88,7 @@ const LoginForm = ({
           </Button>
           <Button
             onClick={() => signIn("google", { callbackUrl })}
-            className="flex gap-2 flex-1 px-4 py-2 bg-white text-black rounded hover:bg-gray-100 border border-gray-100 "
+            className="flex gap-2 flex-1 px-4 py-2 bg-white text-black rounded hover:bg-gray-100 border border-zinc-200"
           >
             <FcGoogle />
             Войти с Google

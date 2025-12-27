@@ -41,18 +41,20 @@ export async function PUT(req: Request) {
   }
 
   const body = await req.json();
-  const { fullName, number, address, password } = body;
+  const { fullName, phone, address, password } = body;
 
-  const data = {
-    fullName: "",
-    phone: "",
-    address: "",
-    password: "",
-  };
-  if (fullName) data.fullName = fullName;
-  if (number) data.phone = number;
-  if (address) data.address = address;
-  if (password) {
+  const data: Record<string, string> = {};
+
+  if (typeof fullName === "string" && fullName.trim().length) {
+    data.fullName = fullName.trim();
+  }
+  if (typeof phone === "string") {
+    data.phone = phone.trim();
+  }
+  if (typeof address === "string") {
+    data.address = address.trim();
+  }
+  if (typeof password === "string" && password.trim().length) {
     const hashed = await hash(password, 10);
     data.password = hashed;
   }

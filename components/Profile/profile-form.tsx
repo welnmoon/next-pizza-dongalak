@@ -12,46 +12,62 @@ interface Props {
 const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
   const form = useFormContext<ProfileSchemaType>();
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-6 mt-10" style={{ width: "400px" }}>
-        <FormInput name="fullName" label="ФИО" placeholder="Фамилия" />
-        <FormInput
-          name="phone"
-          label="Номер телефона"
-          disabled={true}
-          type="tel"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-          placeholder="Номер телефона"
-        />
-        <FormInput
-          name="email"
-          label="Email"
-          disabled={true}
-          type="email"
-          placeholder="Email"
-        />
-        {/*TODO - Нужно сделать верификацию номера*/}
-        <FormInput
-          name="address"
-          label="Адрес"
-          placeholder="Ваш адрес"
-          type="address"
-        />
-        <FormInput name="password" label="Пароль" placeholder="Новый пароль" />
-        <FormInput
-          name="confirmPassword"
-          label="Подтвердите пароль"
-          placeholder="87071234567"
-        />
-        <Button
-          disabled={
-            !isChanged || !form.formState.isValid || form.formState.isSubmitting
-          }
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600"
-        >
-          {loading ? "Сохраняем..." : "Сохранить"}
-        </Button>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
+      <div className="space-y-6 rounded-2xl border border-zinc-200 bg-white/70 p-6 shadow-sm">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormInput name="fullName" label="ФИО" placeholder="Фамилия" />
+          <FormInput
+            name="phone"
+            label="Номер телефона"
+            type="tel"
+            placeholder="+7 707 123 45 67"
+          />
+          <FormInput
+            name="email"
+            label="Email"
+            disabled={true}
+            type="email"
+            placeholder="Email"
+          />
+          <FormInput
+            name="address"
+            label="Адрес"
+            placeholder="Ваш адрес"
+            type="text"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <FormInput
+            name="password"
+            label="Новый пароль"
+            placeholder="Введите новый пароль"
+            type="password"
+          />
+          <FormInput
+            name="confirmPassword"
+            label="Подтвердите пароль"
+            placeholder="Повторите пароль"
+            type="password"
+          />
+        </div>
+
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <p className="text-sm text-gray-500">
+            Сохраняйте изменения, чтобы обновить информацию профиля.
+          </p>
+          <Button
+            disabled={
+              !isChanged ||
+              !form.formState.isValid ||
+              form.formState.isSubmitting
+            }
+            type="submit"
+            className="bg-orange-500 hover:bg-orange-600"
+          >
+            {loading ? "Сохраняем..." : "Сохранить"}
+          </Button>
+        </div>
       </div>
     </form>
   );
