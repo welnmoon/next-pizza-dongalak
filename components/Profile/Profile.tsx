@@ -48,7 +48,7 @@ const ProfileClient = ({ data }: Props) => {
         const res = await fetch("/api/user/profile");
         if (res.status === 404) {
           const json = await res.json();
-          if (json.message === "Пользова��ель не найден") {
+          if (json.message === "Пользователь не найден") {
             signOut();
           }
         }
@@ -72,13 +72,14 @@ const ProfileClient = ({ data }: Props) => {
 
   const watched = form.watch();
 
-  const isChanged =
-    watched.fullName !== user?.fullName ||
-    watched.email !== user.email ||
-    watched.phone !== user.phone ||
-    watched.address !== user.address ||
-    watched.password !== "" ||
-    watched.confirmPassword !== "";
+  const isChanged = user
+    ? watched.fullName !== (user.fullName ?? "") ||
+      watched.email !== (user.email ?? "") ||
+      watched.phone !== (user.phone ?? "") ||
+      watched.address !== (user.address ?? "") ||
+      watched.password !== "" ||
+      watched.confirmPassword !== ""
+    : false;
 
   useEffect(() => {
     if (data) {
@@ -136,29 +137,44 @@ const ProfileClient = ({ data }: Props) => {
 
   if (!user) {
     return (
-      <>
-        <div className="flex flex-col gap-4 mt-10" style={{ width: "400px" }}>
-          <p>
-            Вы не авторизованы. Войдите или зарегистрируйтесь, чтобы связать
-            свои заказы с аккаунтом.
+      <div className="mx-auto mt-6 max-w-2xl">
+        <div className="rounded-2xl border-zinc-200 bg-white/80 p-6 shadow-sm">
+          <h2 className="text-2xl font-bold mb-2">Профиль недоступен</h2>
+          <p className="text-gray-600 mb-4">
+            Войдите или зарегистрируйтесь, чтобы видеть историю заказов,
+            сохранять адрес доставки и быстрее оформлять покупки.
           </p>
-          <Button
-            onClick={() => setOpenAuth(true)}
-            className="bg-orange-500 text-white"
-          >
-            Войти или зарегистрироваться
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              onClick={() => setOpenAuth(true)}
+              className="bg-orange-500 text-white"
+            >
+              Войти или зарегистрироваться
+            </Button>
+            <Button variant="outline" onClick={() => setOpenAuth(true)}>
+              Восстановить доступ по email
+            </Button>
+          </div>
         </div>
         <AuthModal
           open={openAuth}
           setOpen={setOpenAuth}
           callbackUrl="/profile"
         />
-      </>
+      </div>
     );
   }
   return (
-    <>
+    <div className="flex mt-10 max-w-4xl flex-col gap-4">
+      <div className=" rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-sm text-gray-500">Аккаунт</p>
+          <h1 className="text-2xl font-bold">{user.fullName || "Без имени"}</h1>
+          <p className="text-sm text-gray-500">{user.email}</p>
+        </div>
+        <SignOutButton />
+      </div>
+
       <FormProvider {...form}>
         <ProfileForm
           onSubmit={onSubmit}
@@ -166,9 +182,7 @@ const ProfileClient = ({ data }: Props) => {
           isChanged={isChanged}
         />
       </FormProvider>
-
-      <SignOutButton />
-    </>
+    </div>
   );
 };
 

@@ -19,7 +19,12 @@ import { useTransition } from "react";
 const ProfileOrders = ({ orders }: { orders: Order[] }) => {
   const [pending, startTransition] = useTransition();
   if (!orders || orders.length === 0) {
-    return <div>У вас пока нет заказов.</div>;
+    return (
+      <div className="mt-10 rounded-2xl border bg-white/80 p-6 shadow-sm max-w-4xl">
+        <h2 className="text-[28px] font-bold mb-2">Заказы</h2>
+        <p className="text-gray-600">У вас пока нет заказов.</p>
+      </div>
+    );
   }
 
   const handlePay = (id: number) => {
@@ -36,12 +41,12 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
   };
 
   return (
-    <div className="w-1/2 mt-15 ">
-      <h1 className="text-[32px] font-bold mb-5">Ваши заказы</h1>
+    <div className="mt-10 max-w-4xl space-y-4">
+      <h1 className="text-[28px] font-bold">Ваши заказы</h1>
       {orders.map((order) => (
         <div
           key={order.id}
-          className="border rounded p-4 mb-4 shadow flex flex-col gap-2"
+          className="border rounded-2xl p-4 shadow-sm flex flex-col gap-2 bg-white/80"
         >
           {Array.isArray(order.items) &&
           (order.items as OrderItem[]).length > 0 ? (
@@ -68,7 +73,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
           ) : (
             <p>Нет данных о заказе</p>
           )}
-          <div className="p-4 bg-gray-100 rounded-md flex justify-between items-center">
+          <div className="p-4 bg-gray-50 rounded-xl flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
             <div>
               <p>
                 Статус:{" "}
@@ -84,7 +89,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
               <button
                 onClick={() => handlePay(order.id)}
                 disabled={pending}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition"
               >
                 Оплатить
               </button>

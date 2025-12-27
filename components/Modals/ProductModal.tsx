@@ -33,6 +33,10 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
       setSelectedIngredients,
     });
 
+  if (!product) {
+    return <div className="absolute w-full h-full bg-gray-200" />;
+  }
+
   return (
     <Dialog open onOpenChange={() => router.back()}>
       <DialogContent

@@ -4,10 +4,11 @@ import { Cart } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(req: NextRequest) {
   // 1. Получаем userId, если пользователь авторизован
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const userId = Number(session?.user?.id);
 
   let cart;
@@ -94,7 +95,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { productItemId, quantity = 1, ingredientsIds = [] } = body;
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const userId = Number(session?.user?.id);
 
   let token = req.cookies.get("cartToken")?.value;
