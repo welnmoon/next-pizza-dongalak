@@ -6,7 +6,7 @@ interface Props {
 
 const TotalPriceLineItem = ({ price, title, showIcon }: Props) => {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 text-sm sm:text-base">
       {/* Иконка и текст */}
       <div className="flex items-center gap-2">
         <div className="w-4">
@@ -24,7 +24,7 @@ const TotalPriceLineItem = ({ price, title, showIcon }: Props) => {
       </div>
 
       {/* Линия — занимает всё оставшееся место */}
-      <div className="flex-1 border-t border-dashed border-gray-300 mt-1" />
+      <div className="flex-1 border-t border-dashed border-stone-300 mt-1" />
 
       {/* Цена */}
       <p className="font-bold">{price} ₸</p>

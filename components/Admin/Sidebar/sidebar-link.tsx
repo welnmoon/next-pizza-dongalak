@@ -13,7 +13,7 @@ const SidebarLink = ({ path, name }: Props) => {
       href={`/admin/${path}`}
       className={clsx(
         "py-2",
-        pathname.includes(`/${path}`) && "font-bold text-blue-600"
+        pathname.includes(`/${path}`) && "font-bold text-emerald-700"
       )}
     >
       {name}

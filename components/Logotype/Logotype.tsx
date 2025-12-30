@@ -13,10 +13,10 @@ const Logotype = () => {
           className="rounded-full shadow-sm"
         />
         <div className="leading-tight">
-          <h1 className="text-xl sm:text-2xl font-black uppercase text-black tracking-wide">
+          <h1 className="text-xl sm:text-2xl font-black uppercase text-stone-900 tracking-[0.12em]">
             DONGALAK
           </h1>
-          <p className="text-sm sm:text-base text-gray-500 font-medium">
+          <p className="text-sm sm:text-base text-stone-500 font-medium">
             вкусней уже некуда
           </p>
         </div>

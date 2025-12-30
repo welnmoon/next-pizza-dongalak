@@ -13,7 +13,7 @@ export default function CheckoutLayout({
 }>) {
   const session = useSession();
   return (
-    <div className={`min-h-screen bg-[#F4F1EE]`}>
+    <div className="min-h-screen bg-[#F7F3EE]">
       <div className="">
         <Container>
           <Suspense fallback={null}>
@@ -21,7 +21,7 @@ export default function CheckoutLayout({
               session={session.data}
               hasSearch={false}
               hasCart={false}
-              className="border-b-1 border-gray-200 pb-4 pt-6 mb-6"
+              className="border-b-1 border-stone-200 pb-4 pt-6 mb-6"
             />
           </Suspense>
           {children}

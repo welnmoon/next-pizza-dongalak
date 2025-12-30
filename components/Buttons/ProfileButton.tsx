@@ -9,7 +9,7 @@ import Link from "next/link";
 const ProfileButton = () => {
   return (
     <Link href="/profile">
-      <Button className="rounded-full bg-orange-100 border border-orange-200 text-orange-500 hover:bg-orange-500 hover:text-white">
+      <Button className="rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 hover:bg-emerald-700 hover:text-white">
         <User /> Профиль
       </Button>
     </Link>

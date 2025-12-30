@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Container from "../Container";
-import Filter from "./Filter";
 import Products from "./Products";
+import FilterPanel from "./FilterPanel";
 
 const FilterAndProducts = ({
   searchParams,
@@ -9,8 +9,8 @@ const FilterAndProducts = ({
   searchParams: { [key: string]: string | string[] };
 }) => {
   return (
-    <Container className="flex gap-[60px]">
-      <Filter />
+    <Container className="flex flex-col gap-6 lg:flex-row lg:gap-[60px]">
+      <FilterPanel />
       <Suspense fallback={<div className="">Loading...</div>}>
         <Products searchParams={searchParams} />
       </Suspense>

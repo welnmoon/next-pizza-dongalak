@@ -73,20 +73,20 @@ const CartDrawerItem = ({ item }: Props) => {
         ease: [0.4, 0, 0.2, 1],
         layout: { duration: 0.3 },
       }}
-      className="w-full bg-white rounded-xl shadow-sm"
+      className="w-full bg-[#FFFCF7] rounded-2xl border border-stone-200 shadow-sm"
     >
       <div className="p-3 gap-2 flex flex-col">
         <div className="flex gap-2">
           <img
             src={freshItem.imageUrl}
             alt=""
-            className="w-20 h-20 object-cover rounded"
+            className="w-20 h-20 object-cover rounded-xl bg-stone-50"
           />
           <div className="flex flex-col flex-1">
-            <h2 className="text-lg text-gray-800 font-bold">
+            <h2 className="text-lg text-stone-900 font-bold">
               {freshItem.name}
             </h2>
-            <p className="text-xs text-gray-500">{itemDesc}</p>
+            <p className="text-xs text-stone-500">{itemDesc}</p>
           </div>
           <X
             onClick={handleRemove}
@@ -96,15 +96,15 @@ const CartDrawerItem = ({ item }: Props) => {
           />
         </div>
 
-        <div className="flex-1 border-b border-gray-200" />
+        <div className="flex-1 border-b border-stone-200" />
 
-        <div className="flex justify-between text-gray-500 flex-col gap-1">
+        <div className="flex justify-between text-stone-500 flex-col gap-1">
           <div>
-            <h2 className="text-sm text-gray-600 font-semibold">
+            <h2 className="text-sm text-stone-600 font-semibold">
               {freshItem.price} ₸ × {freshItem.quantity} шт
             </h2>
             {freshItem.ingredients.length > 0 && (
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-stone-500">
                 Добавки:{" "}
                 {freshItem.ingredients
                   .map(
@@ -116,10 +116,10 @@ const CartDrawerItem = ({ item }: Props) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-800">
+            <h3 className="text-lg font-bold text-stone-900">
               Всего: {itemTotalPrice} ₸
             </h3>
-            <div className="bg-gray-100 rounded-full flex gap-3 px-2 py-1 items-center">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl flex gap-3 px-2 py-1 items-center">
               <Minus
                 onClick={() => handleChangeQuantity("-")}
                 className="size-4 cursor-pointer"

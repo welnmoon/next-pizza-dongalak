@@ -20,6 +20,7 @@ interface Props {
   selectedIngredients: Ingredient[];
   handleSetSelectedIngredients: (ingredient: Ingredient) => void;
   total: number;
+  stickyFooter?: boolean;
 }
 
 const RightSide = ({
@@ -35,6 +36,7 @@ const RightSide = ({
   ingredients,
   handleSetSelectedIngredients,
   total,
+  stickyFooter = false,
 }: Props) => {
   const addCartItem = useCartStore((s) => s.addCartItem);
 
@@ -85,14 +87,19 @@ const RightSide = ({
   return (
     <div
       className={cn(
-        "w-full h-full md:w-1/2 flex flex-col py-8 px-4 bg-orange-50",
+        "w-full h-full md:w-1/2 flex flex-col py-8 px-4 bg-[#F3F5F1]",
         classNames
       )}
     >
-      <div className="flex-1 overflow-y-auto pr-1">
+      <div
+        className={cn(
+          "flex-1 overflow-y-auto pr-1",
+          stickyFooter && "pb-24"
+        )}
+      >
         <h1 className="text-2xl font-bold mb-1">{product.name}</h1>
         {product.categoryId === 1 && (
-          <p className="text-sm text-gray-500 mb-4">
+          <p className="text-sm text-stone-500 mb-4">
             {selectedSize} см, {PIZZA_TYPE_LABELS[selectedDoughTypes]} тесто
           </p>
         )}
@@ -105,8 +112,8 @@ const RightSide = ({
                 <button
                   key={label}
                   className={cn(
-                    "px-4 py-1 rounded-full border text-sm flex-1",
-                    label === selectedSize && "bg-orange-100 border-orange-500"
+                    "px-4 py-1 rounded-xl border text-sm flex-1 bg-[#FFFCF7]",
+                    label === selectedSize && "bg-emerald-700 text-white border-emerald-700"
                   )}
                   onClick={() => setSelectedSize(label)}
                 >
@@ -126,10 +133,10 @@ const RightSide = ({
                   <button
                     key={id}
                     className={cn(
-                      "px-4 py-1 rounded-full border text-sm flex-1",
+                      "px-4 py-1 rounded-xl border text-sm flex-1 bg-[#FFFCF7]",
                       selectedDoughTypes === id &&
                         isAvailable &&
-                        "bg-orange-100 border-orange-500",
+                        "bg-emerald-700 text-white border-emerald-700",
                       !isAvailable && "opacity-50 cursor-not-allowed"
                     )}
                     disabled={!isAvailable}
@@ -152,14 +159,14 @@ const RightSide = ({
                 <div
                   key={ing.id}
                   className={cn(
-                    "min-w-[90px] relative rounded-xl border bg-white p-2 text-center shadow-sm cursor-pointer hover:border-orange-400 transition",
-                    selectedIngredients.includes(ing) && "border-orange-500"
+                    "min-w-[90px] relative rounded-2xl border border-stone-200 bg-[#FFFCF7] p-2 text-center shadow-sm cursor-pointer hover:border-emerald-400 transition",
+                    selectedIngredients.includes(ing) && "border-emerald-600"
                   )}
                   onClick={() => handleSetSelectedIngredients(ing)}
                 >
                   {selectedIngredients.includes(ing) && (
                     <div className="absolute right-[5px] z-10">
-                      <CircleCheck width={20} className="text-orange-400" />
+                      <CircleCheck width={20} className="text-emerald-500" />
                     </div>
                   )}
                   <div className="relative w-full aspect-square mb-1">
@@ -180,17 +187,25 @@ const RightSide = ({
       </div>
 
       {/* Кнопка снизу */}
-      <Button
-        onClick={handleAddToCart}
-        disabled={isLoading || isSuccess}
+      <div
         className={cn(
-          "mt-6 text-white text-sm py-3 w-full rounded-xl font-semibold transition flex items-center justify-center",
-          isSuccess ? "bg-orange-500" : "bg-orange-500 hover:bg-orange-600",
-          isLoading && "bg-gray-300"
+          "mt-6",
+          stickyFooter &&
+            "sticky bottom-0 left-0 right-0 z-10 bg-[#F3F5F1] pt-3 pb-4 md:static md:pt-0 md:pb-0"
         )}
       >
-        {buttonContent}
-      </Button>
+        <Button
+          onClick={handleAddToCart}
+          disabled={isLoading || isSuccess}
+          className={cn(
+            "text-white text-sm py-3 w-full rounded-xl font-semibold transition flex items-center justify-center",
+            isSuccess ? "bg-emerald-700" : "bg-emerald-700 hover:bg-emerald-800",
+            isLoading && "bg-stone-300"
+          )}
+        >
+          {buttonContent}
+        </Button>
+      </div>
     </div>
   );
 };

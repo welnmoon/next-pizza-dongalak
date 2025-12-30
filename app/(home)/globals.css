@@ -58,7 +58,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(230, 230, 230); /* оранжевый */
+  background-color: rgb(196, 190, 180);
   border-radius: 8px;
 }
 
@@ -140,6 +140,8 @@
 
 body {
   font-family: var(--font-nunito);
+  background-color: #f7f3ee;
+  color: #1f2a1f;
 }
 
 input[type="number"]::-webkit-inner-spin-button,

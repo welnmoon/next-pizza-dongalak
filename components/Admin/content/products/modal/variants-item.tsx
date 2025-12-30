@@ -77,7 +77,7 @@ export default function EditableVariantItem({
     <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-gray-100 px-4 py-2 rounded-lg flex items-center gap-4 w-max"
+        className="bg-stone-100 px-4 py-2 rounded-lg flex items-center gap-4 w-max"
       >
         <FormInput name="price" placeholder="Цена" className="w-24 bg-white" />
         {isPizza && (

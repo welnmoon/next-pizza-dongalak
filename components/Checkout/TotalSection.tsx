@@ -17,11 +17,13 @@ const TotalSection = ({
   const delivery = totalPrice === 0 ? 0 : 1000; // фиксируем доставку под картинку
 
   return (
-    <div className="bg-white rounded-xl w-[450px] flex flex-col gap-6 px-6 py-6">
+    <div className="bg-[#FFFCF7] rounded-2xl border border-stone-200 w-full lg:w-[450px] flex flex-col gap-5 sm:gap-6 px-4 sm:px-6 py-5 sm:py-6">
       {/* Итого */}
       <div>
-        <h3 className="text-lg mb-1">Итого:</h3>
-        <h2 className="text-3xl font-bold">{itemsPriceWithTax + delivery} ₸</h2>
+        <h3 className="text-base sm:text-lg mb-1">Итого:</h3>
+        <h2 className="text-2xl sm:text-3xl font-bold">
+          {itemsPriceWithTax + delivery} ₸
+        </h2>
       </div>
 
       {/* Список цен */}
@@ -35,17 +37,17 @@ const TotalSection = ({
         <TotalPriceLineItem title="Доставка" price={delivery} showIcon={3} />
       </div>
 
-      <hr className="bg-gray-200 w-full" />
+      <hr className="bg-stone-200 w-full" />
 
       {/* Промокод */}
-      <div className="text-gray-400 text-sm">У меня есть промокод</div>
+      <div className="text-stone-400 text-sm">У меня есть промокод</div>
 
       {/* Кнопка */}
       <Button
         // type="submit"
         // onClick={handleClick}
         disabled={totalPrice === 0}
-        className={`bg-orange-500 hover:bg-orange-600 flex h-12 rounded-full w-full `}
+        className="bg-emerald-700 hover:bg-emerald-800 flex h-11 sm:h-12 rounded-xl w-full"
       >
         {pending ? (
           <span className="flex items-center gap-2">
@@ -70,7 +72,7 @@ const TotalSection = ({
             </svg>
           </span>
         ) : (
-          <span className="text-lg flex-1 text-center text-white">
+          <span className="text-base sm:text-lg flex-1 text-center text-white">
             Перейти к оплате
           </span>
         )}

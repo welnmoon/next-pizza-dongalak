@@ -29,7 +29,7 @@ const OrderModal = ({ openModal, selectedOrder, setOpenModal }: Props) => {
           <DialogTitle className="sticky top-0 bg-white p-2 shadow  rounded-md z-10">
             Подробнее о заказе №{selectedOrder.id}
           </DialogTitle>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Создан: {formatDate(selectedOrder?.createdAt ?? new Date())}
           </p>
 

@@ -19,8 +19,10 @@ const ProductGroupList = ({ categoryId, products, groupTitle }: Props) => {
 
   return (
     <div className="w-full">
-      <h1 className="font-semibold text-2xl mb-4">{groupTitle}</h1>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 w-full">
+      <h1 className="font-semibold text-xl sm:text-2xl mb-3 sm:mb-4 text-stone-900">
+        {groupTitle}
+      </h1>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 w-full">
         {filteredProducts?.length > 0 ? (
           filteredProducts.map((product) => (
             <ProductCard
@@ -34,7 +36,9 @@ const ProductGroupList = ({ categoryId, products, groupTitle }: Props) => {
             />
           ))
         ) : (
-          <p className="text-gray-500 italic">Ничего не найдено</p>
+          <p className="text-stone-500 italic text-xs sm:text-sm">
+            Ничего не найдено
+          </p>
         )}
       </div>
     </div>

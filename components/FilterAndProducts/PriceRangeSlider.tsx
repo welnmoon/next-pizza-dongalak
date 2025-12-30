@@ -21,9 +21,11 @@ const PriceRangeSlider = () => {
   };
 
   return (
-    <div className="w-full border-y py-6">
-      <h2 className="font-semibold mb-2">Цена от и до:</h2>
-      <div className="flex gap-4 mb-2">
+    <div className="w-full border-y py-4 sm:py-6">
+      <h2 className="font-semibold text-sm sm:text-base mb-2">
+        Цена от и до:
+      </h2>
+      <div className="flex gap-3 sm:gap-4 mb-2">
         <PriceInput
           value={range[0]}
           onChange={(val) => handleInputChange(0, val)}
@@ -42,11 +44,11 @@ const PriceRangeSlider = () => {
         value={range}
         onValueChange={(val) => setRange([val[0], val[1]])}
       >
-        <Slider.Track className="bg-gray-200 relative grow rounded-full h-1">
-          <Slider.Range className="absolute bg-orange-500 rounded-full h-full" />
+        <Slider.Track className="bg-stone-200 relative grow rounded-full h-1">
+          <Slider.Range className="absolute bg-emerald-700 rounded-full h-full" />
         </Slider.Track>
-        <Slider.Thumb className="block w-5 h-5 bg-white border border-orange-500 rounded-full shadow hover:bg-orange-100" />
-        <Slider.Thumb className="block w-5 h-5 bg-white border border-orange-500 rounded-full shadow hover:bg-orange-100" />
+        <Slider.Thumb className="block w-5 h-5 bg-[#FFFCF7] border border-emerald-700 rounded-full shadow hover:bg-emerald-50" />
+        <Slider.Thumb className="block w-5 h-5 bg-[#FFFCF7] border border-emerald-700 rounded-full shadow hover:bg-emerald-50" />
       </Slider.Root>
     </div>
   );

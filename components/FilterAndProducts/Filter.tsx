@@ -9,13 +9,21 @@ import { usePriceFilterStore } from "@/store/priceFilterStore";
 import { usePizzaSizeFilterStore } from "@/store/pizzaSizeFilterStore";
 import { useDoughTypeFilterStore } from "@/store/doughTypeFilterStore";
 import { useIngredientFilterStore } from "@/store/ingredientFilterStore";
+import { cn } from "@/lib/utils";
 import qs from "qs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
 
-const Filter = () => {
+interface FilterProps {
+  className?: string;
+  showTitle?: boolean;
+}
+
+const Filter = ({ className, showTitle = true }: FilterProps) => {
   const { ingredients } = useFilterIngredients();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchParamsString = searchParams.toString();
 
   const selectedCategory = useCategoryFilterStore((s) => s.selectedCategory);
   const selectedPriceRange = usePriceFilterStore((s) => s.priceRange);
@@ -29,38 +37,48 @@ const Filter = () => {
     (s) => s.selectedIngredients
   );
 
-  const query = useMemo(
-    () =>
-      qs.stringify(
-        {
-          selectedCategory,
-          selectedPriceRange,
-          selectedPizzaSizes: Array.from(selectedPizzaSizes),
-          selectedPizzaDoughTypes: Array.from(selectedPizzaDoughTypes),
-          selectedIngredients: Array.from(selectedIngredients),
-        },
-        {
-          arrayFormat: "repeat",
-          skipNulls: true,
-        }
-      ),
-    [
-      selectedCategory,
-      selectedPriceRange,
-      selectedPizzaSizes,
-      selectedPizzaDoughTypes,
-      selectedIngredients,
-    ]
-  );
+  const query = useMemo(() => {
+    const existing = qs.parse(searchParamsString);
+
+    return qs.stringify(
+      {
+        ...existing,
+        selectedCategory,
+        selectedPriceRange,
+        selectedPizzaSizes: selectedPizzaSizes.size
+          ? Array.from(selectedPizzaSizes)
+          : undefined,
+        selectedPizzaDoughTypes: selectedPizzaDoughTypes.size
+          ? Array.from(selectedPizzaDoughTypes)
+          : undefined,
+        selectedIngredients: selectedIngredients.size
+          ? Array.from(selectedIngredients)
+          : undefined,
+      },
+      {
+        arrayFormat: "repeat",
+        skipNulls: true,
+      }
+    );
+  }, [
+    searchParamsString,
+    selectedCategory,
+    selectedPriceRange,
+    selectedPizzaSizes,
+    selectedPizzaDoughTypes,
+    selectedIngredients,
+  ]);
 
   useEffect(() => {
     router.replace(`?${query}`, { scroll: false });
   }, [query, router]);
 
   return (
-    <div className="lg:w-[250px] md:w-[200px]">
-      <h2 className="font-semibold text-xl mb-4">Фильтрация</h2>
-      <div className="flex flex-col gap-6">
+    <div className={cn("w-full", className)}>
+      {showTitle && (
+        <h2 className="font-semibold text-lg sm:text-xl mb-4">Фильтрация</h2>
+      )}
+      <div className="flex flex-col gap-5 sm:gap-6">
         <DoughTypeCheckboxes
           data={[
             { id: 1, name: "Традиционное" },

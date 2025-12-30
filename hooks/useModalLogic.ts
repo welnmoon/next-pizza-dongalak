@@ -26,10 +26,12 @@ export const useModalLogic = ({
       .map((i) => i.pizzaType)
       .filter((id): id is number => id !== null);
 
+    if (availableTypes.length === 0) return;
+
     if (!availableTypes.includes(selectedDoughTypes)) {
       setSelectedDoughTypes(availableTypes[0]);
     }
-  }, [selectedSize, items]);
+  }, [selectedSize, items, selectedDoughTypes, setSelectedDoughTypes]);
 
   //Доступные размеры
   const availablePizzaSizes = [

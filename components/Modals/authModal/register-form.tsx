@@ -52,7 +52,7 @@ const RegisterForm = ({ handleAuthTypeChange }: Props) => {
       >
         <div>
           <h2 className="text-2xl font-bold mb-4">Регистрация</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-stone-600 mb-6">
             Пожалуйста, зарегистрируйтесь для создания учетной записи.
           </p>
         </div>
@@ -82,16 +82,16 @@ const RegisterForm = ({ handleAuthTypeChange }: Props) => {
           />
         </div>
 
-        <Button className="w-full bg-orange-500" type="submit">
+        <Button className="w-full bg-emerald-700 hover:bg-emerald-800" type="submit">
           Зарегистрироваться
         </Button>
 
         <div>
-          <p className="text-sm text-gray-500 mt-4 text-center">
+          <p className="text-sm text-stone-500 mt-4 text-center">
             Есть аккаунт?{" "}
             <span
               onClick={handleAuthTypeChange}
-              className="text-blue-500 cursor-pointer hover:underline"
+              className="text-emerald-700 cursor-pointer hover:underline"
             >
               Войдите
             </span>

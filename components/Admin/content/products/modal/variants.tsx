@@ -88,7 +88,7 @@ const ProductModalVariants = ({
         <IoIosAdd
           onClick={() => setAddingProduct(true)}
           size={35}
-          className="text-gray-500 cursor-pointer"
+          className="text-stone-500 cursor-pointer"
         />
       </div>
       {addingProduct && (

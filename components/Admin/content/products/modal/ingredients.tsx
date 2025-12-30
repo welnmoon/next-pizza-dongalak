@@ -61,7 +61,7 @@ const ProductModalIngredients = ({
         {ingredients.map((ingredient) => (
           <div
             key={ingredient.id}
-            className="w-max bg-orange-100 px-4 py-2 rounded-lg flex items-start gap-4"
+            className="w-max bg-emerald-100 px-4 py-2 rounded-lg flex items-start gap-4"
           >
             <div className="bg-white rounded-xl">
               <img alt="" src={ingredient.imageUrl} className="w-20 h-20 m-2" />
@@ -84,7 +84,7 @@ const ProductModalIngredients = ({
         {availableIngredients.map((ingredient) => (
           <div
             key={ingredient.id}
-            className="w-max bg-gray-100 px-4 py-2 rounded-lg flex items-start gap-4"
+            className="w-max bg-stone-100 px-4 py-2 rounded-lg flex items-start gap-4"
           >
             <div className="bg-white rounded-xl">
               <img
@@ -94,11 +94,11 @@ const ProductModalIngredients = ({
               />
             </div>
             <div>
-              <h2 className="text-gray-500">{ingredient.name}</h2>
-              <p className="text-gray-500">{ingredient.price} ₸</p>
+              <h2 className="text-stone-500">{ingredient.name}</h2>
+              <p className="text-stone-500">{ingredient.price} ₸</p>
               {editing && (
                 <button
-                  className="mt-1 text-sm text-blue-500 hover:underline"
+                  className="mt-1 text-sm text-emerald-700 hover:underline"
                   onClick={() => handleToggleIngredient(ingredient.id)}
                 >
                   Добавить

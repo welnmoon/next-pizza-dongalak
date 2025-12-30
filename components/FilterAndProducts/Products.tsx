@@ -10,11 +10,44 @@ const filteredPizzaCategoryId = 1; // или динамически получа
 
 const Products = async ({ searchParams }: Props) => {
   const filteredPizzas = await findPizzas(searchParams);
+  const sortValue = Array.isArray(searchParams.sort)
+    ? searchParams.sort[0]
+    : searchParams.sort;
+
+  const sortProducts = (
+    list: {
+      id: number;
+      title: string;
+      price: number;
+      image: string;
+      categoryId: number;
+      ingredients: string;
+    }[]
+  ) => {
+    if (!sortValue || sortValue === "rating") return list;
+
+    const sorted = [...list];
+    switch (sortValue) {
+      case "price_asc":
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case "price_desc":
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+      case "name":
+        sorted.sort((a, b) => a.title.localeCompare(b.title, "ru"));
+        break;
+      default:
+        return list;
+    }
+
+    return sorted;
+  };
 
   const categories = await prisma.category.findMany();
 
   return (
-    <div className="flex flex-col gap-20">
+    <div className="flex flex-col gap-12 sm:gap-16 lg:gap-20">
       {categories.map(async (cat) => {
         let products: {
           id: number;
@@ -40,6 +73,7 @@ const Products = async ({ searchParams }: Props) => {
                 product.ingredients?.map((i) => i.name).join(", ") || "",
             }));
           }
+          products = sortProducts(products);
         } else {
           // Все остальные продукты без фильтра
           const dbProducts = await prisma.product.findMany({
@@ -55,7 +89,11 @@ const Products = async ({ searchParams }: Props) => {
             },
             include: {
               ingredients: true,
-              items: true,
+              items: {
+                orderBy: {
+                  price: "asc",
+                },
+              },
             },
           });
 
@@ -67,6 +105,7 @@ const Products = async ({ searchParams }: Props) => {
             categoryId: product.categoryId,
             ingredients: product.ingredients.map((i) => i.name).join(", "),
           }));
+          products = sortProducts(products);
         }
 
         return (

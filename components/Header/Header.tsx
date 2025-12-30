@@ -34,10 +34,24 @@ const Header = ({
     }
   }, [searchParams]);
   return (
-    <header ref={headerRef} className={cn("flex justify-between", className)}>
+    <header
+      ref={headerRef}
+      className={cn(
+        "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between",
+        className
+      )}
+    >
       <Logotype />
-      {hasSearch ? <HeaderSearch /> : null}
-      <HeaderActions hasCart={hasCart} session={session!} />
+      <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 sm:w-auto sm:flex-1 sm:justify-end">
+        {hasSearch ? (
+          <HeaderSearch className="w-full sm:flex-1 sm:min-w-[260px]" />
+        ) : null}
+        <HeaderActions
+          hasCart={hasCart}
+          session={session!}
+          className="w-full sm:w-auto justify-end"
+        />
+      </div>
     </header>
   );
 };

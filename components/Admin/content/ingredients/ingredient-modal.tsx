@@ -72,10 +72,10 @@ const IngredientModal = ({
           <DialogTitle className="sticky top-0 bg-white p-2 shadow  rounded-md z-10">
             Подробнее о ингредиенте №{selectedIngredient?.id}
           </DialogTitle>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Создан: {formatDate(selectedIngredient?.createdAt ?? new Date())}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Обновлен: {formatDate(selectedIngredient?.createdAt ?? new Date())}
           </p>
           <img

@@ -43,7 +43,7 @@ const UserForm = ({ onSubmit, isChanged, loading }: Props) => {
         <select
           id="role"
           {...form.register("role")}
-          className="border border-gray-300 rounded px-3 py-2"
+          className="border border-stone-300 rounded px-3 py-2"
         >
           <option value="USER">Обычный пользователь</option>
           <option value="ADMIN">Администратор</option>
@@ -59,7 +59,7 @@ const UserForm = ({ onSubmit, isChanged, loading }: Props) => {
             !isChanged || !form.formState.isValid || form.formState.isSubmitting
           }
           type="submit"
-          className="bg-orange-500 hover:bg-orange-600"
+          className="bg-emerald-700 hover:bg-emerald-800"
         >
           {loading ? "Сохраняем..." : "Сохранить"}
         </Button>

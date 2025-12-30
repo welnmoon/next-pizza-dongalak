@@ -40,15 +40,18 @@ const Checkout = () => {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-20">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-8 lg:flex-row lg:gap-20"
+      >
         <div
-          className={`flex flex-1 flex-col gap-10 ${pending && "pointer-events-none"}`}
+          className={`flex flex-1 flex-col gap-8 ${pending && "pointer-events-none"}`}
         >
           <CartSection loading={loading} items={items} />
           <PersonalInfo />
           <AddressSection />
         </div>
-        <div>
+        <div className="w-full lg:w-[450px] lg:shrink-0">
           <TotalSection
             itemsPriceWithTax={itemsPriceWithTax}
             totalPrice={totalPrice}

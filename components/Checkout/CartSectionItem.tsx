@@ -75,51 +75,56 @@ const CartSectionItem = ({ item }: Props) => {
         ease: [0.4, 0, 0.2, 1],
         layout: { duration: 0.3 },
       }}
-      className="w-full bg-white"
+      className="w-full bg-[#FFFCF7]"
     >
-      <div className="flex gap-2 items-center justify-between p-4">
-        <div className="flex gap-2 w-1/2">
+      <div className="flex flex-col gap-4 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4">
+        <div className="flex gap-3 sm:w-1/2">
           <img
             src={freshItem.imageUrl}
             alt=""
-            className="w-20 h-20 object-cover rounded"
+            className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded"
           />
           <div className="flex flex-col flex-1">
-            <h2 className="text-lg text-gray-800 font-bold">
+            <h2 className="text-base sm:text-lg text-stone-900 font-bold">
               {freshItem.name}
             </h2>
-            <p className="text-xs text-gray-500">{itemDesc}</p>
+            <p className="text-xs text-stone-500">{itemDesc}</p>
           </div>
         </div>
-        {/*total*/}
-        <h3 className="text-lg font-bold text-gray-800">{itemTotalPrice} ₸</h3>
 
-        <div className="flex gap-2">
-          {/*+ -*/}
-          <div className="bg-gray-100 rounded-full h-8 flex gap-3 px-2 py-1 items-center">
-            <Minus
-              onClick={() => handleChangeQuantity("-")}
-              className={`size-4 cursor-pointer ${
-                freshItem.quantity < 2 && "text-gray-300"
-              }`}
-            />
-            <span>{freshItem.quantity}</span>
-            <Plus
-              onClick={() => handleChangeQuantity("+")}
-              className="size-4 cursor-pointer"
+        <div className="flex items-center justify-between sm:justify-end sm:gap-4">
+          {/*total*/}
+          <h3 className="text-base sm:text-lg font-bold text-stone-900">
+            {itemTotalPrice} ₸
+          </h3>
+
+          <div className="flex gap-2">
+            {/*+ -*/}
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl h-8 flex gap-3 px-2 py-1 items-center">
+              <Minus
+                onClick={() => handleChangeQuantity("-")}
+                className={`size-4 cursor-pointer ${
+                  freshItem.quantity < 2 && "text-stone-300"
+                }`}
+              />
+              <span>{freshItem.quantity}</span>
+              <Plus
+                onClick={() => handleChangeQuantity("+")}
+                className="size-4 cursor-pointer"
+              />
+            </div>
+            {/*delete*/}
+            <X
+              onClick={handleRemove}
+              width={20}
+              height={20}
+              className="text-red-500 cursor-pointer"
             />
           </div>
-          {/*delete*/}
-          <X
-            onClick={handleRemove}
-            width={20}
-            height={20}
-            className="text-red-500 cursor-pointer"
-          />
         </div>
       </div>
 
-      {!isLastItem && <div className="flex-1 border-b border-gray-200" />}
+      {!isLastItem && <div className="flex-1 border-b border-stone-200" />}
     </motion.div>
   );
 };

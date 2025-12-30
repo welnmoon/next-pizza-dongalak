@@ -15,7 +15,7 @@ export function CheckboxItem({ label, checked, onChange, id }: Props) {
       <Checkbox id={label} checked={checked} onClick={() => onChange(id)} />
       <label
         htmlFor={label}
-        className="text-sm font-medium leading-none cursor-pointer"
+        className="text-xs sm:text-sm font-medium leading-none cursor-pointer"
       >
         {label}
       </label>

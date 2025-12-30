@@ -60,7 +60,7 @@ const UploadForm = ({
       </button>
 
       {/* Отображение выбранного имени файла */}
-      <p className="text-sm text-gray-700">{fileName || "Файл не выбран"}</p>
+      <p className="text-sm text-stone-700">{fileName || "Файл не выбран"}</p>
 
       {/* Превью картинки */}
       {imageUrl && (

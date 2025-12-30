@@ -37,7 +37,11 @@ const Checkboxes = ({
 
   return (
     <div className="">
-      {title && <h3 className="font-semibold text-lg mb-3">{title}</h3>}
+      {title && (
+        <h3 className="font-semibold text-base sm:text-lg mb-2 sm:mb-3">
+          {title}
+        </h3>
+      )}
       {needToShowAllButton && showAll && (
         <FilterSearch
           onChange={setSearchValue}
@@ -69,7 +73,7 @@ const Checkboxes = ({
 
       {needToShowAllButton && data.length > limit && (
         <button
-          className="mt-2 text-sm text-orange-500 hover:underline"
+          className="mt-2 text-xs sm:text-sm text-emerald-700 hover:underline"
           onClick={() => setShowAll((prev) => !prev)}
         >
           {showAll ? "Скрыть" : "Показать все"}

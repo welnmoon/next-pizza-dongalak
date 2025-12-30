@@ -17,7 +17,7 @@ const AuthModal = ({ open, setOpen, callbackUrl }: Props) => {
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg ">
+      <DialogContent className="max-w-md w-full p-6 bg-[#FFFCF7] rounded-2xl border border-stone-200 shadow-xl">
         <div className="flex flex-col items-center justify-center h-full">
           {authType === "login" && (
             <LoginForm
@@ -30,7 +30,7 @@ const AuthModal = ({ open, setOpen, callbackUrl }: Props) => {
             <RegisterForm handleAuthTypeChange={handleAuthTypeChange} />
           )}
 
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-stone-500 mt-4">
             <Link href={"/home"}>Вернуться на главную страницу</Link>
           </p>
         </div>

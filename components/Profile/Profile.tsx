@@ -138,16 +138,16 @@ const ProfileClient = ({ data }: Props) => {
   if (!user) {
     return (
       <div className="mx-auto mt-6 max-w-2xl">
-        <div className="rounded-2xl border-zinc-200 bg-white/80 p-6 shadow-sm">
+        <div className="rounded-2xl border border-stone-200 bg-[#FFFCF7] p-6 shadow-sm">
           <h2 className="text-2xl font-bold mb-2">Профиль недоступен</h2>
-          <p className="text-gray-600 mb-4">
+          <p className="text-stone-600 mb-4">
             Войдите или зарегистрируйтесь, чтобы видеть историю заказов,
             сохранять адрес доставки и быстрее оформлять покупки.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button
               onClick={() => setOpenAuth(true)}
-              className="bg-orange-500 text-white"
+              className="bg-emerald-700 text-white hover:bg-emerald-800"
             >
               Войти или зарегистрироваться
             </Button>
@@ -166,11 +166,11 @@ const ProfileClient = ({ data }: Props) => {
   }
   return (
     <div className="flex mt-10 max-w-4xl flex-col gap-4">
-      <div className=" rounded-2xl border border-zinc-200 bg-white/80 p-5 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <div className="rounded-2xl border border-stone-200 bg-[#FFFCF7] p-5 shadow-sm flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-sm text-gray-500">Аккаунт</p>
+          <p className="text-sm text-stone-500">Аккаунт</p>
           <h1 className="text-2xl font-bold">{user.fullName || "Без имени"}</h1>
-          <p className="text-sm text-gray-500">{user.email}</p>
+          <p className="text-sm text-stone-500">{user.email}</p>
         </div>
         <SignOutButton />
       </div>

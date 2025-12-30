@@ -61,7 +61,10 @@ const Stories = () => {
         Array(5)
           .fill(0)
           .map((_, index) => (
-            <Skeleton key={index} className="h-[300px] w-[250px] mb-2" />
+            <Skeleton
+              key={index}
+              className="h-[300px] w-[250px] min-w-[250px] mb-2 shrink-0"
+            />
           ))}
 
       {stories.map((story) => (
@@ -70,7 +73,7 @@ const Stories = () => {
           key={story.id}
           alt="Story Preview"
           src={story.previewImageUrl}
-          className="w-[250px] h-[300px] rounded-lg"
+          className="w-[250px] h-[300px] min-w-[250px] rounded-lg shrink-0"
         ></img>
       ))}
 
@@ -78,7 +81,7 @@ const Stories = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-black/80 flex items-center justify-center z-30">
           <button
             title="X button"
-            className="absolute top-4 right-4 p-2 bg-white z-40 rounded-full"
+            className="absolute top-4 right-4 p-2 bg-[#FFFCF7] border border-stone-200 z-40 rounded-full"
           >
             <X onClick={() => setSelectedStory(null)} />
           </button>

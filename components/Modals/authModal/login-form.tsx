@@ -64,7 +64,7 @@ const LoginForm = ({
         {/*Header*/}
         <div>
           <h2 className="text-2xl font-bold mb-2">Авторизация</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-stone-600 mb-6">
             Пожалуйста, войдите в свою учетную запись.
           </p>
         </div>
@@ -73,7 +73,7 @@ const LoginForm = ({
           <FormInput name="password" label="Пароль" placeholder="Password" />
         </div>
 
-        <Button className="w-full bg-orange-500" type="submit">
+        <Button className="w-full bg-emerald-700 hover:bg-emerald-800" type="submit">
           Войти
         </Button>
 
@@ -81,25 +81,25 @@ const LoginForm = ({
         <div className="flex gap-4 w-full">
           <Button
             onClick={() => signIn("github", { callbackUrl })}
-            className="flex gap-2 flex-1 px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+            className="flex gap-2 flex-1 px-4 py-2 bg-stone-900 text-white rounded-xl hover:bg-stone-800"
           >
             <IoLogoGithub />
             Войти с GitHub
           </Button>
           <Button
             onClick={() => signIn("google", { callbackUrl })}
-            className="flex gap-2 flex-1 px-4 py-2 bg-white text-black rounded hover:bg-gray-100 border border-zinc-200"
+            className="flex gap-2 flex-1 px-4 py-2 bg-[#FFFCF7] text-stone-900 rounded-xl hover:bg-stone-100 border border-stone-200"
           >
             <FcGoogle />
             Войти с Google
           </Button>
         </div>
         {/*Change Type*/}
-        <p className="text-sm text-gray-500 mt-4 text-center">
+        <p className="text-sm text-stone-500 mt-4 text-center">
           Нет аккаунта?{" "}
           <span
             onClick={handleAuthTypeChange}
-            className="text-blue-500 cursor-pointer hover:underline"
+            className="text-emerald-700 cursor-pointer hover:underline"
           >
             Зарегистрируйтесь
           </span>

@@ -36,7 +36,7 @@ export function CartDrawer({ children }: Props) {
 
   if (loading)
     return (
-      <div className="w-[130px] h-9 flex items-center justify-center bg-orange-500/60 rounded-full">
+      <div className="w-[130px] h-9 flex items-center justify-center bg-emerald-700/70 rounded-2xl">
         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
       </div>
     );
@@ -46,7 +46,7 @@ export function CartDrawer({ children }: Props) {
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent
         side="right"
-        className="!max-w-none w-[430px] bg-gray-100 flex flex-col"
+        className="!max-w-none w-[430px] bg-[#F7F3EE] flex flex-col"
       >
         {items.length > 0 && (
           <SheetHeader>
@@ -80,13 +80,13 @@ export function CartDrawer({ children }: Props) {
             <div className="flex flex-col items-center gap-2">
               <div className="flex flex-col gap-1">
                 <h2 className="font-bold text-xl">Корзина пуста</h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-stone-500">
                   Добавьте хотя бы одну пиццу, чтобы совершить заказ
                 </p>
               </div>
 
               <SheetClose asChild>
-                <Button className="bg-orange-500 hover:bg-orange-600 flex h-10 rounded-full">
+                <Button className="bg-emerald-700 hover:bg-emerald-800 flex h-10 rounded-xl">
                   <ArrowLeft />
                   <span className="text-md flex-1">Вернуться назад</span>
                 </Button>
@@ -96,7 +96,7 @@ export function CartDrawer({ children }: Props) {
         )}
 
         {items.length > 0 && (
-          <SheetFooter className="p-0 bg-white border-t border-gray-300">
+          <SheetFooter className="p-0 bg-[#FFFCF7] border-t border-stone-200">
             <div className="p-6 w-full space-y-2 flex flex-col gap-2">
               <div>
                 <div className="flex items-center justify-between gap-2 text-sm font-bold text-xs">
@@ -109,7 +109,7 @@ export function CartDrawer({ children }: Props) {
                 </div>
               </div>
 
-              <div className="flex-1 border-b border-gray-200" />
+              <div className="flex-1 border-b border-stone-200" />
 
               <div className="flex items-center justify-between gap-2 text-sm font-bold">
                 <span className="text-lg font-semibold">Сумма заказа</span>
@@ -119,7 +119,7 @@ export function CartDrawer({ children }: Props) {
               </div>
 
               <Link href={"/checkout"} className="">
-                <Button className="w-full bg-orange-500 hover:bg-orange-600 flex h-12 rounded-full">
+                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 flex h-12 rounded-xl">
                   <span className="text-lg flex-1">К оформлению заказа</span>
                   <ChevronRight className="size-6 text-white" />
                 </Button>

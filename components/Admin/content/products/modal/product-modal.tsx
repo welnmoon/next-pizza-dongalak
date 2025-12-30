@@ -69,7 +69,7 @@ const ProductModal = ({
           <DialogTitle className="sticky top-0 bg-white p-2 shadow  rounded-md z-10">
             Подробнее о продукте {product.name}
           </DialogTitle>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Создан: {formatDate(product?.createdAt ?? new Date())}
           </p>
 
@@ -80,7 +80,7 @@ const ProductModal = ({
           {/*--------------Категория----------------*/}
           <div className="flex gap-4 text-center items-center">
             <h2 className="text-2xl text-medium">Категория:</h2>
-            <h2 className="bg-orange-200 text-orange-600 w-max px-3 rounded-lg">
+            <h2 className="bg-emerald-200 text-emerald-700 w-max px-3 rounded-lg">
               {product.category?.name}
             </h2>
           </div>

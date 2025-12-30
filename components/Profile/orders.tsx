@@ -20,9 +20,9 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
   const [pending, startTransition] = useTransition();
   if (!orders || orders.length === 0) {
     return (
-      <div className="mt-10 rounded-2xl border bg-white/80 p-6 shadow-sm max-w-4xl">
+      <div className="mt-10 rounded-2xl border border-stone-200 bg-[#FFFCF7] p-6 shadow-sm max-w-4xl">
         <h2 className="text-[28px] font-bold mb-2">Заказы</h2>
-        <p className="text-gray-600">У вас пока нет заказов.</p>
+        <p className="text-stone-600">У вас пока нет заказов.</p>
       </div>
     );
   }
@@ -46,7 +46,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
       {orders.map((order) => (
         <div
           key={order.id}
-          className="border rounded-2xl p-4 shadow-sm flex flex-col gap-2 bg-white/80"
+          className="border border-stone-200 rounded-2xl p-4 shadow-sm flex flex-col gap-2 bg-[#FFFCF7]"
         >
           {Array.isArray(order.items) &&
           (order.items as OrderItem[]).length > 0 ? (
@@ -55,7 +55,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
                 <img
                   src={item.productItem.product.imageUrl}
                   alt={item.productItem.product.name}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-16 h-16 object-cover rounded-xl bg-stone-50"
                 />
                 <div>
                   <p className="font-semibold">
@@ -64,7 +64,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
                   <p>Размер: {item.productItem.size} см</p>
                   <p>Количество: {item.quantity}</p>
                   <p>Цена за штуку: {item.productItem.price} ₸</p>
-                  <p className="font-medium text-orange-600">
+                  <p className="font-medium text-emerald-700">
                     Общая цена: {item.quantity * item.productItem.price} ₸
                   </p>
                 </div>
@@ -73,7 +73,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
           ) : (
             <p>Нет данных о заказе</p>
           )}
-          <div className="p-4 bg-gray-50 rounded-xl flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
+          <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
             <div>
               <p>
                 Статус:{" "}
@@ -89,7 +89,7 @@ const ProfileOrders = ({ orders }: { orders: Order[] }) => {
               <button
                 onClick={() => handlePay(order.id)}
                 disabled={pending}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition"
+                className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl transition"
               >
                 Оплатить
               </button>

@@ -9,7 +9,7 @@ const formatText = (text: string) => {
 
 const Warning = ({ text }: { text: string }) => {
   return (
-    <p className="bg-orange-100 text-orange-500 px-4 py-2 rounded-lg mt-4">
+    <p className="bg-emerald-50 text-emerald-800 px-4 py-2 rounded-xl border border-emerald-200 mt-4">
       {formatText(text)}
     </p>
   );

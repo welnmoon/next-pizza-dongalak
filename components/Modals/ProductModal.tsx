@@ -18,8 +18,11 @@ interface Props {
 const ProductModal = ({ product, ingredients, items }: Props) => {
   const router = useRouter();
 
-  const [selectedSize, setSelectedSize] = useState(30);
-  const [selectedDoughTypes, setSelectedDoughTypes] = useState(1);
+  const initialSize = items.find((i) => i.size !== null)?.size ?? 30;
+  const initialDoughType = items.find((i) => i.pizzaType !== null)?.pizzaType ?? 1;
+  const [selectedSize, setSelectedSize] = useState(initialSize);
+  const [selectedDoughTypes, setSelectedDoughTypes] =
+    useState(initialDoughType);
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(
     []
   );
@@ -34,7 +37,7 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
     });
 
   if (!product) {
-    return <div className="absolute w-full h-full bg-gray-200" />;
+    return <div className="absolute w-full h-full bg-stone-200" />;
   }
 
   return (
@@ -43,7 +46,7 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
         className="
           w-[95vw] sm:w-[500px] md:w-[800px] lg:w-[800px] xl:w-[800px]
           h-[95vh] md:h-[72vh] max-h-[90vh]
-           bg-white block md:flex rounded-3xl
+           bg-[#FFFCF7] block md:flex rounded-3xl
           overflow-y-auto md:overflow-hidden items-center
           p-0
         "
@@ -67,6 +70,7 @@ const ProductModal = ({ product, ingredients, items }: Props) => {
           ingredients={ingredients}
           handleSetSelectedIngredients={handleSetSelectedIngredients}
           total={total}
+          stickyFooter
         />
       </DialogContent>
     </Dialog>

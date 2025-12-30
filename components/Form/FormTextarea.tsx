@@ -39,7 +39,7 @@ const FormTextArea = ({ name, label, required, placeholder }: Props) => {
           {...register(name)}
           placeholder={placeholder}
           maxLength={200}
-          className="max-h-[200px] w-full resize-none overflow-y-auto border-gray-100"
+          className="max-h-[200px] w-full resize-none overflow-y-auto border-stone-200"
         />
         {value && <ClearButton onClick={onClear} />}
       </div>

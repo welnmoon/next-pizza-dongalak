@@ -3,7 +3,7 @@ interface Props {
 }
 
 const Title3 = ({ title }: Props) => {
-  return <h3 className="text-lg font-bold">{title}</h3>;
+  return <h3 className="text-base sm:text-lg font-bold">{title}</h3>;
 };
 
 export default Title3;

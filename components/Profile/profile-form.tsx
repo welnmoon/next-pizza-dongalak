@@ -13,7 +13,7 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
   const form = useFormContext<ProfileSchemaType>();
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
-      <div className="space-y-6 rounded-2xl border border-zinc-200 bg-white/70 p-6 shadow-sm">
+      <div className="space-y-6 rounded-2xl border border-stone-200 bg-[#FFFCF7] p-6 shadow-sm">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <FormInput name="fullName" label="ФИО" placeholder="Фамилия" />
           <FormInput
@@ -53,7 +53,7 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
         </div>
 
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Сохраняйте изменения, чтобы обновить информацию профиля.
           </p>
           <Button
@@ -63,7 +63,7 @@ const ProfileForm = ({ onSubmit, isChanged, loading }: Props) => {
               form.formState.isSubmitting
             }
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-emerald-700 hover:bg-emerald-800"
           >
             {loading ? "Сохраняем..." : "Сохранить"}
           </Button>

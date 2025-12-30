@@ -13,9 +13,11 @@ export const calculateTotalPrice = ({
   selectedIngredients,
   selectedDoughTypes,
 }: Props): number => {
-  const base = items.find(
-    (i) => i.pizzaType === selectedDoughTypes && i.size === selectedSize
-  );
+  const base = items.find((i) => {
+    const sizeMatch = i.size === null || i.size === selectedSize;
+    const doughMatch = i.pizzaType === null || i.pizzaType === selectedDoughTypes;
+    return sizeMatch && doughMatch;
+  });
 
   const ingredientsPrice = selectedIngredients.reduce(
     (sum, cur) => sum + cur.price,
@@ -23,9 +25,8 @@ export const calculateTotalPrice = ({
   );
 
   if (!base) {
-    throw new Error(
-      "Base product item not found for the selected size and dough type."
-    );
+    const fallback = items[0];
+    return fallback ? fallback.price + ingredientsPrice : ingredientsPrice;
   }
 
   return base.price + ingredientsPrice;

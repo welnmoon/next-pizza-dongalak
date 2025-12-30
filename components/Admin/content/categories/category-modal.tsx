@@ -113,7 +113,7 @@ const CategoryModal = ({
                     label="Категория"
                     className="mb-2"
                   />
-                  <Button className="bg-gray-500" type="submit">
+                  <Button className="bg-stone-500" type="submit">
                     {loading ? "...Сохраняем" : "Сохранить"}
                   </Button>
                 </form>
@@ -127,7 +127,7 @@ const CategoryModal = ({
             </div>
           )}
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-500">
             Создан: {formatDate(selectedCategory?.createdAt ?? new Date())}
           </p>
 

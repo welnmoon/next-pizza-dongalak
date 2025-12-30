@@ -17,7 +17,7 @@ const AuthClient = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+      <div className="max-w-md w-full p-6 bg-[#FFFCF7] rounded-2xl border border-stone-200 shadow-xl">
         {authType === "login" ? (
           <LoginForm
             setOpen={redirectToMainPage}

@@ -13,14 +13,14 @@ interface Props {
 
 const CartSection = ({ loading, items }: Props) => {
   return (
-    <div className="bg-white rounded-md w-full">
-      <div className="p-4">
+    <div className="bg-[#FFFCF7] rounded-2xl border border-stone-200 w-full">
+      <div className="p-3 sm:p-4">
         <Title3 title="1. Корзина" />
       </div>
 
-      <hr className="w-full" />
+      <hr className="w-full border-stone-200" />
 
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         {loading ? (
           <div>
             {[...Array(3)].map((_, idx) => (
@@ -38,7 +38,7 @@ const CartSection = ({ loading, items }: Props) => {
                 </AnimatePresence>
               </div>
             ) : (
-              <div className="m-auto w-1/2 text-center">
+              <div className="m-auto w-full sm:w-1/2 text-center">
                 <div className="items-center">
                   <Image
                     alt="empty"
@@ -52,7 +52,7 @@ const CartSection = ({ loading, items }: Props) => {
                 <div className="flex flex-col items-center gap-2">
                   <div className="flex flex-col gap-1">
                     <h2 className="font-bold text-xl">Корзина пуста</h2>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-stone-500">
                       Добавьте хотя бы одну пиццу, чтобы совершить заказ
                     </p>
                   </div>

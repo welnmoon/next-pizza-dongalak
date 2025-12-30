@@ -13,7 +13,7 @@ const ButtonCart = () => {
   return (
     <div className="relative">
       <CartDrawer>
-        <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 flex items-center gap-2 shadow-md group min-w-[120px] justify-between cursor-pointer">
+        <Button className="bg-emerald-700 hover:bg-emerald-800 text-white rounded-2xl px-4 py-2 flex items-center gap-2 shadow-lg group min-w-[120px] justify-between cursor-pointer">
           {/* Сумма */}
           <span className="text-md font-semibold">{totalPrice} ₸</span>
 
