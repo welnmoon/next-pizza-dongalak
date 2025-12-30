@@ -9,7 +9,8 @@ Next Pizza — e-commerce приложение для онлайн-заказа 
 аутентификацию пользователей и административную панель.
 
 
-<img width="1801" height="898" alt="image" src="https://github.com/user-attachments/assets/5f675974-6560-4c3f-a258-ac76063e457b" />
+<img width="1911" height="906" alt="image" src="https://github.com/user-attachments/assets/1579302d-a67e-436b-b041-1becf65d78aa" />
+
 <img width="1909" height="897" alt="image" src="https://github.com/user-attachments/assets/9fcfab73-18ca-4a88-848e-9aa37d73ba69" />
 
 
